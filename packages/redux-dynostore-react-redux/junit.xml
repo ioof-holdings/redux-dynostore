@@ -1,0 +1,8 @@
+<testsuites name="jest tests">
+  <testsuite name="dynamic tests" errors="0" failures="0" skipped="0" timestamp="2018-04-05T13:28:36" time="1.129" tests="2">
+    <testcase classname="dynamic tests should create dynamic component" name="dynamic tests should create dynamic component" time="0.101">
+    </testcase>
+    <testcase classname="dynamic tests should create dynamic component with enhancer" name="dynamic tests should create dynamic component with enhancer" time="0.005">
+    </testcase>
+  </testsuite>
+</testsuites>

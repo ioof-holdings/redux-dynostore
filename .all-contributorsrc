@@ -1,0 +1,45 @@
+{
+  "projectName": "@redux-dynostore/core",
+  "projectOwner": "ioof-holdings",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "mpeyper",
+      "name": "Michael Peyper",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/23029903?v=4",
+      "profile": "https://github.com/mpeyper",
+      "contributions": [
+        "question",
+        "bug",
+        "code",
+        "doc",
+        "example",
+        "ideas",
+        "infra",
+        "review",
+        "platform",
+        "talk",
+        "test",
+        "tool"
+      ]
+    },
+    {
+      "login": "jpeyper",
+      "name": "Jonathan Peyper",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/6560018?v=4",
+      "profile": "https://github.com/jpeyper",
+      "contributions": [
+        "question",
+        "bug",
+        "code",
+        "ideas",
+        "review",
+        "test"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "name": "@redux-dynostore/redux-saga",
+  "version": "1.0.0",
+  "description": "Dynamically add Redux sagas at runtime",
+  "author": "Michael Peyper",
+  "contributors": [
+    "Jonathan Peyper"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioof-holdings/redux-dynostore.git"
+  },
+  "peerDependencies": {
+    "@redux-dynostore/core": "^1.0.0",
+    "redux": "^3.0.0",
+    "redux-saga": "^0.16.0"
+  },
+  "devDependencies": {
+    "@redux-dynostore/core": "^1.0.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-module-resolver": "^3.1.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "jest": "^22.4.3",
+    "jest-junit": "^3.6.0",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.16.0",
+    "rollup": "^0.57.1",
+    "rollup-plugin-babel": "^3.0.3"
+  },
+  "scripts": {
+    "prebuild": "rimraf lib es",
+    "build": "rollup -c",
+    "lint": "eslint . --ext .js --ext .jsx",
+    "lint:fix": "eslint . --ext .js --ext .jsx --fix",
+    "test": "JEST_JUNIT_OUTPUT=./test-reports/unit-test-output.xml jest --coverage --colors",
+    "test:watch": "npm test -- --watch",
+    "prepublish": "npm run build"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/src/**"
+    ],
+    "testResultsProcessor": "./node_modules/jest-junit"
+  }
+}

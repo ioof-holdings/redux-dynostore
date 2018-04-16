@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+lerna-debug.log
+.nyc_output
+coverage
+test-reports
+.vscode
+.idea
+lib/
+es/

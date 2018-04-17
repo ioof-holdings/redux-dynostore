@@ -9,6 +9,9 @@
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ioof-holdings/redux-dynostore.git"

@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "Enhance Redux stores to allow additional functionality to be dynamically added at runtime",
   "author": "Michael Peyper",
-  "contributors": ["Jonathan Peyper"],
+  "contributors": [
+    "Jonathan Peyper"
+  ],
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ioof-holdings/redux-dynostore.git"
@@ -41,7 +46,9 @@
     "prepublish": "npm run build"
   },
   "jest": {
-    "collectCoverageFrom": ["**/src/**"],
+    "collectCoverageFrom": [
+      "**/src/**"
+    ],
     "testResultsProcessor": "./node_modules/jest-junit"
   }
 }

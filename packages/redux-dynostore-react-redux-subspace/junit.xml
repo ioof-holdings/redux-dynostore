@@ -1,6 +1,0 @@
-<testsuites name="jest tests">
-  <testsuite name="subspaced tests" errors="0" failures="0" skipped="0" timestamp="2018-04-05T13:28:36" time="0.869" tests="1">
-    <testcase classname="subspaced tests should create subspaced enhanced component" name="subspaced tests should create subspaced enhanced component" time="0.043">
-    </testcase>
-  </testsuite>
-</testsuites>

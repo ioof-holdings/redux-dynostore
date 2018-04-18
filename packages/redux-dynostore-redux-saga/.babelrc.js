@@ -8,6 +8,7 @@ module.exports = {
     'stage-3'
   ],
   plugins: [
+    'annotate-pure-calls',
     cjs && 'transform-es2015-modules-commonjs', 
     ['module-resolver', { alias: { src: './src' } }]
   ].filter(Boolean)

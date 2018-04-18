@@ -1,8 +1,0 @@
-<testsuites name="jest tests">
-  <testsuite name="attachReducer tests" errors="0" failures="0" skipped="0" timestamp="2018-04-05T13:28:40" time="0.235" tests="2">
-    <testcase classname="attachReducer tests should attach reducer to non namespaced store" name="attachReducer tests should attach reducer to non namespaced store" time="0.006">
-    </testcase>
-    <testcase classname="attachReducer tests should attach reducer to namespaced store" name="attachReducer tests should attach reducer to namespaced store" time="0.001">
-    </testcase>
-  </testsuite>
-</testsuites>

@@ -1,8 +1,0 @@
-<testsuites name="jest tests">
-  <testsuite name="runSaga tests" errors="0" failures="0" skipped="0" timestamp="2018-04-05T13:28:40" time="0.272" tests="2">
-    <testcase classname="runSaga tests should run saga to non namespaced store" name="runSaga tests should run saga to non namespaced store" time="0.009">
-    </testcase>
-    <testcase classname="runSaga tests should run saga to namespaced store" name="runSaga tests should run saga to namespaced store" time="0.001">
-    </testcase>
-  </testsuite>
-</testsuites>

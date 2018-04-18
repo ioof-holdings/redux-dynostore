@@ -1,5 +1,6 @@
 # @redux-dynostore/redux-subspace
 
+[![build status](https://img.shields.io/travis/ioof-holdings/redux-dynostore/master.svg?style=flat-square)](https://travis-ci.org/ioof-holdings/redux-dynostore)
 [![npm version](https://img.shields.io/npm/v/@redux-dynostore/redux-subspace.svg?style=flat-square)](https://www.npmjs.com/package/redux-dynostore-redux-subspace)
 [![npm downloads](https://img.shields.io/npm/dm/@redux-dynostore/redux-subspace.svg?style=flat-square)](https://www.npmjs.com/package/@redux-dynostore/redux-subspace)
 [![License: BSD-3-Clause](https://img.shields.io/npm/l/@redux-dynostore/redux-subspace.svg?style=flat-square)](/LICENSE.md)

@@ -9,6 +9,12 @@
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "sideEffects": false,
+  "files": [
+    "lib",
+    "es",
+    "src"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -29,6 +35,7 @@
     "@redux-dynostore/react-redux": "^1.0.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-plugin-annotate-pure-calls": "^0.2.2",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-preset-env": "^1.6.1",

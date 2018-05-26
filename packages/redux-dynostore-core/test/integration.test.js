@@ -7,7 +7,7 @@
  */
 
 import { createStore, combineReducers } from 'redux'
-import dynostore, { dynamicReducers, createDynamicTarget, attachReducer, dispatchAction } from 'src'
+import dynostore, { dynamicReducers, createDynamicTarget, attachReducer, dispatchAction, escapeIdentifier } from 'src'
 
 describe('integration tests', () => {
   const makeTestReducer = id => (state = `${id} - initialValue`, { type, newValue }) => {
@@ -61,6 +61,30 @@ describe('integration tests', () => {
 
     expect(target1).not.toHaveBeenCalled()
     expect(target2).not.toHaveBeenCalled()
+  })
+
+  test('should attach reduce with escaped identifer', () => {
+    const reducer = combineReducers({
+      static1: makeTestReducer('static1'),
+      static2: makeTestReducer('static2')
+    })
+
+    const store = createStore(reducer, dynostore(dynamicReducers()))
+
+    const target = mockTarget(
+      [attachReducer(makeTestReducer('dynamic'))],
+      escapeIdentifier('dynamic/reducer'),
+      store,
+      jest.fn()
+    )
+
+    expect(store.getState()).toEqual({
+      static1: 'static1 - initialValue',
+      static2: 'static2 - initialValue',
+      ['dynamic/reducer']: 'dynamic - initialValue'
+    })
+
+    expect(target).not.toHaveBeenCalled()
   })
 
   test('should dispatch actions', () => {

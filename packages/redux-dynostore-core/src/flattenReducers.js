@@ -6,17 +6,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const flattenReducers = (reducers, parentKey) => {
-  if (typeof reducers === 'function') {
-    return { [parentKey.replace(/\//g, '.')]: reducers }
+import { unescapeIdentifier } from './escapeIdentifier'
+
+const flattenReducers = (reducer, path = []) => {
+  if (typeof reducer === 'function') {
+    return { path: path.map(p => unescapeIdentifier(p)), reducer }
   }
 
-  return Object.keys(reducers).reduce(
-    (reducerMap, key) => ({
-      ...reducerMap,
-      ...flattenReducers(reducers[key], parentKey ? `${parentKey}.${key}` : key)
-    }),
-    {}
+  return Object.keys(reducer).reduce(
+    (current, key) => [...current, ...flattenReducers(reducer[key], [...path, ...key.split(/[./]/g)])],
+    []
   )
 }
 

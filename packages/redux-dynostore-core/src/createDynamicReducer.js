@@ -13,18 +13,17 @@ import filteredReducer from './filteredReducer'
 const expandReducers = reducers => {
   const expandedReducers = { children: {} }
 
-  for (let key in reducers) {
-    let path = key.split('.')
+  for (let flattenedReducer of reducers) {
     let currentNode = expandedReducers
 
-    for (let element of path) {
+    for (let element of flattenedReducer.path) {
       if (!currentNode.children[element]) {
         currentNode.children[element] = { children: {} }
       }
 
       currentNode = currentNode.children[element]
     }
-    currentNode.reducer = reducers[key]
+    currentNode.reducer = flattenedReducer.reducer
   }
 
   return expandedReducers

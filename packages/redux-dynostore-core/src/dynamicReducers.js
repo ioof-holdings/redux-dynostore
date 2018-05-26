@@ -12,19 +12,16 @@ import createDynamicReducer from './createDynamicReducer'
 import flattenReducers from './flattenReducers'
 
 const dynamicReducersEnhancer = () => createHandlers => (store, reducer, ...rest) => {
-  let dynamicReducers = {}
+  let dynamicReducers = []
 
   const createReducer = () => {
-    const reducers = [
-      filteredReducer(reducer),
-      filteredReducer(createDynamicReducer(dynamicReducers))
-    ]
+    const reducers = [filteredReducer(reducer), filteredReducer(createDynamicReducer(dynamicReducers))]
 
     return concatenateReducers(reducers)
   }
 
   const attachReducers = reducers => {
-    dynamicReducers = { ...dynamicReducers, ...flattenReducers(reducers) }
+    dynamicReducers = [...dynamicReducers, ...flattenReducers(reducers)]
     store.replaceReducer(createReducer())
   }
 

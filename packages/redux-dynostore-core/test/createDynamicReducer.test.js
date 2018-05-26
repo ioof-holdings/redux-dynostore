@@ -13,15 +13,36 @@ describe('createDynamicReducer Tests', () => {
     const dummyReducer = (state = { value: 0 }, action) =>
       action.type === 'INC' ? { ...state, value: state.value + 1 } : state
 
-    const inputStructure = {
-      foo: dummyReducer,
-      'foo.bar': dummyReducer,
-      'foo.bar.baz': dummyReducer,
-      'foo.bar.qux': dummyReducer,
-      'foo.baz': dummyReducer,
-      bar: dummyReducer,
-      'bar.baz': dummyReducer
-    }
+    const inputStructure = [
+      {
+        path: ['foo'],
+        reducer: dummyReducer
+      },
+      {
+        path: ['foo', 'bar'],
+        reducer: dummyReducer
+      },
+      {
+        path: ['foo', 'bar', 'baz'],
+        reducer: dummyReducer
+      },
+      {
+        path: ['foo', 'bar', 'qux'],
+        reducer: dummyReducer
+      },
+      {
+        path: ['foo', 'baz'],
+        reducer: dummyReducer
+      },
+      {
+        path: ['bar'],
+        reducer: dummyReducer
+      },
+      {
+        path: ['bar', 'baz'],
+        reducer: dummyReducer
+      }
+    ]
 
     const reducer = createDynamicReducer(inputStructure)
 

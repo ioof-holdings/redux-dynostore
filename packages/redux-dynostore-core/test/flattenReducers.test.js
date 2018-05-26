@@ -25,15 +25,19 @@ describe('flattenReducers tests', () => {
 
     const flattenedStructure = flattenReducers(inputStructure)
 
-    expect(flattenedStructure['test']).toBe(inputStructure.test)
-    expect(flattenedStructure['nested.test']).toBe(inputStructure.nested.test)
-    expect(flattenedStructure['multiple.test']).toBe(inputStructure.multiple.test)
-    expect(flattenedStructure['multiple.nested.test']).toBe(inputStructure.multiple.nested.test)
+    expect(flattenedStructure[0].path).toEqual(['test'])
+    expect(flattenedStructure[0].reducer).toBe(inputStructure.test)
+    expect(flattenedStructure[1].path).toEqual(['nested', 'test'])
+    expect(flattenedStructure[1].reducer).toBe(inputStructure.nested.test)
+    expect(flattenedStructure[2].path).toEqual(['multiple', 'test'])
+    expect(flattenedStructure[2].reducer).toBe(inputStructure.multiple.test)
+    expect(flattenedStructure[3].path).toEqual(['multiple', 'nested', 'test'])
+    expect(flattenedStructure[3].reducer).toBe(inputStructure.multiple.nested.test)
   })
 
   test('should normalize delimeters', () => {
     const inputStructure = {
-      'test': jest.fn(),
+      test: jest.fn(),
       'dot.test': jest.fn(),
       'slash/test': jest.fn(),
       'multiple.dot.test': jest.fn(),
@@ -43,11 +47,17 @@ describe('flattenReducers tests', () => {
 
     const flattenedStructure = flattenReducers(inputStructure)
 
-    expect(flattenedStructure['test']).toBe(inputStructure['test'])
-    expect(flattenedStructure['dot.test']).toBe(inputStructure['dot.test'])
-    expect(flattenedStructure['slash.test']).toBe(inputStructure['slash/test'])
-    expect(flattenedStructure['multiple.dot.test']).toBe(inputStructure['multiple.dot.test'])
-    expect(flattenedStructure['multiple.slash.test']).toBe(inputStructure['multiple/slash/test'])
-    expect(flattenedStructure['multiple.mixed.delimeter.test']).toBe(inputStructure['multiple/mixed.delimeter/test'])
+    expect(flattenedStructure[0].path).toEqual(['test'])
+    expect(flattenedStructure[0].reducer).toBe(inputStructure['test'])
+    expect(flattenedStructure[1].path).toEqual(['dot', 'test'])
+    expect(flattenedStructure[1].reducer).toBe(inputStructure['dot.test'])
+    expect(flattenedStructure[2].path).toEqual(['slash', 'test'])
+    expect(flattenedStructure[2].reducer).toBe(inputStructure['slash/test'])
+    expect(flattenedStructure[3].path).toEqual(['multiple', 'dot', 'test'])
+    expect(flattenedStructure[3].reducer).toBe(inputStructure['multiple.dot.test'])
+    expect(flattenedStructure[4].path).toEqual(['multiple', 'slash', 'test'])
+    expect(flattenedStructure[4].reducer).toBe(inputStructure['multiple/slash/test'])
+    expect(flattenedStructure[5].path).toEqual(['multiple', 'mixed', 'delimeter', 'test'])
+    expect(flattenedStructure[5].reducer).toBe(inputStructure['multiple/mixed.delimeter/test'])
   })
 })

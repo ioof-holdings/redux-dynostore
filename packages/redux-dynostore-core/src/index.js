@@ -12,4 +12,6 @@ export { default as dynamicReducers } from './dynamicReducers'
 export { default as attachReducer } from './attachReducer'
 export { default as dispatchAction } from './dispatchAction'
 
+export { escapeIdentifier, escapeIdentifiers, unescapeIdentifier } from './escapeIdentifier'
+
 export { default as createDynamicTarget } from './createDynamicTarget'

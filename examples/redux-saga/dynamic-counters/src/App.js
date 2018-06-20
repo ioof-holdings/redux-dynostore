@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import Counter from './components/Counter'
 import { ADD_COUNTER } from './actionTypes'
 
-const initialState = { counters: ['Counter one', 'Counter two'] }
+const initialState = { counterIds: ['Counter one', 'Counter two'] }
 
 export const pageReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_COUNTER:
-      return { ...state, counters: [...state.counters, action.value] }
+      return { ...state, counterIds: [...state.counterIds, action.value] }
     default:
       return state
   }
@@ -33,7 +33,7 @@ class App extends React.Component {
 
   _handleNewCounterClick = () => {
     const counterName = this._counterNameInputRef.current.value.trim()
-    if (this.props.counters.indexOf(counterName) !== -1) {
+    if (this.props.counterIds.indexOf(counterName) !== -1) {
       alert('Each identifier must be unique')
       return
     }
@@ -48,11 +48,11 @@ class App extends React.Component {
     return (
       <div>
         <div>
-          {this.props.counters.map(id => {
+          {this.props.counterIds.map(id => {
             return (
-              <div>
+              <div key={id}>
                 <span>{id}</span>
-                <DynaCounter key={id} id={id} />
+                <DynaCounter id={id} />
                 <br />
               </div>
             )
@@ -71,6 +71,6 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({ counters: state.page.counters })
+const mapStateToProps = state => ({ counterIds: state.page.counterIds })
 
 export default connect(mapStateToProps)(App)

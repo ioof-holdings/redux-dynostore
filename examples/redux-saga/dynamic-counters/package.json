@@ -1,5 +1,5 @@
 {
-  "name": "cancellable-counter",
+  "name": "dynamic-list-counters",
   "version": "1.0.0",
   "private": true,
   "devDependencies": {

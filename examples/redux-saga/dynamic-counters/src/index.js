@@ -9,7 +9,7 @@ import { dynamicSagas } from '@redux-dynostore/redux-saga'
 
 import App, { pageReducer } from './App'
 
-const rootReducer = combineReducers({ page: pageReducer })
+const rootReducer = combineReducers({ page: pageReducer }) // all static reducers here
 const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(

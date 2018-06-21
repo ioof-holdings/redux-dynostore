@@ -1,0 +1,28 @@
+{
+  "name": "dynamic-list-counters",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "react-scripts": "^1.0.14"
+  },
+  "dependencies": {
+    "@redux-dynostore/core": "^1.0.0",
+    "@redux-dynostore/react-redux": "^1.0.0",
+    "@redux-dynostore/react-redux-subspace": "^1.0.0",
+    "@redux-dynostore/redux-saga": "^1.0.0",
+    "@redux-dynostore/redux-subspace": "^1.0.0",
+    "@redux-dynostore/redux-subspace-saga": "^1.0.0",
+    "prop-types": "^15.6.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.16.0",
+    "redux-subspace": "^2.4.0",
+    "redux-subspace-saga": "^2.4.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "eject": "react-scripts eject"
+  }
+}

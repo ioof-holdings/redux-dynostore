@@ -6,7 +6,8 @@ import {
   INCREMENT_IF_ODD,
   INCREMENT_ASYNC,
   CANCEL_INCREMENT_ASYNC,
-  COUNTDOWN_TERMINATED
+  COUNTDOWN_TERMINATED,
+  ADD_COUNTER
 } from '../actionTypes'
 
 function countdown(state = 0, action) {
@@ -34,7 +35,16 @@ function counter(state = 0, action) {
   }
 }
 
-export default combineReducers({
+export const counterInstanceReducer = combineReducers({
   countdown,
   counter
 })
+
+export const allCountersReducer = (state = { allIds: ['Counter one', 'Counter two'] }, action) => {
+  switch (action.type) {
+    case ADD_COUNTER:
+      return { ...state, allIds: [...state.allIds, action.value] }
+    default:
+      return state
+  }
+}

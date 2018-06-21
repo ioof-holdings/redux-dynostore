@@ -1,29 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Counter from './components/Counter'
+import { DynaCounter } from './components'
 import { ADD_COUNTER } from './actionTypes'
-
-const initialState = { counterIds: ['Counter one', 'Counter two'] }
-
-export const pageReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case ADD_COUNTER:
-      return { ...state, counterIds: [...state.counterIds, action.value] }
-    default:
-      return state
-  }
-}
-
-class DynaCounter extends React.Component {
-  constructor(props) {
-    super(props)
-    this.CounterInst = Counter.createInstance(props.id)
-  }
-
-  render() {
-    return <this.CounterInst />
-  }
-}
 
 class App extends React.Component {
   constructor(props) {
@@ -33,7 +11,7 @@ class App extends React.Component {
 
   _handleNewCounterClick = () => {
     const counterName = this._counterNameInputRef.current.value.trim()
-    if (this.props.counterIds.indexOf(counterName) !== -1) {
+    if (this.props.allIds.indexOf(counterName) !== -1) {
       alert('Each identifier must be unique')
       return
     }
@@ -41,14 +19,14 @@ class App extends React.Component {
       alert('New identifier must not be null')
       return
     }
-    this.props.dispatch({ type: ADD_COUNTER, value: counterName })
+    this.props.addCounter(counterName)
   }
 
   render() {
     return (
       <div>
         <div>
-          {this.props.counterIds.map(id => {
+          {this.props.allIds.map(id => {
             return (
               <div key={id}>
                 <span>{id}</span>
@@ -71,6 +49,16 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({ counterIds: state.page.counterIds })
+const mapStateToProps = state => {
+  return { allIds: state.counters.allIds }
+}
+const mapDispatchToProps = {
+  addCounter: counterName => {
+    return { type: ADD_COUNTER, value: counterName }
+  }
+}
 
-export default connect(mapStateToProps)(App)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)

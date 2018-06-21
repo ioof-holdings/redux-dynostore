@@ -40,6 +40,16 @@
         "review",
         "test"
       ]
+    },
+    {
+      "login": "Gregor1971",
+      "name": "Greg Miller",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/11048958?v=4",
+      "profile": "https://github.com/Gregor1971",
+      "contributions": [
+        "example"
+      ]
     }
-  ]
+  ],
+  "repoType": "github"
 }

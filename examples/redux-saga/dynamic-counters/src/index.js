@@ -7,9 +7,10 @@ import createSagaMiddleware from 'redux-subspace-saga'
 import dynostore, { dynamicReducers } from '@redux-dynostore/core'
 import { dynamicSagas } from '@redux-dynostore/redux-saga'
 
-import App, { pageReducer } from './App'
+import App from './App'
+import { allCountersReducer } from './reducers'
 
-const rootReducer = combineReducers({ page: pageReducer }) // all static reducers here
+const rootReducer = combineReducers({ counters: allCountersReducer }) // all static reducers here
 const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(

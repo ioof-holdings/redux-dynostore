@@ -5,7 +5,7 @@ import dynamic from '@redux-dynostore/react-redux'
 import subspaced from '@redux-dynostore/react-redux-subspace'
 import { attachReducer } from '@redux-dynostore/redux-subspace'
 import runSaga from '@redux-dynostore/redux-subspace-saga'
-import reducer from '../reducers'
+import { counterInstanceReducer } from '../reducers'
 import saga from '../sagas'
 
 import { INCREMENT, DECREMENT, INCREMENT_IF_ODD, INCREMENT_ASYNC, CANCEL_INCREMENT_ASYNC } from '../actionTypes'
@@ -45,4 +45,4 @@ function mapStateToProps(state) {
 
 const CounterContainer = connect(mapStateToProps)(Counter)
 
-export default dynamic('counter', attachReducer(reducer), runSaga(saga), subspaced())(CounterContainer)
+export default dynamic('counter', attachReducer(counterInstanceReducer), runSaga(saga), subspaced())(CounterContainer)

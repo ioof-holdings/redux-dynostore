@@ -30,7 +30,8 @@ const createDynamic = (identifier, enhancers) => {
     hoistNonReactStatics(Dynamic, Component)
     Dynamic.displayName = wrapDisplayName(Component, 'Dynamic')
 
-    Dynamic.createInstance = instanceIdentfier => createDynamic(instanceIdentfier, enhancers)(Component)
+    Dynamic.createInstance = (instanceIdentfier, ...instanceEnhancers) =>
+      createDynamic(instanceIdentfier, enhancers.concat(instanceEnhancers))(Component)
 
     Dynamic.contextTypes = {
       store: PropTypes.object

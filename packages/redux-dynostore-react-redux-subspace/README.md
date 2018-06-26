@@ -16,6 +16,12 @@ import subspaced from '@redux-dynostore/react-redux-subspace'
 export default dynamic('identifier', subspaced())(MyComponent)
 ```
 
+## With extra state
+
+```javascript
+export default dynamic('identifier', subspaced({ mapExtraState: (state, rootState) => ({ /* ... */ }) }))(MyComponent)
+```
+
 When mounted, `MyComponent` will be wrapped in a [`SubspaceProvider`](https://ioof-holdings.github.io/redux-subspace/packages/react-redux-subspace/docs/api/SubspaceProvider.html).
 
 If you are attaching a reducer dynamically, you should use the [redux-subspace variant](/packages/redux-dynostore-redux-subspace) to ensure it will receive the namespaced actions.

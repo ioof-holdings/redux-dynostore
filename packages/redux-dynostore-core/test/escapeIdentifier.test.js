@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { escapeIdentifier, escapeIdentifiers, unescapeIdentifier } from 'src/escapeIdentifier'
+import { escapeIdentifier, escapeIdentifiers, unescapeIdentifier, splitIdentifier } from 'src/escapeIdentifier'
 
 describe('escapeIdentifier tests', () => {
   test('should escape identifier', () => {
@@ -66,5 +66,14 @@ describe('escapeIdentifier tests', () => {
     expect(
       unescapeIdentifier('multiple%%FORWARD_SLASH_TOKEN%%mixed%%DOT_TOKEN%%delimeter%%FORWARD_SLASH_TOKEN%%test')
     ).toBe('multiple/mixed.delimeter/test')
+  })
+
+  test('should split identifier', () => {
+    expect(splitIdentifier('test')).toEqual(['test'])
+    expect(splitIdentifier('dot.test')).toEqual(['dot', 'test'])
+    expect(splitIdentifier('slash/test')).toEqual(['slash', 'test'])
+    expect(splitIdentifier('multiple.dot.test')).toEqual(['multiple', 'dot', 'test'])
+    expect(splitIdentifier('multiple/slash/test')).toEqual(['multiple', 'slash', 'test'])
+    expect(splitIdentifier('multiple/mixed.delimeter/test')).toEqual(['multiple', 'mixed', 'delimeter', 'test'])
   })
 })

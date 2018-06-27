@@ -13,13 +13,14 @@ const subspacedEnhancer = ({ mapExtraState = () => null } = {}) => identifier =>
   const mapState = (state, rootState) => {
     const componentState = state[identifier]
     if (!isPlainObject(componentState)) {
-      // perhaps a warning/error
       return componentState
     }
 
     const extraState = mapExtraState(state, rootState)
     if (!isPlainObject(extraState)) {
-      // perhaps a warning/error if not null
+      if (process.env.NODE_ENV !== 'production' && extraState !== null) {
+        throw new TypeError(`extra state must be a plain object but received ${extraState}`)
+      }
       return componentState
     }
 

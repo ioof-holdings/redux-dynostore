@@ -87,4 +87,32 @@ describe('dynamic tests', () => {
     expect(wrapper.html()).toBe('<p>Hello World</p>')
     expect(callback).toHaveBeenCalledTimes(1)
   })
+
+  test('should create instance of dynamic component with enhancer and instance enhancer', () => {
+    const callback = jest.fn()
+
+    const fakeStore = {}
+
+    const testEnhancer1 = identifier => store => {
+      expect(identifier).toBe('testId')
+      expect(store).toBe(fakeStore)
+      callback(1)
+    }
+
+    const testEnhancer2 = identifier => store => {
+      expect(identifier).toBe('testId')
+      expect(store).toBe(fakeStore)
+      callback(2)
+    }
+
+    const TestComponent = () => <p>Hello World</p>
+    const DynamicComponent = dynamic('baseId', testEnhancer1)(TestComponent).createInstance('testId', testEnhancer2)
+
+    const wrapper = shallow(<DynamicComponent />, { context: { store: fakeStore } })
+
+    expect(wrapper.html()).toBe('<p>Hello World</p>')
+    expect(callback).toHaveBeenCalledWith(1)
+    expect(callback).toHaveBeenCalledWith(2)
+    expect(callback).toHaveBeenCalledTimes(2)
+  })
 })

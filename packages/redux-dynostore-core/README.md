@@ -22,8 +22,8 @@ const store = createStore(reducer, dynostore(
 
 Dynamic enhancers are used to make dynamic features available to the store. The following dynamic enhancers are provided:
 
-1. Reducers - dynamically attach reducers
-2. [Sagas](/packages/redux-dynostore-redux-saga) - dynamically run sagas
+1.  Reducers - dynamically attach reducers
+2.  [Sagas](/packages/redux-dynostore-redux-saga) - dynamically run sagas
 
 ### `dynamicReducers`
 
@@ -47,7 +47,7 @@ Multiple reducers can be attached as well:
 store.attachReducers({ dynamicReducer1, dynamicReducer2 })
 ```
 
-Reducers can also be added to nested locations in the store.  The following formats are supported:
+Reducers can also be added to nested locations in the store. The following formats are supported:
 
 ```javascript
 store.attachReducers({ 'some.path.to': dynamicReducer })
@@ -77,7 +77,7 @@ Dynamic enhancers can be created for many use cases by implementing the followin
 const enhancer = createHandlers => (store, reducer, preloadedState) => ({ ...handlers })
 ```
 
-`handlers` is an object with all the functions you want your enhancer to add to the store.  You should only ever append your handlers to the object and not remove any added by other dynamic handlers.
+`handlers` is an object with all the functions you want your enhancer to add to the store. You should only ever append your handlers to the object and not remove any added by other dynamic handlers.
 
 ## Utilities
 
@@ -98,7 +98,43 @@ An enhancer compatible with [`react-redux-dynostore`](/package/react-redux-dynos
 
 ```javascript
 import dynamic from '@redux-dynostore/react-redux'
-import { dispatchAction } from '-redux-dynostore'
+import { dispatchAction } from '@redux-dynostore/core'
 
 export default dynamic('identifier', dispatchAction({ type: 'MY_ACTION' }))(MyComponent)
+```
+
+### `escapeIdentifier`
+
+Escapes the given identifier string so that it does not accidentally trigger additional levels of nesting:
+
+```javascript
+import dynamic from '@redux-dynostore/react-redux'
+import { escapeIdentifier } from '@redux-dynostore/core'
+
+export default dynamic(escapeIdentifier('escaped/identifier'))(MyComponent)
+```
+
+### `escapeIdentifiers`
+
+Escapes the keys of the given object so that it does not accidentally trigger additional levels of nesting:
+
+```javascript
+import { escapeIdentifiers } from '@redux-dynostore/core'
+
+store.attachReducers(escapeIdentifiers({
+  'escaped/identifier': {
+    'escaped/nested/identifier': dynamicReducer
+  }
+})
+```
+
+### `unescapeIdentifier`
+
+Reverses the escaping performed by `escapeIdentifier` and `escapeIdentifiers`:
+
+```javascript
+import { escapeIdentifier, unescapeIdentifier } from '@redux-dynostore/core'
+
+const escaped = escapeIdentifier('escaped/identifier')
+const unexcaped = unescapeIdentifier(escaped)
 ```

@@ -49,6 +49,17 @@
       "contributions": [
         "example"
       ]
+    },
+    {
+      "login": "Ethorsen",
+      "name": "Ethorsen",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1493968?v=4",
+      "profile": "https://github.com/Ethorsen",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
     }
   ],
   "repoType": "github"

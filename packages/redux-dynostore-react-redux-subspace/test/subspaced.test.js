@@ -13,7 +13,7 @@ import { Provider, connect } from 'react-redux'
 import { SubspaceProvider } from 'react-redux-subspace'
 import { mount } from 'enzyme'
 
-import dynostore from '../../redux-dynostore-core/lib/index'
+import dynostore from '@redux-dynostore/core'
 import subspaced from 'src/subspaced'
 import dynamic from '@redux-dynostore/react-redux'
 

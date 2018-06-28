@@ -45,20 +45,14 @@ describe('dynamic tests', () => {
 
     const fakeStore = {}
 
-    const testEnhancer1 = identifier => store => {
+    const testEnhancer = instance => identifier => store => {
       expect(identifier).toBe('testId')
       expect(store).toBe(fakeStore)
-      callback(1)
-    }
-
-    const testEnhancer2 = identifier => store => {
-      expect(identifier).toBe('testId')
-      expect(store).toBe(fakeStore)
-      callback(2)
+      callback(instance)
     }
 
     const TestComponent = () => <p>Hello World</p>
-    const DynamicComponent = dynamic('testId', testEnhancer1, testEnhancer2)(TestComponent)
+    const DynamicComponent = dynamic('testId', testEnhancer(1), testEnhancer(2))(TestComponent)
 
     const wrapper = shallow(<DynamicComponent />, { context: { store: fakeStore } })
 
@@ -93,20 +87,14 @@ describe('dynamic tests', () => {
 
     const fakeStore = {}
 
-    const testEnhancer1 = identifier => store => {
+    const testEnhancer = instance => identifier => store => {
       expect(identifier).toBe('testId')
       expect(store).toBe(fakeStore)
-      callback(1)
-    }
-
-    const testEnhancer2 = identifier => store => {
-      expect(identifier).toBe('testId')
-      expect(store).toBe(fakeStore)
-      callback(2)
+      callback(instance)
     }
 
     const TestComponent = () => <p>Hello World</p>
-    const DynamicComponent = dynamic('baseId', testEnhancer1)(TestComponent).createInstance('testId', testEnhancer2)
+    const DynamicComponent = dynamic('baseId', testEnhancer(1))(TestComponent).createInstance('testId', testEnhancer(2))
 
     const wrapper = shallow(<DynamicComponent />, { context: { store: fakeStore } })
 

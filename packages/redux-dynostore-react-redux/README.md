@@ -45,3 +45,11 @@ Enahncers can be created for many use cases by implementing the following interf
 ```javascript
 const enhancer = identifier => store => Component => EnhancedComponent
 ```
+
+### Instance Enhancers
+
+Additional enhancers can be injected on a specific instance of a dynamic component 
+
+```javascript
+const MyComponent1 = MyComponent.createInstance('instance1', subspaced())
+```

@@ -29,12 +29,11 @@ describe('dynamicReducers tests', () => {
     const createHandlers = jest.fn()
     const store = { replaceReducer: jest.fn() }
     const reducer = (state = {}) => state
-    const otherHandlers = { other: jest.fn() }
 
     const testReducer1 = (state = 'value1') => state
     const testReducer2 = (state = 'value2') => state
 
-    createHandlers.mockReturnValue(otherHandlers)
+    createHandlers.mockReturnValue({})
 
     const handlers = dynamicReducers()(createHandlers)(store, reducer)
 
@@ -45,6 +44,32 @@ describe('dynamicReducers tests', () => {
     expect(store.replaceReducer.mock.calls[0][0]()).toEqual({
       testReducer1: 'value1',
       testReducer2: 'value2'
+    })
+  })
+
+  test('should override attached reducers with the same key', () => {
+    const createHandlers = jest.fn()
+    const store = { replaceReducer: jest.fn() }
+    const reducer = (state = {}) => state
+
+    const testReducer1 = (state = 'value1') => state
+    const testReducer2 = (state = 'value2') => state
+
+    createHandlers.mockReturnValue({})
+
+    const handlers = dynamicReducers()(createHandlers)(store, reducer)
+
+    handlers.attachReducers({ testReducer: testReducer1 })
+    handlers.attachReducers({ testReducer: testReducer2 })
+
+    expect(store.replaceReducer).toHaveBeenCalledTimes(2)
+
+    expect(store.replaceReducer.mock.calls[0][0]()).toEqual({
+      testReducer: 'value1'
+    })
+
+    expect(store.replaceReducer.mock.calls[1][0]()).toEqual({
+      testReducer: 'value2'
     })
   })
 })

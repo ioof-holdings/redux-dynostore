@@ -16,12 +16,13 @@ const dynamicReducersEnhancer = () => createHandlers => (store, reducer, ...rest
 
   const createReducer = () => {
     const reducers = [filteredReducer(reducer), filteredReducer(createDynamicReducer(dynamicReducers))]
-
     return concatenateReducers(reducers)
   }
 
   const attachReducers = reducers => {
-    dynamicReducers = [...dynamicReducers, ...flattenReducers(reducers)]
+    const newReducers = flattenReducers(reducers)
+    const newKeys = newReducers.map(r => r.key)
+    dynamicReducers = dynamicReducers.filter(r => !newKeys.includes(r.key)).concat(newReducers)
     store.replaceReducer(createReducer())
   }
 

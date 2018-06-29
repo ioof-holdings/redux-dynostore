@@ -10,7 +10,7 @@ import { unescapeIdentifier, splitIdentifier } from './escapeIdentifier'
 
 const flattenReducers = (reducer, path = []) => {
   if (typeof reducer === 'function') {
-    return { path: path.map(p => unescapeIdentifier(p)), reducer }
+    return { key: path.join('/'), path: path.map(p => unescapeIdentifier(p)), reducer }
   }
 
   return Object.keys(reducer).reduce(

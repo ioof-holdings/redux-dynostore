@@ -83,7 +83,7 @@ const enhancer = createHandlers => (store, reducer, preloadedState) => ({ ...han
 
 ### `attachReducer`
 
-An enhancer compatible with [`react-redux-dynostore`](/package/react-redux-dynostore) to attach the reducer when activated:
+An enhancer compatible with [`react-redux-dynostore`](/packages/react-redux-dynostore) to attach the reducer when activated:
 
 ```javascript
 import dynamic from '@redux-dynostore/react-redux'
@@ -94,7 +94,7 @@ export default dynamic('identifier', attachReducer(myReducer))(MyComponent)
 
 ### `dispatchAction`
 
-An enhancer compatible with [`react-redux-dynostore`](/package/react-redux-dynostore) to dispatch an action when activated:
+An enhancer compatible with [`react-redux-dynostore`](/packages/react-redux-dynostore) to dispatch an action when activated:
 
 ```javascript
 import dynamic from '@redux-dynostore/react-redux'

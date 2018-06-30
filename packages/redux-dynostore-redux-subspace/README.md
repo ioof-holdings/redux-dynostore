@@ -11,7 +11,7 @@ Enhancers for integrating redux-dynostore with [redux-subspace](https://github.c
 
 ### `attachReducer`
 
-This enhancer is similar to the base [`attachReducer` enhancer](/package/redux-dynostore-core), except the reducer is namespaced with the `dynamic` component's identifier:
+This enhancer is similar to the base [`attachReducer` enhancer](/packages/redux-dynostore-core), except the reducer is namespaced with the `dynamic` component's identifier:
 
 ```javascript
 import dynamic from '@redux-dynostore/react-redux'
@@ -23,7 +23,7 @@ export default dynamic('identifier', subspaced(), attachReducer(myReducer))(MyCo
 
 ### `dispatchAction`
 
-This enhancer is similar to the base [`dispatchAction` enhancer](/package/redux-dynostore-core), except the action is namespaced with the `dynamic` component's identifier:
+This enhancer is similar to the base [`dispatchAction` enhancer](/packages/react-redux-dynostore), except the action is namespaces with the `dynamic` component's identifier:
 
 ```javascript
 import dynamic from '@redux-dynostore/react-redux'

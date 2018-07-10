@@ -8,3 +8,5 @@ test-reports
 .idea
 lib/
 es/
+bundle/
+externals/

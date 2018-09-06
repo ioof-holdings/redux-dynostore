@@ -100,6 +100,9 @@ describe('integration tests', () => {
     })
 
     const store = createStore(reducer, dynostore(dynamicReducers()))
+    const subspacedStore = subspace('static')(store)
+
+    const target = mockTarget([dispatchAction(changeValue('newValue'))], 'static2', subspacedStore, jest.fn())
 
     expect(store.getState()).toEqual({
       static: {

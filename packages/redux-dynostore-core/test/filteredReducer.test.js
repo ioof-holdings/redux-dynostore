@@ -15,6 +15,7 @@ describe('filteredReducer Tests', () => {
     const plainObject = (state = { test: "value" }) => state
     const array = (state = [ "value" ]) => state
     const changingState = (state = {}, action) => action.type == 'ADD_STATE' ? { ...state, test: "value" } : state
+    const replacingReducer = (state = {test: null}) => state
 
     const testCases = [
         {
@@ -60,6 +61,15 @@ describe('filteredReducer Tests', () => {
             expectedState1: {},
             expectedState2: { test: "value" },
             expectedState3: { test: "other" },
+            expectedState4: { test: "value" }
+        },
+        {
+            name: "replacing reducer",
+            reducer: () => replacingReducer,
+            initialState: { test: "value" },
+            expectedState1: { test: null },
+            expectedState2: { test: null },
+            expectedState3: { test: "value" },
             expectedState4: { test: "value" }
         }
     ]

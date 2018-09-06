@@ -8,7 +8,7 @@
 
 import { createStore, combineReducers } from 'redux'
 import { subspace, namespaced, namespacedAction } from 'redux-subspace'
-import dynostore, { dynamicReducers, createDynamicTarget } from '@redux-dynostore/core'
+import dynostore, { dynamicReducers, createDynamicTarget, DELETE_TYPE } from '@redux-dynostore/core'
 import { attachReducer, dispatchAction } from 'src'
 
 describe('integration tests', () => {
@@ -100,9 +100,6 @@ describe('integration tests', () => {
     })
 
     const store = createStore(reducer, dynostore(dynamicReducers()))
-    const subspacedStore = subspace('static')(store)
-
-    const target = mockTarget([dispatchAction(changeValue('newValue'))], 'static2', subspacedStore, jest.fn())
 
     expect(store.getState()).toEqual({
       static: {
@@ -112,5 +109,30 @@ describe('integration tests', () => {
     })
 
     expect(target).not.toHaveBeenCalled()
+  })
+
+  test('should dispatch a DELETE action to remove a specific namespaced reducer', () => {
+    const reducer = combineReducers({
+      static1: makeTestReducer('static1'),
+      static2: makeTestReducer('static2')
+    })
+
+    const store = createStore(reducer, dynostore(dynamicReducers()))
+
+    mockTarget([attachReducer(makeTestReducer('dynamic1'))], 'dynamic1', store, jest.fn())
+
+    expect(store.getState()).toEqual({
+      static1: 'static1 - initialValue',
+      static2: 'static2 - initialValue',
+      dynamic1: 'dynamic1 - initialValue'
+    })
+
+    store.dispatch(namespacedAction('dynamic1')({type: DELETE_TYPE}))
+
+    expect(store.getState()).toEqual({
+      static1: 'static1 - initialValue',
+      static2: 'static2 - initialValue',
+      dynamic1: null
+    })
   })
 })

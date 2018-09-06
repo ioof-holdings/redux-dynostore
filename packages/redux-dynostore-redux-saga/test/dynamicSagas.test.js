@@ -64,4 +64,58 @@ describe('dynamicSagas tests', () => {
     expect(sagaMiddleware.run).toBeCalledWith(testSaga)
     expect(sagaMiddleware.run).toHaveBeenCalledTimes(1)
   })
+
+  describe('detaching sagas', () => {
+    test('should cancel and remove a running saga', () => {
+      const runningTestSaga = { cancel: jest.fn() }
+      const sagaMiddleware = { run: jest.fn().mockReturnValue(runningTestSaga) }
+      const createHandlers = jest.fn()
+      const store = {}
+      const testSaga = jest.fn()
+
+      const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
+
+      handlers.runSagas({ testSaga })
+      expect(sagaMiddleware.run).toBeCalledWith(testSaga)
+
+      handlers.detachSaga('testSaga')
+      expect(runningTestSaga.cancel).toBeCalled()
+    })
+
+    test('should allow a previously run and canceled saga to be freshly added and run again', () => {
+      const runningTestSaga = { cancel: jest.fn() }
+      const sagaMiddleware = { run: jest.fn().mockReturnValue(runningTestSaga) }
+      const createHandlers = jest.fn()
+      const store = {}
+      const testSaga = jest.fn()
+
+      const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
+
+      handlers.runSagas({ testSaga })
+      expect(sagaMiddleware.run).toBeCalledWith(testSaga)
+
+      handlers.detachSaga('testSaga')
+      expect(runningTestSaga.cancel).toBeCalled()
+
+      jest.clearAllMocks()
+
+      handlers.runSagas({ testSaga })
+
+      expect(sagaMiddleware.run).toBeCalledWith(testSaga)
+      expect(sagaMiddleware.run).toHaveBeenCalledTimes(1)
+    })
+
+    test('should safegaurd against detaching sagas that do not exists', () => {
+      const runningTestSaga = { cancel: jest.fn() }
+      const sagaMiddleware = { run: jest.fn().mockReturnValue(runningTestSaga) }
+      const createHandlers = jest.fn()
+      const store = {}
+
+      const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
+
+      handlers.detachSaga('testSaga')
+      expect(runningTestSaga.cancel).not.toBeCalled()
+    })
+  })
+
 })

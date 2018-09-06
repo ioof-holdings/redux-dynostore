@@ -7,10 +7,10 @@
  */
 
 import { namespaced } from 'redux-subspace'
-import { attachReducer } from '@redux-dynostore/core'
+import { attachReducer, deletableReducer } from '@redux-dynostore/core'
 
 const attachNamespacedReducerEnhancer = reducer => identifier => {
-  const namespacedReducer = namespaced(identifier)(reducer)
+  const namespacedReducer = namespaced(identifier)(deletableReducer(reducer))
 
   return store => {
     const storeNamespace = store.namespace

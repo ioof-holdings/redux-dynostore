@@ -6,12 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+ import detatch from './detachableReducer'
+
 const attachReducerEnhancer = reducer => identifier => store => {
   if (process.env.NODE_ENV !== 'production' && typeof store.attachReducers !== 'function') {
     throw new TypeError(`'store.attachReducers' function is missing: Unable to attach reducer '${identifier}'.`)
   }
 
-  store.attachReducers({ [identifier]: reducer })
+  store.attachReducers({ [identifier]: detatch(identifier)(reducer) })
 }
 
 export default attachReducerEnhancer

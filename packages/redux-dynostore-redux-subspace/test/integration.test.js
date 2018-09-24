@@ -113,29 +113,4 @@ describe('integration tests', () => {
 
     expect(target).not.toHaveBeenCalled()
   })
-
-  test('should dispatch a DELETE action to remove a specific namespaced reducer', () => {
-    const reducer = combineReducers({
-      static1: makeTestReducer('static1'),
-      static2: makeTestReducer('static2')
-    })
-
-    const store = createStore(reducer, dynostore(dynamicReducers()))
-
-    mockTarget([attachReducer(makeTestReducer('dynamic1'))], 'dynamic1', store, jest.fn())
-
-    expect(store.getState()).toEqual({
-      static1: 'static1 - initialValue',
-      static2: 'static2 - initialValue',
-      dynamic1: 'dynamic1 - initialValue'
-    })
-
-    store.dispatch(namespacedAction('dynamic1')({type: DELETE_TYPE}))
-
-    expect(store.getState()).toEqual({
-      static1: 'static1 - initialValue',
-      static2: 'static2 - initialValue',
-      dynamic1: null
-    })
-  })
 })

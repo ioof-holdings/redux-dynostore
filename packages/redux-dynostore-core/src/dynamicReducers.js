@@ -10,7 +10,8 @@ import concatenateReducers from 'redux-concatenate-reducers'
 import filteredReducer from './filteredReducer'
 import createDynamicReducer from './createDynamicReducer'
 import flattenReducers from './flattenReducers'
-import { DELETE_TYPE } from './deletableReducer'
+import { globalAction } from 'redux-subspace'
+import { DETACH_TYPE } from './detachableReducer'
 
 const dynamicReducersEnhancer = () => createHandlers => (store, reducer, ...rest) => {
   let dynamicReducers = {}
@@ -33,10 +34,12 @@ const dynamicReducersEnhancer = () => createHandlers => (store, reducer, ...rest
     store.replaceReducer(createReducer())
   }
 
-  const detachReducer = identifier => {
-    store.dispatch({type: `${identifier}/${DELETE_TYPE}`})
-    delete dynamicReducers[identifier]
-    store.replaceReducer(createReducer())
+  const detachReducer = identifiers => {
+    identifiers.forEach(identifier => {
+      store.dispatch(globalAction({ type: DETACH_TYPE, identifier }))
+      delete dynamicReducers[identifier]
+      store.replaceReducer(createReducer())
+    })
   }
 
   const handlers = createHandlers(store, reducer, ...rest)

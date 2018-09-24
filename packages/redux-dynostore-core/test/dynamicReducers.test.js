@@ -67,13 +67,21 @@ describe('dynamicReducers tests', () => {
 
     handlers.attachReducers({ testReducer1, testReducer2 })
 
-    handlers.detachReducer('testReducer1')
-    expect(store.replaceReducer.mock.calls[1][0]()).toEqual({ testReducer2: 'value2' })
-    expect(store.dispatch.mock.calls[0][0]).toEqual({ type: 'testReducer1/DYNOSTORE/DELETE_REDUCER' })
+    handlers.detachReducer(['testReducer1', 'testReducer2'])
 
-    handlers.detachReducer('testReducer2')
+    expect(store.replaceReducer.mock.calls[1][0]()).toEqual({ testReducer2: 'value2' })
+    expect(store.dispatch.mock.calls[0][0]).toEqual({
+      globalAction: true,
+      identifier: 'testReducer1',
+      type: 'DYNOSTORE/DETACH_REDUCER'
+    })
+
     expect(store.replaceReducer.mock.calls[2][0]()).toEqual({})
-    expect(store.dispatch.mock.calls[1][0]).toEqual({ type: 'testReducer2/DYNOSTORE/DELETE_REDUCER' })
+    expect(store.dispatch.mock.calls[1][0]).toEqual({
+      globalAction: true,
+      identifier: 'testReducer2',
+      type: 'DYNOSTORE/DETACH_REDUCER'
+    })
 
   })
 })

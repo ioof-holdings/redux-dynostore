@@ -17,7 +17,7 @@ describe('dynamicSagas tests', () => {
     const otherHandlers = { other: jest.fn() }
 
     createHandlers.mockReturnValue(otherHandlers)
-    
+
     const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store, param)
 
     expect(handlers.runSagas).toBeDefined()
@@ -36,7 +36,7 @@ describe('dynamicSagas tests', () => {
 
     createHandlers.mockReturnValue(otherHandlers)
     sagaMiddleware.run.mockReturnValue(jest.fn())
-    
+
     const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
 
     handlers.runSagas({ testSaga1, testSaga2 })
@@ -55,7 +55,7 @@ describe('dynamicSagas tests', () => {
 
     createHandlers.mockReturnValue(otherHandlers)
     sagaMiddleware.run.mockReturnValue(jest.fn())
-    
+
     const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
 
     handlers.runSagas({ testSaga })
@@ -65,7 +65,7 @@ describe('dynamicSagas tests', () => {
     expect(sagaMiddleware.run).toHaveBeenCalledTimes(1)
   })
 
-  describe('detaching sagas', () => {
+  describe('canceling sagas', () => {
     test('should cancel and remove a running saga', () => {
       const runningTestSaga = { cancel: jest.fn() }
       const sagaMiddleware = { run: jest.fn().mockReturnValue(runningTestSaga) }
@@ -78,7 +78,7 @@ describe('dynamicSagas tests', () => {
       handlers.runSagas({ testSaga })
       expect(sagaMiddleware.run).toBeCalledWith(testSaga)
 
-      handlers.detachSaga('testSaga')
+      handlers.cancelSagas(['testSaga'])
       expect(runningTestSaga.cancel).toBeCalled()
     })
 
@@ -94,7 +94,7 @@ describe('dynamicSagas tests', () => {
       handlers.runSagas({ testSaga })
       expect(sagaMiddleware.run).toBeCalledWith(testSaga)
 
-      handlers.detachSaga('testSaga')
+      handlers.cancelSagas(['testSaga'])
       expect(runningTestSaga.cancel).toBeCalled()
 
       jest.clearAllMocks()
@@ -113,7 +113,7 @@ describe('dynamicSagas tests', () => {
 
       const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
 
-      handlers.detachSaga('testSaga')
+      handlers.cancelSagas(['testSaga'])
       expect(runningTestSaga.cancel).not.toBeCalled()
     })
   })

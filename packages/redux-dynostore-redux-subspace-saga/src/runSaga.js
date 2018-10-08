@@ -20,7 +20,7 @@ const runSubspacedSagaEnhancer = saga => identifier => {
     const sagaToRun = storeNamespace
       ? subspaced(state => get(state, storeNamespace.replace(/\//g, '.')), storeNamespace)(subspacedSaga)
       : subspacedSaga
-      
+
     return runSaga(sagaToRun)(namespacedIdentifier)(store)
   }
 }

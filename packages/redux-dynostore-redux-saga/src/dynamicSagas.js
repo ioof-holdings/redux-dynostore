@@ -19,11 +19,10 @@ const dynamicSagasEnhancer = sagaMiddleware => createHandlers => (store, ...para
   }
 
   const cancelSagas = identifiers => {
-    identifiers.forEach(identifier => {
-      if (dynamicSagas[identifier]) {
-        dynamicSagas[identifier].cancel()
-        delete dynamicSagas[identifier]
-      }
+    identifiers.filter(identifier => dynamicSagas[identifier]).forEach(identifier => {
+      const runningSaga = dynamicSagas[identifier]
+      delete dynamicSagas[identifier]
+      runningSaga.cancel()
     })
   }
 

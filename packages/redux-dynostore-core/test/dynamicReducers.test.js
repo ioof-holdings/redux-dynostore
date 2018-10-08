@@ -9,7 +9,7 @@
 import dynamicReducers from 'src/dynamicReducers'
 
 describe('dynamicReducers tests', () => {
-  test('should create attachReducers and detachReducer handlers', () => {
+  test('should create attachReducers and detachReducers handlers', () => {
     const createHandlers = jest.fn()
     const store = {}
     const reducer = (state = {}) => state
@@ -21,7 +21,7 @@ describe('dynamicReducers tests', () => {
     const handlers = dynamicReducers()(createHandlers)(store, reducer, param)
 
     expect(handlers.attachReducers).toBeDefined()
-    expect(handlers.detachReducer).toBeDefined()
+    expect(handlers.detachReducers).toBeDefined()
     expect(handlers.other).toBe(otherHandlers.other)
     expect(createHandlers).toBeCalledWith(store, reducer, param)
   })
@@ -43,7 +43,7 @@ describe('dynamicReducers tests', () => {
 
     expect(store.replaceReducer).toHaveBeenCalled()
 
-    expect(store.replaceReducer.mock.calls[0][0]()).toEqual({
+    expect(store.replaceReducer.mock.calls[0][0](undefined, {})).toEqual({
       testReducer1: 'value1',
       testReducer2: 'value2'
     })
@@ -60,28 +60,26 @@ describe('dynamicReducers tests', () => {
 
     const testReducer1 = (state = 'value1') => state
     const testReducer2 = (state = 'value2') => state
+    const testReducer3 = (state = 'value3') => state
 
     createHandlers.mockReturnValue(otherHandlers)
 
     const handlers = dynamicReducers()(createHandlers)(store, reducer)
 
-    handlers.attachReducers({ testReducer1, testReducer2 })
+    handlers.attachReducers({ testReducer1, testReducer2, testReducer3 })
 
-    handlers.detachReducer(['testReducer1', 'testReducer2'])
+    handlers.detachReducers(['testReducer1', 'testReducer2'])
 
-    expect(store.replaceReducer.mock.calls[1][0]()).toEqual({ testReducer2: 'value2' })
     expect(store.dispatch.mock.calls[0][0]).toEqual({
-      globalAction: true,
       identifier: 'testReducer1',
-      type: 'DYNOSTORE/DETACH_REDUCER'
+      type: '@@DYNOSTORE/DETACH_REDUCER'
     })
 
-    expect(store.replaceReducer.mock.calls[2][0]()).toEqual({})
     expect(store.dispatch.mock.calls[1][0]).toEqual({
-      globalAction: true,
       identifier: 'testReducer2',
-      type: 'DYNOSTORE/DETACH_REDUCER'
+      type: '@@DYNOSTORE/DETACH_REDUCER'
     })
 
+    expect(store.replaceReducer.mock.calls[1][0](undefined, {})).toEqual({ testReducer3: 'value3' })
   })
 })

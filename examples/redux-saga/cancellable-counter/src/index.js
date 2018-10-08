@@ -13,7 +13,10 @@ const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(
   (state = {}) => state,
-  compose(applyMiddleware(sagaMiddleware), dynostore(dynamicReducers(), dynamicSagas(sagaMiddleware)))
+  compose(
+    applyMiddleware(sagaMiddleware),
+    dynostore(dynamicReducers(), dynamicSagas(sagaMiddleware))
+  )
 )
 
 render(

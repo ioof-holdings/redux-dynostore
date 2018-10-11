@@ -8,7 +8,7 @@
 
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import { put } from 'redux-saga/effects'
+import { takeEvery, put } from 'redux-saga/effects'
 import dynostore, { createDynamicTarget } from '@redux-dynostore/core'
 import { dynamicSagas, runSaga } from 'src'
 
@@ -20,7 +20,9 @@ describe('integration tests', () => {
   const changeValue = newValue => ({ type: 'CHANGE_VALUE', newValue })
 
   const createSaga = (newValue) => function* saga() {
-    yield put(changeValue(newValue))
+    yield takeEvery('MAKE_CHANGE', function* () {
+      yield put(changeValue(newValue))
+    })
   }
 
   const mockTarget = (enhancers, id, store, mockFn) => {
@@ -42,9 +44,38 @@ describe('integration tests', () => {
 
     const target = mockTarget([runSaga(createSaga('newValue'))], 'dynamic', store, jest.fn())
 
+    store.dispatch({ type: 'MAKE_CHANGE' })
+
     expect(store.getState()).toEqual({
       static1: 'static1 - newValue',
       static2: 'static2 - newValue'
+    })
+
+    expect(target).not.toHaveBeenCalled()
+  })
+
+  test('should cancel sagas', () => {
+    const reducer = combineReducers({
+      static1: makeTestReducer('static1'),
+      static2: makeTestReducer('static2')
+    })
+
+    const sagaMiddleware = createSagaMiddleware()
+
+    const store = createStore(reducer, compose(
+      applyMiddleware(sagaMiddleware),
+      dynostore(dynamicSagas(sagaMiddleware))
+    ))
+
+    const target = mockTarget([runSaga(createSaga('newValue'))], 'dynamic', store, jest.fn())
+
+    store.cancelSagas(['static2', 'dynamic'])
+
+    store.dispatch({ type: 'MAKE_CHANGE' })
+
+    expect(store.getState()).toEqual({
+      static1: 'static1 - initialValue',
+      static2: 'static2 - initialValue'
     })
 
     expect(target).not.toHaveBeenCalled()

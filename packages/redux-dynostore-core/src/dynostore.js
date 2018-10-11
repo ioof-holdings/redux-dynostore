@@ -22,7 +22,7 @@ const dynostore = (...dynamicEnhancers) => createStore => (reducer, preloadedSta
 
   return {
     ...store,
-    ...dynamicHandlers,
+    ...dynamicHandlers
   }
 }
 

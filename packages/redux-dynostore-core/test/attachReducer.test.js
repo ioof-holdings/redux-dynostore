@@ -7,12 +7,6 @@
  */
 
 import attachReducer from 'src/attachReducer'
-import detach from 'src/detachableReducer'
-
-jest.mock('src/detachableReducer', () => ({
-  __esModule: true,
-  default: jest.fn().mockReturnValue(reducer => reducer)
-}))
 
 describe('attachReducer tests', () => {
   test('should attach reducer', () => {
@@ -21,7 +15,6 @@ describe('attachReducer tests', () => {
 
     attachReducer(reducer)('testId')(store)
 
-    expect(detach).toBeCalledWith('testId')
     expect(store.attachReducers).toBeCalledWith({ testId: reducer })
   })
 

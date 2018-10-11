@@ -7,7 +7,7 @@
  */
 
 import { createStore } from 'redux'
-import { default as detachable, DETACH_TYPE } from 'src/detachableReducer'
+import { detachable, detach } from 'src/detachableReducer'
 
 describe('detachableReducer Tests', () => {
   const identifier = 'fooBar'
@@ -28,9 +28,9 @@ describe('detachableReducer Tests', () => {
       const reducer = detachable(identifier)((state = intialState) => state)
       const store = createStore(reducer)
 
-      store.dispatch({ type: DETACH_TYPE, identifier })
+      store.dispatch(detach(identifier))
 
-      expect(store.getState()).toEqual(null)
+      expect(store.getState()).toEqual(undefined)
   })
 
   test('should ignore the action if the identifier does not match', () => {
@@ -38,8 +38,8 @@ describe('detachableReducer Tests', () => {
     const reducer = detachable(identifier)((state = intialState) => state)
     const store = createStore(reducer)
 
-    store.dispatch({ type: DETACH_TYPE, identifier: 'notFooBar' })
+    store.dispatch(detach('notFooBar'))
 
     expect(store.getState()).toEqual(intialState)
-})
+  })
 })

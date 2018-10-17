@@ -68,6 +68,7 @@
     "collectCoverageFrom": [
       "**/src/**"
     ],
-    "testResultsProcessor": "./node_modules/jest-junit"
+    "testResultsProcessor": "./node_modules/jest-junit",
+    "testURL": "http://localhost/"
   }
 }

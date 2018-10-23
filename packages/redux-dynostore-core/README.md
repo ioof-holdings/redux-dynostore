@@ -86,14 +86,14 @@ store.detachReducers(['dynamicReducer1', 'dynamicReducer2'])
 Nested reducers can also be removed by using the full path to the reducer.  The following formats are supported:
 
 ```javascript
-store.attachReducers(['some.path.to.reducer'])
+store.detachReducers(['some.path.to.dynamicReducer'])
 ```
 
 ```javascript
-store.attachReducers(['some/path/to/reducer'])
+store.detachReducers(['some/path/to/dynamicReducer'])
 ```
 
-_Note:_ only reducers that were added using an the `attachReducer` function.  Static reducers cannot be detached from the store.
+_Note:_ only reducers that were added using an the `attachReducer` function can be detached.  Static reducers cannot be detached from the store.
 
 ### Custom Enhancers
 
@@ -124,7 +124,7 @@ An enhancer compatible with [`react-redux-dynostore`](/packages/react-redux-dyno
 
 ```javascript
 import dynamic from '@redux-dynostore/react-redux'
-import { dispatchAction } from '-redux-dynostore'
+import { dispatchAction } from '@redux-dynostore/core'
 
 export default dynamic('identifier', dispatchAction({ type: 'MY_ACTION' }))(MyComponent)
 ```

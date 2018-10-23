@@ -67,10 +67,10 @@ store.runSagas({
 Both the above examples are equivalent to calling:
 
 ```javascript
-store.attachReducers({ 'some.path.to': dynamicSaga })
+store.runSagas({ 'some.path.to': dynamicSaga })
 ```
 
-#### Cancelling sagas
+### Cancelling sagas
 
 If you need to dynamically cancel a saga, the `cancelSagas` function that can be used:
 
@@ -81,7 +81,7 @@ store.cancelSagas(['dynamicSaga'])
 Multiple sagas can be cancelled at the same time as well:
 
 ```javascript
-store.cancelSaga(['dynamicSaga1', 'dynamicSaga2'])
+store.cancelSagas(['dynamicSaga1', 'dynamicSaga2'])
 ```
 
-_Note:_ only sagas that were added using an the `runSagas` function.  Static sagas cannot be cancelled.
+_Note:_ only sagas that were added using an the `runSagas` function can be cancelled.  Static sagas cannot be cancelled.

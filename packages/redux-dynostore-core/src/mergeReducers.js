@@ -11,13 +11,20 @@ const mergeState = (oldState = {}, newState) => {
     .filter(([key]) => oldState[key] === undefined || newState[key] !== oldState[key])
     .reduce((nextState, [key, value]) => {
       nextState[key] = value
+      if(nextState[key] === undefined) {
+        delete nextState[key]
+        delete oldState[key]
+      }
       return nextState
     }, {})
   return Object.keys(updatedState).length ? { ...oldState, ...updatedState } : oldState
 }
 
 const mergeReducers = reducers => (state, action) => {
-  return reducers.reduce((nextState, reducer) => mergeState(nextState, reducer(state, action)), state)
+  return reducers.reduce((nextState, reducer) => {
+    const newState = reducer(state !== undefined ? nextState : undefined, action)
+    return mergeState(nextState, newState)
+  }, state)
 }
 
 export default mergeReducers

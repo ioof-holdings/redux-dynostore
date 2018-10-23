@@ -16,7 +16,11 @@ const dynamicReducersEnhancer = () => createHandlers => (store, reducer, ...rest
   let dynamicReducers = {}
 
   const createReducer = () => {
-    const reducers = [filtered(reducer), createDynamicReducer(dynamicReducers)]
+    const reducers = [filtered(reducer)]
+
+    if (Object.keys(dynamicReducers).length) {
+      reducers.push(createDynamicReducer(dynamicReducers));
+    }
 
     return mergeReducers(reducers)
   }
@@ -29,7 +33,7 @@ const dynamicReducersEnhancer = () => createHandlers => (store, reducer, ...rest
   }
 
   const detachReducers = identifiers => {
-    identifiers.forEach(identifier => {
+    identifiers.filter(identifier => dynamicReducers[identifier]).forEach(identifier => {
       delete dynamicReducers[identifier]
       store.dispatch(detach(identifier))
     })

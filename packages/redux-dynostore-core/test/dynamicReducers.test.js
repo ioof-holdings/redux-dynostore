@@ -81,5 +81,12 @@ describe('dynamicReducers tests', () => {
     })
 
     expect(store.replaceReducer.mock.calls[1][0](undefined, {})).toEqual({ testReducer3: 'value3' })
+
+    jest.clearAllMocks()
+
+    handlers.detachReducers(['testReducer3'])
+
+    expect(store.replaceReducer.mock.calls[0].length).toBe(1)
+    expect(store.replaceReducer.mock.calls[0][0](undefined, {})).toEqual({})
   })
 })

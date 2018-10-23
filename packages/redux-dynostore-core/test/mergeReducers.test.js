@@ -14,7 +14,15 @@ describe('mergeReducers Tests', () => {
   const primative = (state = { primative: 0 }) => state
   const plainObject = (state = { plainObject: { test: "value" } }) => state
   const array = (state = { array: [ "value" ] }) => state
-  const changingState = (state = {}, action) => action.type == 'ADD_STATE' ? { ...state, changingState: "value" } : state
+  const changingState = (state = {}, action) => {
+    if (action.type == 'ADD_STATE') {
+      return { ...state, changingState: "value" }
+    } else if (action.type === 'DELETE_STATE') {
+      return {...state, changingState: undefined}
+    } else {
+      return state
+    }
+  }
 
   test('should merge reducers', () => {
     const store = createStore(mergeReducers([
@@ -77,6 +85,31 @@ describe('mergeReducers Tests', () => {
     const state = store.getState()
 
     expect(state).toBe(initialState)
+
+    expect(state.primative).toBe(initialState.primative)
+    expect(state.plainObject).toBe(initialState.plainObject)
+    expect(state.array).toBe(initialState.array)
+  })
+
+  test('should delete the key if next state of it is undefined' , () => {
+    const store = createStore(mergeReducers([
+      primative,
+      plainObject,
+      array,
+      changingState
+    ]))
+
+    const initialState = store.getState()
+
+    store.dispatch({ type: 'ADD_STATE' })
+
+    expect(Object.keys(store.getState()).length).toBe(4)
+
+    store.dispatch({ type: 'DELETE_STATE' })
+
+    expect(Object.keys(store.getState()).length).toBe(3)
+
+    const state = store.getState()
 
     expect(state.primative).toBe(initialState.primative)
     expect(state.plainObject).toBe(initialState.plainObject)

@@ -4,7 +4,8 @@
   "description": "Enhance Redux stores to allow additional functionality to be dynamically added at runtime",
   "author": "Michael Peyper",
   "contributors": [
-    "Jonathan Peyper"
+    "Jonathan Peyper",
+    "Jake Turner"
   ],
   "license": "BSD-3-Clause",
   "main": "lib/index.js",

@@ -18,9 +18,7 @@ const filteredReducer = reducer => {
 
     if (knownKeys.length && state !== undefined) {
       filteredState = knownKeys.reduce((current, key) => {
-        if (state[key] !== null) {
-          current[key] = state[key]
-        }
+        current[key] = state[key]
         return current
       }, {})
     }

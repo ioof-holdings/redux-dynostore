@@ -69,6 +69,32 @@ store.attachReducers({
 })
 ```
 
+#### Detaching reducers
+
+If you need to remove a reducer from the store, the `detachReducers` function that can be used:
+
+```javascript
+store.detachReducers(['dynamicReducer'])
+```
+
+Multiple reducers can be detached at the same time as well:
+
+```javascript
+store.detachReducers(['dynamicReducer1', 'dynamicReducer2'])
+```
+
+Nested reducers can also be removed by using the full path to the reducer.  The following formats are supported:
+
+```javascript
+store.attachReducers(['some.path.to.reducer'])
+```
+
+```javascript
+store.attachReducers(['some/path/to/reducer'])
+```
+
+_Note:_ only reducers that were added using an the `attachReducer` function.  Static reducers cannot be detached from the store.
+
 ### Custom Enhancers
 
 Dynamic enhancers can be created for many use cases by implementing the following interface:

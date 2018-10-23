@@ -49,11 +49,11 @@ store.runSagas({ dynamicSaga1, dynamicSaga2 })
 Sagas can also be provided in a nested structure, but this only provides simplified identifier creation:
 
 ```javascript
-store.attachReducers({ 'some/path/to': dynamicSaga })
+store.runSagas({ 'some/path/to': dynamicSaga })
 ```
 
 ```javascript
-store.attachReducers({
+store.runSagas({
   some: {
     path: {
       to: {
@@ -69,3 +69,19 @@ Both the above examples are equivalent to calling:
 ```javascript
 store.attachReducers({ 'some.path.to': dynamicSaga })
 ```
+
+#### Cancelling sagas
+
+If you need to dynamically cancel a saga, the `cancelSagas` function that can be used:
+
+```javascript
+store.cancelSagas(['dynamicSaga'])
+```
+
+Multiple sagas can be cancelled at the same time as well:
+
+```javascript
+store.cancelSaga(['dynamicSaga1', 'dynamicSaga2'])
+```
+
+_Note:_ only sagas that were added using an the `runSagas` function.  Static sagas cannot be cancelled.

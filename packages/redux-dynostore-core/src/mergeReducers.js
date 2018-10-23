@@ -6,25 +6,31 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const mergeState = (oldState = {}, newState) => {
-  const updatedState = Object.entries(newState)
-    .filter(([key]) => oldState[key] === undefined || newState[key] !== oldState[key])
-    .reduce((nextState, [key, value]) => {
+const createInitialStateReducer = reducers => (action) =>
+  reducers.reduce((nextState, reducer) => ({ ...nextState, ...reducer(undefined, action) }), {})
+
+const createUpdateStateReducer = reducers => (state, action) =>
+  reducers.reduce((nextState, reducer) => {
+    const newState = reducer(nextState, action)
+    return newState === nextState ? nextState : newState
+  }, state)
+
+const removeUndefinedValues = state => {
+  const nextState = Object.entries(state).reduce((nextState, [key, value]) => {
+    if (value !== undefined) {
       nextState[key] = value
-      if(nextState[key] === undefined) {
-        delete nextState[key]
-        delete oldState[key]
-      }
-      return nextState
-    }, {})
-  return Object.keys(updatedState).length ? { ...oldState, ...updatedState } : oldState
+    }
+    return nextState
+  }, {})
+
+  return Object.keys(state).length !== Object.keys(nextState).length ? nextState : state
 }
 
-const mergeReducers = reducers => (state, action) => {
-  return reducers.reduce((nextState, reducer) => {
-    const newState = reducer(state !== undefined ? nextState : undefined, action)
-    return mergeState(nextState, newState)
-  }, state)
+const mergeReducers = reducers => {
+  const initialStateReducer = createInitialStateReducer(reducers)
+  const updateStateReducer = createUpdateStateReducer([...reducers, removeUndefinedValues])
+  return (state, action) =>
+    state === undefined ? initialStateReducer(action) : updateStateReducer(state, action)
 }
 
 export default mergeReducers

@@ -6,25 +6,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const mergeState = (oldState = {}, newState) => {
-  const updatedState = Object.entries(newState)
-    .filter(([key]) => oldState[key] === undefined || newState[key] !== oldState[key])
-    .reduce((nextState, [key, value]) => {
+const removeUndefinedValues = (state = {}) => {
+  const stateEntries = Object.entries(state)
+  const nextState = stateEntries.reduce((nextState, [key, value]) => {
+    if (value !== undefined) {
       nextState[key] = value
-      if(nextState[key] === undefined) {
-        delete nextState[key]
-        delete oldState[key]
-      }
-      return nextState
-    }, {})
-  return Object.keys(updatedState).length ? { ...oldState, ...updatedState } : oldState
+    }
+    return nextState
+  }, {})
+
+  return Object.keys(nextState).length !== stateEntries.length ? nextState : state
 }
 
 const mergeReducers = reducers => (state, action) => {
-  return reducers.reduce((nextState, reducer) => {
+  const nextState = reducers.reduce((nextState, reducer) => {
     const newState = reducer(state !== undefined ? nextState : undefined, action)
-    return mergeState(nextState, newState)
+    return newState !== nextState ? { ...nextState, ...newState } : nextState
   }, state)
+
+  return removeUndefinedValues(nextState)
 }
 
 export default mergeReducers

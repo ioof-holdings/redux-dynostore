@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { combineReducers } from 'redux'
-import concatenateReducers from 'redux-concatenate-reducers'
-import filteredReducer from './filteredReducer'
+import combineReducers from './combineReducers'
+import mergeReducers from './mergeReducers'
 
 const expandReducers = reducers => {
   const expandedReducers = { children: {} }
@@ -46,7 +45,7 @@ const collapseReducers = node => {
 
   const childrenReducer = combineReducers(reducersToCombine)
 
-  return reducer ? concatenateReducers([filteredReducer(reducer), filteredReducer(childrenReducer)]) : childrenReducer
+  return reducer ? mergeReducers([reducer, childrenReducer]) : childrenReducer
 }
 
 const createDynamicReducer = reducers => {

@@ -6,25 +6,38 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import concatenateReducers from 'redux-concatenate-reducers'
-import filteredReducer from './filteredReducer'
+import mergeReducers from './mergeReducers'
+import filtered from './filteredReducer'
 import createDynamicReducer from './createDynamicReducer'
 import flattenReducers from './flattenReducers'
+import { detachable, detach } from './detachableReducer'
 
 const dynamicReducersEnhancer = () => createHandlers => (store, reducer, ...rest) => {
   let dynamicReducers = {}
 
   const createReducer = () => {
-    const reducers = [
-      filteredReducer(reducer),
-      filteredReducer(createDynamicReducer(dynamicReducers))
-    ]
+    const reducers = [filtered(reducer)]
 
-    return concatenateReducers(reducers)
+    if (Object.keys(dynamicReducers).length) {
+      reducers.push(createDynamicReducer(dynamicReducers));
+    }
+
+    return mergeReducers(reducers)
   }
 
   const attachReducers = reducers => {
-    dynamicReducers = { ...dynamicReducers, ...flattenReducers(reducers) }
+    Object.entries(flattenReducers(reducers)).forEach(([identifier, reducer]) => {
+      dynamicReducers[identifier] = detachable(identifier)(reducer)
+    })
+    store.replaceReducer(createReducer())
+  }
+
+  const detachReducers = identifiers => {
+    identifiers.filter(identifier => dynamicReducers[identifier]).forEach(identifier => {
+      delete dynamicReducers[identifier]
+      store.dispatch(detach(identifier))
+    })
+
     store.replaceReducer(createReducer())
   }
 
@@ -32,7 +45,8 @@ const dynamicReducersEnhancer = () => createHandlers => (store, reducer, ...rest
 
   return {
     ...handlers,
-    attachReducers
+    attachReducers,
+    detachReducers
   }
 }
 

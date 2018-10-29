@@ -17,7 +17,7 @@ describe('dynamicSagas tests', () => {
     const otherHandlers = { other: jest.fn() }
 
     createHandlers.mockReturnValue(otherHandlers)
-    
+
     const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store, param)
 
     expect(handlers.runSagas).toBeDefined()
@@ -36,7 +36,7 @@ describe('dynamicSagas tests', () => {
 
     createHandlers.mockReturnValue(otherHandlers)
     sagaMiddleware.run.mockReturnValue(jest.fn())
-    
+
     const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
 
     handlers.runSagas({ testSaga1, testSaga2 })
@@ -55,7 +55,7 @@ describe('dynamicSagas tests', () => {
 
     createHandlers.mockReturnValue(otherHandlers)
     sagaMiddleware.run.mockReturnValue(jest.fn())
-    
+
     const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
 
     handlers.runSagas({ testSaga })
@@ -64,4 +64,58 @@ describe('dynamicSagas tests', () => {
     expect(sagaMiddleware.run).toBeCalledWith(testSaga)
     expect(sagaMiddleware.run).toHaveBeenCalledTimes(1)
   })
+
+  describe('canceling sagas', () => {
+    test('should cancel and remove a running saga', () => {
+      const runningTestSaga = { cancel: jest.fn() }
+      const sagaMiddleware = { run: jest.fn().mockReturnValue(runningTestSaga) }
+      const createHandlers = jest.fn()
+      const store = {}
+      const testSaga = jest.fn()
+
+      const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
+
+      handlers.runSagas({ testSaga })
+      expect(sagaMiddleware.run).toBeCalledWith(testSaga)
+
+      handlers.cancelSagas(['testSaga'])
+      expect(runningTestSaga.cancel).toBeCalled()
+    })
+
+    test('should allow a previously run and canceled saga to be freshly added and run again', () => {
+      const runningTestSaga = { cancel: jest.fn() }
+      const sagaMiddleware = { run: jest.fn().mockReturnValue(runningTestSaga) }
+      const createHandlers = jest.fn()
+      const store = {}
+      const testSaga = jest.fn()
+
+      const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
+
+      handlers.runSagas({ testSaga })
+      expect(sagaMiddleware.run).toBeCalledWith(testSaga)
+
+      handlers.cancelSagas(['testSaga'])
+      expect(runningTestSaga.cancel).toBeCalled()
+
+      jest.clearAllMocks()
+
+      handlers.runSagas({ testSaga })
+
+      expect(sagaMiddleware.run).toBeCalledWith(testSaga)
+      expect(sagaMiddleware.run).toHaveBeenCalledTimes(1)
+    })
+
+    test('should safegaurd against detaching sagas that do not exists', () => {
+      const runningTestSaga = { cancel: jest.fn() }
+      const sagaMiddleware = { run: jest.fn().mockReturnValue(runningTestSaga) }
+      const createHandlers = jest.fn()
+      const store = {}
+
+      const handlers = dynamicSagas(sagaMiddleware)(createHandlers)(store)
+
+      handlers.cancelSagas(['testSaga'])
+      expect(runningTestSaga.cancel).not.toBeCalled()
+    })
+  })
+
 })

@@ -8,7 +8,7 @@
 
 import { createStore, combineReducers } from 'redux'
 import { subspace, namespaced, namespacedAction } from 'redux-subspace'
-import dynostore, { dynamicReducers, createDynamicTarget } from '@redux-dynostore/core'
+import dynostore, { dynamicReducers, createDynamicTarget, DELETE_TYPE } from '@redux-dynostore/core'
 import { attachReducer, dispatchAction } from 'src'
 
 describe('integration tests', () => {
@@ -65,6 +65,55 @@ describe('integration tests', () => {
       static2: 'static2 - initialValue',
       dynamic: {
         dynamic1: 'dynamic1 - newValue',
+        dynamic2: 'dynamic2 - initialValue'
+      }
+    })
+
+    expect(target1).not.toHaveBeenCalled()
+    expect(target2).not.toHaveBeenCalled()
+  })
+
+  test('should detach reducer', () => {
+    const reducer = combineReducers({
+      static1: makeTestReducer('static1'),
+      static2: makeTestReducer('static2')
+    })
+
+    const store = createStore(reducer, dynostore(dynamicReducers()))
+
+    const target1 = mockTarget([attachReducer(makeTestReducer('dynamic1'))], 'dynamic1', store, jest.fn())
+    const target2 = mockTarget([attachReducer(makeTestReducer('dynamic2'))], 'dynamic2', store, jest.fn())
+
+    store.detachReducers(['static2', 'dynamic1'])
+
+    expect(store.getState()).toEqual({
+      static1: 'static1 - initialValue',
+      static2: 'static2 - initialValue',
+      dynamic2: 'dynamic2 - initialValue'
+    })
+
+    expect(target1).not.toHaveBeenCalled()
+    expect(target2).not.toHaveBeenCalled()
+  })
+
+  test('should detach nested reducer', () => {
+    const reducer = combineReducers({
+      static1: makeTestReducer('static1'),
+      static2: makeTestReducer('static2')
+    })
+
+    const store = createStore(reducer, dynostore(dynamicReducers()))
+    const subspacedStore = subspace('dynamic')(store)
+
+    const target1 = mockTarget([attachReducer(makeTestReducer('dynamic1'))], 'dynamic1', subspacedStore, jest.fn())
+    const target2 = mockTarget([attachReducer(makeTestReducer('dynamic2'))], 'dynamic2', subspacedStore, jest.fn())
+
+    store.detachReducers(['static2', 'dynamic.dynamic1'])
+
+    expect(store.getState()).toEqual({
+      static1: 'static1 - initialValue',
+      static2: 'static2 - initialValue',
+      dynamic: {
         dynamic2: 'dynamic2 - initialValue'
       }
     })

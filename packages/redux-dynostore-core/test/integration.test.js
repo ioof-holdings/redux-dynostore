@@ -63,6 +63,26 @@ describe('integration tests', () => {
     expect(target2).not.toHaveBeenCalled()
   })
 
+  test('should detach reducer', () => {
+    const reducer = combineReducers({
+      static1: makeTestReducer('static1'),
+      static2: makeTestReducer('static2')
+    })
+
+    const store = createStore(reducer, dynostore(dynamicReducers()))
+
+    mockTarget([attachReducer(makeTestReducer('dynamic1'))], 'dynamic1', store, jest.fn())
+    mockTarget([attachReducer(makeTestReducer('dynamic2'))], 'dynamic2', store, jest.fn())
+
+    store.detachReducers(['static2', 'dynamic1'])
+
+    expect(store.getState()).toEqual({
+      static1: 'static1 - initialValue',
+      static2: 'static2 - initialValue',
+      dynamic2: 'dynamic2 - initialValue'
+    })
+  })
+
   test('should dispatch actions', () => {
     const reducer = combineReducers({
       static1: makeTestReducer('static1'),

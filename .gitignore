@@ -10,3 +10,4 @@ lib/
 es/
 bundle/
 externals/
+build/

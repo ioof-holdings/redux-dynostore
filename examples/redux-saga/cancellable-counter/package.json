@@ -1,17 +1,17 @@
 {
   "name": "cancellable-counter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "devDependencies": {
     "react-scripts": "^1.0.14"
   },
   "dependencies": {
-    "@redux-dynostore/core": "^1.0.0",
-    "@redux-dynostore/react-redux": "^1.0.0",
-    "@redux-dynostore/react-redux-subspace": "^1.0.0",
-    "@redux-dynostore/redux-saga": "^1.0.0",
-    "@redux-dynostore/redux-subspace": "^1.0.0",
-    "@redux-dynostore/redux-subspace-saga": "^1.0.0",
+    "@redux-dynostore/core": "^1.1.0",
+    "@redux-dynostore/react-redux": "^1.1.0",
+    "@redux-dynostore/react-redux-subspace": "^1.1.0",
+    "@redux-dynostore/redux-saga": "^1.1.0",
+    "@redux-dynostore/redux-subspace": "^1.1.0",
+    "@redux-dynostore/redux-subspace-saga": "^1.1.0",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "@redux-dynostore/redux-saga",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Dynamically add Redux sagas at runtime",
   "author": "Michael Peyper",
   "contributors": [
@@ -28,7 +28,7 @@
     "redux-saga": "^0.16.0"
   },
   "devDependencies": {
-    "@redux-dynostore/core": "^1.0.0",
+    "@redux-dynostore/core": "^1.1.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-plugin-annotate-pure-calls": "^0.2.2",

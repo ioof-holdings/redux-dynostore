@@ -1,15 +1,15 @@
 {
   "name": "counter-microfrontend",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "build": "webpack"
   },
   "dependencies": {
-    "@redux-dynostore/core": "^1.0.0",
-    "@redux-dynostore/react-redux": "^1.0.0",
-    "@redux-dynostore/react-redux-subspace": "^1.0.0",
-    "@redux-dynostore/redux-subspace": "^1.0.0",
+    "@redux-dynostore/core": "^1.1.0",
+    "@redux-dynostore/react-redux": "^1.1.0",
+    "@redux-dynostore/react-redux-subspace": "^1.1.0",
+    "@redux-dynostore/redux-subspace": "^1.1.0",
     "react": "^16.4.1",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2"

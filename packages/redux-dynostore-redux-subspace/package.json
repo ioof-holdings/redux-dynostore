@@ -1,6 +1,6 @@
 {
   "name": "@redux-dynostore/redux-subspace",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "redux-subspace extensions for redux-dynostore",
   "author": "Michael Peyper",
   "contributors": [
@@ -23,7 +23,7 @@
     "url": "https://github.com/ioof-holdings/redux-dynostore.git"
   },
   "dependencies": {
-    "@redux-dynostore/core": "^1.0.0",
+    "@redux-dynostore/core": "^1.1.0",
     "redux-subspace": "^2.4.0"
   },
   "peerDependencies": {

@@ -13,3 +13,6 @@ export { default as attachReducer } from './attachReducer'
 export { default as dispatchAction } from './dispatchAction'
 
 export { default as createDynamicTarget } from './createDynamicTarget'
+
+export { default as combineReducers } from './combineReducers'
+export { default as mergeReducers } from './mergeReducers'

@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { combineReducers, createStore } from 'redux'
+import { combineReducers } from 'redux'
 import filteredReducer from 'src/filteredReducer'
 
 describe('filteredReducer Tests', () => {
@@ -78,31 +78,32 @@ describe('filteredReducer Tests', () => {
         describe(`${testCase.name} reducers`, () => {
     
             test('should filter', () => {
-                const store = createStore(filteredReducer(testCase.reducer()))
+                const reducer = filteredReducer(testCase.reducer())
+                const state = reducer(undefined, {})
 
-                expect(store.getState()).toEqual(testCase.expectedState1)
+                expect(state).toEqual(testCase.expectedState1)
             })
 
             test('should filter and handle actions', () => {
-                const store = createStore(filteredReducer(testCase.reducer()))
+                const reducer = filteredReducer(testCase.reducer())
+                const initialState = reducer(undefined, {})
+                const state = reducer(initialState, { type: "ADD_STATE" })
 
-                store.dispatch({ type: "ADD_STATE" })
-
-                expect(store.getState()).toEqual(testCase.expectedState2)
+                expect(state).toEqual(testCase.expectedState2)
             })
 
             test('should filter with initial state', () => {
-                const store = createStore(filteredReducer(testCase.reducer()), testCase.initialState)
+                const reducer = filteredReducer(testCase.reducer())
+                const state = reducer(testCase.initialState, {})
 
-                expect(store.getState()).toEqual(testCase.expectedState3)
+                expect(state).toEqual(testCase.expectedState3)
             })
 
             test('should filter with initial state and handle actions', () => {
-                const store = createStore(filteredReducer(testCase.reducer()), testCase.initialState)
+                const reducer = filteredReducer(testCase.reducer())
+                const state = reducer(testCase.initialState, { type: "ADD_STATE" })
 
-                store.dispatch({ type: "ADD_STATE" })
-
-                expect(store.getState()).toEqual(testCase.expectedState4)
+                expect(state).toEqual(testCase.expectedState4)
             })
         })
     })

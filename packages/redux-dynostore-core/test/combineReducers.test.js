@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { createStore } from 'redux'
 import combineReducers from 'src/combineReducers'
 
 describe('combineReducers Tests', () => {
@@ -17,14 +16,14 @@ describe('combineReducers Tests', () => {
   const changingState = (state = {}, action) => action.type == 'ADD_STATE' ? { ...state, test: "value" } : state
 
   test('should combine reducers', () => {
-    const store = createStore(combineReducers({
+    const reducer = combineReducers({
       primative,
       plainObject,
       array,
       changingState
-    }))
+    })
 
-    const state = store.getState()
+    const state = reducer(undefined, {})
 
     expect(state).toEqual({
       primative: 0,
@@ -37,18 +36,23 @@ describe('combineReducers Tests', () => {
   })
 
   test('should handle actions' , () => {
-    const store = createStore(combineReducers({
+    const reducer = combineReducers({
       primative,
       plainObject,
       array,
       changingState
-    }))
+    })
 
-    const initialState = store.getState()
+    const initialState = {
+      primative: 0,
+      plainObject: {
+        test: "value"
+      },
+      array: ["value"],
+      changingState: {}
+    }
 
-    store.dispatch({ type: 'ADD_STATE' })
-
-    const state = store.getState()
+    const state = reducer(initialState, { type: 'ADD_STATE' })
 
     expect(state).toEqual({
       primative: 0,
@@ -66,18 +70,23 @@ describe('combineReducers Tests', () => {
   })
 
   test('should not change reference for noop' , () => {
-    const store = createStore(combineReducers({
+    const reducer = combineReducers({
       primative,
       plainObject,
       array,
       changingState
-    }))
+    })
 
-    const initialState = store.getState()
+    const initialState = {
+      primative: 0,
+      plainObject: {
+        test: "value"
+      },
+      array: ["value"],
+      changingState: {}
+    }
 
-    store.dispatch({ type: 'NOOP' })
-
-    const state = store.getState()
+    const state = reducer(initialState, { type: 'NOOP' })
 
     expect(state).toBe(initialState)
 

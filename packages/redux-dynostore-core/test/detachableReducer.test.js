@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { createStore } from 'redux'
 import { detachable, detach } from 'src/detachableReducer'
 
 describe('detachableReducer Tests', () => {
@@ -16,30 +15,24 @@ describe('detachableReducer Tests', () => {
       const intialState = { foo: "bar" }
 
       const reducer = detachable(identifier)((state = intialState) => state)
-      const store = createStore(reducer)
+      const state = reducer(intialState, { type: "FOO", identifier })
 
-      store.dispatch({ type: "FOO", identifier })
-
-      expect(store.getState()).toEqual(intialState)
+      expect(state).toEqual(intialState)
   })
 
   test('should intercept the action and return a null state for this reducer', () => {
       const intialState = { foo: "bar" }
       const reducer = detachable(identifier)((state = intialState) => state)
-      const store = createStore(reducer)
+      const state = reducer(intialState, detach(identifier))
 
-      store.dispatch(detach(identifier))
-
-      expect(store.getState()).toEqual(undefined)
+      expect(state).toEqual(undefined)
   })
 
   test('should ignore the action if the identifier does not match', () => {
     const intialState = { foo: "bar" }
     const reducer = detachable(identifier)((state = intialState) => state)
-    const store = createStore(reducer)
+    const state = reducer(intialState, detach('notFooBar'))
 
-    store.dispatch(detach('notFooBar'))
-
-    expect(store.getState()).toEqual(intialState)
+    expect(state).toEqual(intialState)
   })
 })

@@ -114,6 +114,26 @@ describe('deepMerge tests', () => {
     expect(deepMerge(target, source)).toBe(target)
   })
 
+  test('should keep identity when merging a subset of object values', () => {
+    const object = Object.freeze({ key: 'value' })
+    const array = Object.freeze(['value'])
+
+    const target = Object.freeze({ key1: object, key2: array, compositeObject: { key1: object, key2: array }, compositeArray: [object, array] })
+    const source = Object.freeze({ key2: array, compositeObject: { key1: object }, compositeArray: [object] })
+
+    expect(deepMerge(target, source)).toBe(target)
+  })
+
+  test('should keep identity when merging a subset of array values', () => {
+    const object = Object.freeze({ key: 'value' })
+    const array = Object.freeze(['value'])
+
+    const target = Object.freeze([object, array, { key1: object, key2: array }, [object, array]])
+    const source = Object.freeze([object, array, { key2: array }, [object]])
+
+    expect(deepMerge(target, source)).toBe(target)
+  })
+
   ;[
     [{}, 1], [{}, true], [{}, "new"], [{}, []],
     [[], 1], [[], true], [[], "new"], [[], {}],

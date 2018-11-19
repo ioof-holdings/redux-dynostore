@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { createStore } from 'redux'
 import mergeReducers from 'src/mergeReducers'
 
 describe('mergeReducers Tests', () => {
@@ -24,95 +23,151 @@ describe('mergeReducers Tests', () => {
     }
   }
 
+  const overlappingState1 = (state = { overlapping1: true, overlapping2: false }) => state
+  const overlappingState2 = (state = { overlapping2: true, overlapping3: true }) => state
+
   test('should merge reducers', () => {
-    const store = createStore(mergeReducers([
+    const reducer = mergeReducers([
       primative,
       plainObject,
       array,
-      changingState
-    ]))
+      changingState,
+      overlappingState1,
+      overlappingState2
+    ])
 
-    expect(store.getState()).toEqual({
-      primative: 0,
-      plainObject: {
-        test: "value"
-      },
-      array: ["value"]
-    })
-  })
+    const state = reducer(undefined, {})
 
-  test('should handle actions' , () => {
-    const store = createStore(mergeReducers([
-      primative,
-      plainObject,
-      array,
-      changingState
-    ]))
-
-    const initialState = store.getState()
-
-    store.dispatch({ type: 'ADD_STATE' })
-
-    const state = store.getState()
-
-    expect(store.getState()).toEqual({
+    expect(state).toEqual({
       primative: 0,
       plainObject: {
         test: "value"
       },
       array: ["value"],
-      changingState: "value"
+      overlapping1: true,
+      overlapping2: true,
+      overlapping3: true,
+    })
+  })
+
+  test('should handle actions' , () => {
+    const reducer = mergeReducers([
+      primative,
+      plainObject,
+      array,
+      changingState,
+      overlappingState1,
+      overlappingState2
+    ])
+
+    const initialState = {
+      primative: 0,
+      plainObject: {
+        test: "value"
+      },
+      array: ["value"],
+      overlapping1: true,
+      overlapping2: true,
+      overlapping3: true
+    }
+
+    const state = reducer(initialState, { type: 'ADD_STATE' })
+
+    expect(state).toEqual({
+      primative: 0,
+      plainObject: {
+        test: "value"
+      },
+      array: ["value"],
+      changingState: "value",
+      overlapping1: true,
+      overlapping2: true,
+      overlapping3: true
     })
 
     expect(state.primative).toBe(initialState.primative)
     expect(state.plainObject).toBe(initialState.plainObject)
     expect(state.array).toBe(initialState.array)
     expect(state.changingState).not.toBe(initialState.changingState)
+    expect(state.overlapping1).toBe(initialState.overlapping1)
+    expect(state.overlapping2).toBe(initialState.overlapping2)
+    expect(state.overlapping3).toBe(initialState.overlapping3)
   })
 
   test('should not change reference for noop' , () => {
-    const store = createStore(mergeReducers([
+    const reducer = mergeReducers([
       primative,
       plainObject,
       array,
-      changingState
-    ]))
+      changingState,
+      overlappingState1,
+      overlappingState2
+    ])
 
-    const initialState = store.getState()
+    const initialState = {
+      primative: 0,
+      plainObject: {
+        test: "value"
+      },
+      array: ["value"],
+      overlapping1: true,
+      overlapping2: true,
+      overlapping3: true
+    }
 
-    store.dispatch({ type: 'NOOP' })
-
-    const state = store.getState()
+    const state = reducer(initialState, { type: 'NOOP' })
 
     expect(state).toBe(initialState)
 
     expect(state.primative).toBe(initialState.primative)
     expect(state.plainObject).toBe(initialState.plainObject)
     expect(state.array).toBe(initialState.array)
+    expect(state.overlapping1).toBe(initialState.overlapping1)
+    expect(state.overlapping2).toBe(initialState.overlapping2)
+    expect(state.overlapping3).toBe(initialState.overlapping3)
   })
 
   test('should delete the key if next state of it is undefined' , () => {
-    const store = createStore(mergeReducers([
+    const reducer = mergeReducers([
       primative,
       plainObject,
       array,
-      changingState
-    ]))
+      changingState,
+      overlappingState1,
+      overlappingState2
+    ])
 
-    const initialState = store.getState()
+    const initialState = {
+      primative: 0,
+      plainObject: {
+        test: "value"
+      },
+      array: ["value"],
+      changingState: "value",
+      overlapping1: true,
+      overlapping2: true,
+      overlapping3: true
+    }
 
-    store.dispatch({ type: 'ADD_STATE' })
-
-    expect(Object.keys(store.getState()).length).toBe(4)
-
-    store.dispatch({ type: 'DELETE_STATE' })
-
-    expect(Object.keys(store.getState()).length).toBe(3)
-
-    const state = store.getState()
+    const state = reducer(initialState, { type: 'DELETE_STATE' })
 
     expect(state.primative).toBe(initialState.primative)
     expect(state.plainObject).toBe(initialState.plainObject)
     expect(state.array).toBe(initialState.array)
+    expect(state.overlapping1).toBe(initialState.overlapping1)
+    expect(state.overlapping2).toBe(initialState.overlapping2)
+    expect(state.overlapping3).toBe(initialState.overlapping3)
+    expect(Object.keys(state).length).toBe(6)
+  })
+
+  test('should return empty object for reducers that do not return state', () => {
+    const reducer = mergeReducers([
+      () => undefined,
+      () => undefined,
+    ])
+
+    const state = reducer(undefined, {})
+
+    expect(state).toEqual({})
   })
 })

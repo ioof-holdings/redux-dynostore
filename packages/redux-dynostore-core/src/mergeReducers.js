@@ -6,6 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import deepMerge from './deepMerge'
+
 const removeUndefinedValues = (state = {}) => {
   const stateEntries = Object.entries(state)
   const nextState = stateEntries.reduce((nextState, [key, value]) => {
@@ -21,7 +23,7 @@ const removeUndefinedValues = (state = {}) => {
 const mergeReducers = reducers => (state, action) => {
   const nextState = reducers.reduce((nextState, reducer) => {
     const newState = reducer(state !== undefined ? nextState : undefined, action)
-    return newState !== nextState ? { ...nextState, ...newState } : nextState
+    return newState !== nextState ? deepMerge(nextState, newState) : nextState
   }, state)
 
   return removeUndefinedValues(nextState)

@@ -100,4 +100,39 @@ describe('integration tests', () => {
 
     expect(target).not.toHaveBeenCalled()
   })
+
+  test('should attach dynamic reducer to static key', () => {
+    const reducer = combineReducers({
+      group1: combineReducers({
+        group2: combineReducers({
+          key1: makeTestReducer('key1')
+        }),
+        key3: makeTestReducer('key3')
+      }),
+      key5: makeTestReducer('key5')
+    })
+
+    const store = createStore(reducer, dynostore(dynamicReducers()))
+
+    store.attachReducers({
+      group1: {
+        group2: {
+          key2: makeTestReducer('key2')
+        },
+        key4: makeTestReducer('key4')
+      }
+    })
+
+    expect(store.getState()).toEqual({
+      group1: {
+        group2: {
+          key1: 'key1 - initialValue',
+          key2: 'key2 - initialValue'
+        },
+        key3: 'key3 - initialValue',
+        key4: 'key4 - initialValue'
+      },
+      key5: 'key5 - initialValue'
+    })
+  })
 })

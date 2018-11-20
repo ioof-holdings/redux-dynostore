@@ -141,7 +141,9 @@ describe('deepMerge tests', () => {
     [true, 1], [true, "new"], [true, {}], [true, []],
     ["old", 1], ["old", true], ["old", {}], ["old", []]
   ].forEach(([target, source]) => {
-    test(`should return source when source type is ${Array.isArray(source) ? 'array' : typeof source} and target type is ${Array.isArray(target) ? 'array' : typeof target}`, () => {
+    const targetType = Array.isArray(target) ? 'array' : typeof target
+    const sourceType = Array.isArray(source) ? 'array' : typeof source
+    test(`should return source when types are not same type for merging: ${targetType} -> ${sourceType}`, () => {
       expect(deepMerge(target, source)).toBe(source)
     })
   })

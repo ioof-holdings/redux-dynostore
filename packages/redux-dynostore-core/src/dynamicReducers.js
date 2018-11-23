@@ -6,47 +6,78 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import mergeReducers from './mergeReducers'
-import filtered from './filteredReducer'
-import createDynamicReducer from './createDynamicReducer'
-import flattenReducers from './flattenReducers'
-import { detachable, detach } from './detachableReducer'
+import mergeReducers from './reducers/mergeReducers'
+import filtered from './reducers/filteredReducer'
+import createDynamicReducer from './reducers/createDynamicReducer'
+import flattenReducers from './utils/flattenReducers'
+import { detachable, detach } from './reducers/detachableReducer'
+import deepMerge from './utils/deepMerge'
+import shallowCombine from './utils/shallowCombine'
+import cleanState from './utils/cleanState'
+import plainStateFilter from './utils/plainStateFilter'
 
-const dynamicReducersEnhancer = () => createHandlers => (store, reducer, ...rest) => {
-  let dynamicReducers = {}
+const dynamicReducersEnhancer = ({
+  mergeFunction = deepMerge,
+  combineFunction = shallowCombine,
+  cleanStateFunction = cleanState,
+  stateFilter = plainStateFilter
+} = {}) => {
+  return createHandlers => (store, reducer, ...rest) => {
+    const defaultReducerOptions = {
+      mergeFunction,
+      combineFunction,
+      cleanStateFunction,
+      stateFilter
+    }
+    
+    const dynamicReducers = {}
+    const dynamicReducerOptions = {}
 
-  const createReducer = () => {
-    const reducers = [filtered(reducer)]
+    const createReducer = () => {
+      const reducers = [filtered(reducer, defaultReducerOptions)]
 
-    if (Object.keys(dynamicReducers).length) {
-      reducers.push(createDynamicReducer(dynamicReducers));
+      if (Object.keys(dynamicReducers).length) {
+        reducers.push(createDynamicReducer(dynamicReducers, dynamicReducerOptions));
+      }
+
+      return mergeReducers(reducers, defaultReducerOptions)
     }
 
-    return mergeReducers(reducers)
-  }
+    const attachReducers = (reducers, {
+      mergeFunction = defaultReducerOptions.mergeFunction,
+      combineFunction = defaultReducerOptions.combineFunction,
+      cleanStateFunction = defaultReducerOptions.cleanStateFunction,
+      stateFilter = defaultReducerOptions.stateFilter
+    } = {}) => {
+      Object.entries(flattenReducers(reducers)).forEach(([identifier, reducer]) => {
+        dynamicReducers[identifier] = detachable(identifier)(reducer)
+        dynamicReducerOptions[identifier] = {
+          mergeFunction,
+          combineFunction,
+          cleanStateFunction,
+          stateFilter
+        }
+      })
+      store.replaceReducer(createReducer())
+    }
 
-  const attachReducers = reducers => {
-    Object.entries(flattenReducers(reducers)).forEach(([identifier, reducer]) => {
-      dynamicReducers[identifier] = detachable(identifier)(reducer)
-    })
-    store.replaceReducer(createReducer())
-  }
+    const detachReducers = identifiers => {
+      identifiers.filter(identifier => dynamicReducers[identifier]).forEach(identifier => {
+        delete dynamicReducers[identifier]
+        delete dynamicReducerOptions[identifier]
+        store.dispatch(detach(identifier))
+      })
 
-  const detachReducers = identifiers => {
-    identifiers.filter(identifier => dynamicReducers[identifier]).forEach(identifier => {
-      delete dynamicReducers[identifier]
-      store.dispatch(detach(identifier))
-    })
+      store.replaceReducer(createReducer())
+    }
 
-    store.replaceReducer(createReducer())
-  }
+    const handlers = createHandlers(store, reducer, ...rest)
 
-  const handlers = createHandlers(store, reducer, ...rest)
-
-  return {
-    ...handlers,
-    attachReducers,
-    detachReducers
+    return {
+      ...handlers,
+      attachReducers,
+      detachReducers
+    }
   }
 }
 

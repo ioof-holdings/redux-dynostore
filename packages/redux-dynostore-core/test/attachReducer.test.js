@@ -15,7 +15,7 @@ describe('attachReducer tests', () => {
 
     attachReducer(reducer)('testId')(store)
 
-    expect(store.attachReducers).toBeCalledWith({ testId: reducer })
+    expect(store.attachReducers).toBeCalledWith({ testId: reducer }, undefined)
   })
 
   test('should raise error if store has invalid attachReducers', () => {
@@ -23,5 +23,15 @@ describe('attachReducer tests', () => {
     const store = { attachReducers: {} }
 
     expect(() => attachReducer(reducer)('testId')(store)).toThrow(TypeError)
+  })
+
+  test('should attach reducer with options', () => {
+    const reducer = jest.fn()
+    const options = {}
+    const store = { attachReducers: jest.fn() }
+
+    attachReducer(reducer, options)('testId')(store)
+
+    expect(store.attachReducers).toBeCalledWith({ testId: reducer }, options)
   })
 })

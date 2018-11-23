@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import createDynamicReducer from 'src/createDynamicReducer'
+import createDynamicReducer from 'src/reducers/createDynamicReducer'
 
 describe('createDynamicReducer Tests', () => {
   test('should make reducer', () => {

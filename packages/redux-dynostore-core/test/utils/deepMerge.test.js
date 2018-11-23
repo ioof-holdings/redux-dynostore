@@ -6,16 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import deepMerge from 'src/deepMerge'
+import deepMerge from 'src/utils/deepMerge'
 
 describe('deepMerge tests', () => {
 
   [{}, [], 0, true, "new"].forEach(source => {
-    test(`should return ${Array.isArray(source) ? 'array' : typeof source} source if target is missing`, () => {
-      expect(deepMerge(undefined, source)).toBe(source)
-      expect(deepMerge(null, source)).toBe(source)
-    })
-
     test(`should return ${Array.isArray(source) ? 'array' : typeof source} source if target is missing`, () => {
       expect(deepMerge(undefined, source)).toBe(source)
       expect(deepMerge(null, source)).toBe(source)

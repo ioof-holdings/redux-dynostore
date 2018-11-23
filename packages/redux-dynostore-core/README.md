@@ -95,6 +95,35 @@ store.detachReducers(['some/path/to/dynamicReducer'])
 
 _Note:_ only reducers that were added using an the `attachReducer` function can be detached.  Static reducers cannot be detached from the store.
 
+#### Options
+
+`dynamicReducers` accepts options to modify it's behaviour.  These can be used to optimize for different goals, such as accuracy or performace, or to support alternative state structures, such as `ImmutableJS`.
+
+| Key | Description | Default | Inbuilt Options | Interface |
+| --- | ----------- | ------- | --------------- | --------- |
+| mergeFunction | Function used to merge a dynamic reducer's state with the state produced by it's dynamic children.  This function is also used when merging the dynamic reducer's state with the static reducer's state when the default is overridden.  | `deepMerge` | `deepMerge|shallowMerge` | `(state, newState) => nextState` |
+| combineFunction | Function used to combine the child state together before merging. | `shallowCombine` | `shallowCombine` | `(state, key, value) => nexState` |
+| cleanStateFunction | Function used to sanitize the state after merging, e.g. remove `undefined` values caused by detaching a reducer. | `cleanState` | `cleanState` | `(state) => nextState` |
+| stateFilter | Function used to filter the input state into the provided reducers.  This is most commonly used to avoid warnings produced by having additional keys in the reducer state by filtering them out of the state, such as those produced by Redux's `combineReducers` implementation. | `plainStateFilter` | `plainStateFilter|noStateFilter` | `(intialState) => ({ filter: (state) => state, merge(state, newState) => nextState` |
+
+Default options can be overriden when creating the `dynamicReducers` enhancer:
+
+```javascript
+import dynostore, { dynamicReducers, shallowMerge } from '@redux-dynostore/core'
+
+const store = createStore(reducer, dynostore(
+  dynamicReducers({ mergeFunction: shallowMerge })
+))
+```
+
+Options can also be overridden for specific reducers when attaching them to the store:
+
+```javascript
+store.attachReducers({ 'some.path.to': dynamicReducer }, { combineFunction: mySpecialCombiner })
+```
+
+_Note:_ All the reducers being attached in a single `attachReducers` call will use the same provided options.
+
 ### Custom Enhancers
 
 Dynamic enhancers can be created for many use cases by implementing the following interface:
@@ -117,6 +146,13 @@ import { attachReducer } from '@redux-dynostore/core'
 
 export default dynamic('identifier', attachReducer(myReducer))(MyComponent)
 ```
+
+The same options that can be provided to `store.attachReducers` (above) can also be provided to the `attachReducer` enhancer as the second parameter:
+
+import dynamic from '@redux-dynostore/react-redux'
+import { attachReducer, shallowMerge } from '@redux-dynostore/core'
+
+export default dynamic('identifier', attachReducer(myReducer, { shallowMerge }))(MyComponent)
 
 ### `dispatchAction`
 

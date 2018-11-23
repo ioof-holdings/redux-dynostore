@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { detachable, detach } from 'src/detachableReducer'
+import { detachable, detach } from 'src/reducers/detachableReducer'
 
 describe('detachableReducer Tests', () => {
   const identifier = 'fooBar'

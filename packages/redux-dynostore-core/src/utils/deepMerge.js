@@ -32,10 +32,10 @@ const mergeObject = (target, source) => {
   const destination = { ...target }
 
   Object.keys(source).forEach(key => {
-    if (!isMergable(source[key]) || !target[key]) {
-      destination[key] = source[key]
-    } else {
+    if (isMergable(source[key]) && target[key]) {
       destination[key] = deepMerge(target[key], source[key])
+    } else {
+      destination[key] = source[key]
     }
 
     if (destination[key] !== target[key]) {

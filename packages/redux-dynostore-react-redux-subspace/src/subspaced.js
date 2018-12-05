@@ -8,10 +8,15 @@
 
 import isPlainObject from 'lodash.isplainobject'
 import { subspaced } from 'react-redux-subspace'
+import { objectKeyStateResolver, shallowMerge } from '@redux-dynostore/core'
 
-const subspacedEnhancer = ({ mapExtraState = () => null } = {}) => identifier => {
+const subspacedEnhancer = ({
+  resolveStateFunction = objectKeyStateResolver,
+  mergeFunction = shallowMerge,
+  mapExtraState = () => null
+} = {}) => identifier => {
   const mapState = (state, rootState) => {
-    const componentState = state[identifier]
+    const componentState = resolveStateFunction(state, identifier)
     if (!isPlainObject(componentState)) {
       return componentState
     }
@@ -24,7 +29,7 @@ const subspacedEnhancer = ({ mapExtraState = () => null } = {}) => identifier =>
       return componentState
     }
 
-    return { ...extraState, ...componentState }
+    return mergeFunction(extraState, componentState)
   }
   const subspaceEnhancer = subspaced(mapState, identifier)
   return () => Component => subspaceEnhancer(Component)

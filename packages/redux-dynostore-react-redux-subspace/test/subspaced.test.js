@@ -80,8 +80,39 @@ describe('subspaced tests', () => {
     expect(actions.length).toEqual(1)
     expect(actions[0]).toEqual({ type: 'parentId/testId/TEST_DISPATCH' })
   })
-})
 
+  test('should create subspaced enhanced component to a primative value', () => {
+    const SubspacedComponent = subspaced()('testKey')()(connect(s => ({ testKey: s }), mapDispatchToProps)(TestComponent))
+    const wrapper = mount(
+      <Provider store={store}>
+        <SubspaceProvider mapState={state => state.parentId.testId} namespace="parentId/testId">
+          <SubspacedComponent />
+        </SubspaceProvider>
+      </Provider>
+    )
+
+    expect(wrapper.html()).toBe('<p>nested value</p>')
+
+    const actions = store.getActions()
+    expect(actions.length).toEqual(1)
+    expect(actions[0]).toEqual({ type: 'parentId/testId/testKey/TEST_DISPATCH' })
+  })
+
+  test('should override resolve state function', () => {
+    const resolveStateFunction = (state, key) => ({ ...state[key], testKey: 'override value' })
+
+    const SubspacedComponent = subspaced({ resolveStateFunction })('testId')()(ConnectedTestComponent)
+    const wrapper = mount(
+      <Provider store={store}>
+        <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
+          <SubspacedComponent />
+        </SubspaceProvider>
+      </Provider>
+    )
+
+    expect(wrapper.html()).toBe('<p>override value</p>')
+  })
+})
 
 describe('mapExtraState tests', () => {
 
@@ -143,6 +174,22 @@ describe('mapExtraState tests', () => {
     )
 
     expect(wrapper.html()).toBe('<p>extra state value</p>')
+  })
+
+  test('should override merge function', () => {
+    const mapExtraState= (state, rootState) => ({ extraState: rootState.extraState })
+    const mergeFunction = (oldState, newState) => ({ ...oldState, ...newState, extraState: { extraStateId: 'override value' } })
+
+    const SubspacedComponent = subspaced({ mapExtraState, mergeFunction })('testId')()(ConnectedTestComponent)
+    const wrapper = mount(
+      <Provider store={store}>
+        <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
+          <SubspacedComponent />
+        </SubspaceProvider>
+      </Provider>
+    )
+
+    expect(wrapper.html()).toBe('<p>override value</p>')
   })
 
   test('should fail to create subspaced enhanced component with invalid extraState', () => {

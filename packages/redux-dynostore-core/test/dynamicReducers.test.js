@@ -101,6 +101,7 @@ describe('dynamicReducers tests', () => {
     })
 
     expect(store.replaceReducer.mock.calls[1][0](undefined, {})).toEqual({
+      called: true,
       testReducer1: {
         testReducer2: 'value2',
         testReducer3: 'value3',
@@ -168,6 +169,47 @@ describe('dynamicReducers tests', () => {
       testReducer1: {
         testReducer2: 'value1',
         value: 'value3',
+        called: true
+      }
+    })
+  })
+
+  test('should override default resolve state function', () => {
+    const createHandlers = jest.fn()
+    const store = { replaceReducer: jest.fn() }
+    const reducer = (state = {}) => state
+    const otherHandlers = { other: jest.fn() }
+
+    const testReducer1 = (state = {}) => state
+    const testReducer2 = (state = { test: 'value' }) => state
+
+    const resolveStateFunction = (state, key) => typeof state[key] === 'object' ? ({ ...state[key], called: true }) : state[key]
+
+    createHandlers.mockReturnValue(otherHandlers)
+
+    const handlers = dynamicReducers({ resolveStateFunction })(createHandlers)(store, reducer)
+
+    handlers.attachReducers({ testReducer1 })
+    handlers.attachReducers({
+      testReducer1: {
+        testReducer2
+      }
+    })
+
+    const initialState = {
+      testReducer1: {
+        testReducer2: {
+          test: 'value',
+        }
+      }
+    }
+
+    expect(store.replaceReducer.mock.calls[1][0](initialState, {})).toEqual({
+      testReducer1: {
+        testReducer2: {
+          test: 'value',
+          called: true
+        },
         called: true
       }
     })
@@ -259,6 +301,46 @@ describe('dynamicReducers tests', () => {
         testReducer2: 'value1',
         value: 'value3',
         called: true
+      }
+    })
+  })
+
+  test('should attach reducers with overridden resolve state function', () => {
+    const createHandlers = jest.fn()
+    const store = { replaceReducer: jest.fn() }
+    const reducer = (state = {}) => state
+    const otherHandlers = { other: jest.fn() }
+
+    const testReducer1 = (state = {}) => state
+    const testReducer2 = (state = { test: 'value' }) => state
+
+    const resolveStateFunction = (state, key) => typeof state[key] === 'object' ? ({ ...state[key], called: true }) : state[key]
+
+    createHandlers.mockReturnValue(otherHandlers)
+
+    const handlers = dynamicReducers()(createHandlers)(store, reducer)
+
+    handlers.attachReducers({ testReducer1 }, { resolveStateFunction })
+    handlers.attachReducers({
+      testReducer1: {
+        testReducer2
+      }
+    })
+
+    const initialState = {
+      testReducer1: {
+        testReducer2: {
+          test: 'value',
+        }
+      }
+    }
+
+    expect(store.replaceReducer.mock.calls[1][0](initialState, {})).toEqual({
+      testReducer1: {
+        testReducer2: {
+          test: 'value',
+          called: true
+        }
       }
     })
   })

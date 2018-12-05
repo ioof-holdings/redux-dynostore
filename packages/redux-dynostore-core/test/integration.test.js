@@ -65,6 +65,7 @@ describe('integration tests', () => {
       dynostore(
         dynamicReducers({
           mergeFunction: (oldState, newState) => ({ ...oldState, ...newState, defaultMergeCalled: true }),
+          resolveStateFunction: (state, key) => typeof state[key] === 'object' ? ({ ...state[key], defaultResolveStateCalled: true }) : state[key],
           combineFunction: (state, key, value) => ({ ...state, [key]: value, defaultCombineCalled: true }),
           cleanStateFunction: state => ({ ...state, defaultCleanStateCalled: true }),
           stateFilter: () => {
@@ -113,11 +114,13 @@ describe('integration tests', () => {
     store.dispatch(changeValue('newValue'))
 
     expect(store.getState()).toEqual({
+      defaultCombineCalled: true,
       defaultMergeCalled: true,
       defaultFilterCalled: true,
       static1: 'static1 - newValue',
       static2: 'static2 - newValue',
       group1: {
+        defaultResolveStateCalled: true,
         defaultCombineCalled: true,
         defaultFilterCalled: true,
         dynamic1: 'dynamic1 - newValue',
@@ -126,6 +129,7 @@ describe('integration tests', () => {
       },
       group2: {
         mergeOverrideCalled: true,
+        defaultResolveStateCalled: true,
         combineOverrideCalled: true,
         cleanStateOverrideCalled: true,
         filterOverrideCalled: true,

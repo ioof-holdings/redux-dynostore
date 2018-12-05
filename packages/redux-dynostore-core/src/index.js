@@ -22,6 +22,7 @@ export { default as cleanStateReducer } from './reducers/cleanStateReducer'
 export { default as deepMerge } from './utils/deepMerge'
 export { default as shallowMerge } from './utils/shallowMerge'
 
+export { default as objectKeyStateResolver } from './utils/objectKeyStateResolver'
 export { default as shallowCombine } from './utils/shallowCombine'
 
 export { default as cleanState } from './utils/cleanState'

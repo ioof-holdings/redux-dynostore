@@ -12,12 +12,14 @@ import createDynamicReducer from './reducers/createDynamicReducer'
 import flattenReducers from './utils/flattenReducers'
 import { detachable, detach } from './reducers/detachableReducer'
 import deepMerge from './utils/deepMerge'
+import objectKeyStateResolver from './utils/objectKeyStateResolver'
 import shallowCombine from './utils/shallowCombine'
 import cleanState from './utils/cleanState'
 import plainStateFilter from './utils/plainStateFilter'
 
 const dynamicReducersEnhancer = ({
   mergeFunction = deepMerge,
+  resolveStateFunction = objectKeyStateResolver,
   combineFunction = shallowCombine,
   cleanStateFunction = cleanState,
   stateFilter = plainStateFilter
@@ -25,11 +27,12 @@ const dynamicReducersEnhancer = ({
   return createHandlers => (store, reducer, ...rest) => {
     const defaultReducerOptions = {
       mergeFunction,
+      resolveStateFunction,
       combineFunction,
       cleanStateFunction,
       stateFilter
     }
-    
+
     const dynamicReducers = {}
     const dynamicReducerOptions = {}
 
@@ -37,22 +40,27 @@ const dynamicReducersEnhancer = ({
       const reducers = [filtered(reducer, defaultReducerOptions)]
 
       if (Object.keys(dynamicReducers).length) {
-        reducers.push(createDynamicReducer(dynamicReducers, dynamicReducerOptions));
+        reducers.push(createDynamicReducer(dynamicReducers, dynamicReducerOptions, defaultReducerOptions))
       }
 
       return mergeReducers(reducers, defaultReducerOptions)
     }
 
-    const attachReducers = (reducers, {
-      mergeFunction = defaultReducerOptions.mergeFunction,
-      combineFunction = defaultReducerOptions.combineFunction,
-      cleanStateFunction = defaultReducerOptions.cleanStateFunction,
-      stateFilter = defaultReducerOptions.stateFilter
-    } = {}) => {
+    const attachReducers = (
+      reducers,
+      {
+        mergeFunction = defaultReducerOptions.mergeFunction,
+        resolveStateFunction = defaultReducerOptions.resolveStateFunction,
+        combineFunction = defaultReducerOptions.combineFunction,
+        cleanStateFunction = defaultReducerOptions.cleanStateFunction,
+        stateFilter = defaultReducerOptions.stateFilter
+      } = {}
+    ) => {
       Object.entries(flattenReducers(reducers)).forEach(([identifier, reducer]) => {
         dynamicReducers[identifier] = detachable(identifier)(reducer)
         dynamicReducerOptions[identifier] = {
           mergeFunction,
+          resolveStateFunction,
           combineFunction,
           cleanStateFunction,
           stateFilter
@@ -62,11 +70,13 @@ const dynamicReducersEnhancer = ({
     }
 
     const detachReducers = identifiers => {
-      identifiers.filter(identifier => dynamicReducers[identifier]).forEach(identifier => {
-        delete dynamicReducers[identifier]
-        delete dynamicReducerOptions[identifier]
-        store.dispatch(detach(identifier))
-      })
+      identifiers
+        .filter(identifier => dynamicReducers[identifier])
+        .forEach(identifier => {
+          delete dynamicReducers[identifier]
+          delete dynamicReducerOptions[identifier]
+          store.dispatch(detach(identifier))
+        })
 
       store.replaceReducer(createReducer())
     }

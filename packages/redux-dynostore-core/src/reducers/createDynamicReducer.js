@@ -32,8 +32,8 @@ const expandReducers = (reducers, options) => {
   return expandedReducers
 }
 
-const collapseReducers = node => {
-  const { reducer, children, options } = node
+const collapseReducers = (node, defaultOptions) => {
+  const { reducer, children, options = defaultOptions } = node
 
   const childrenKeys = Object.keys(children)
 
@@ -48,19 +48,19 @@ const collapseReducers = node => {
 
   const childrenReducer = combineReducers(reducersToCombine, options)
 
-  if (!reducer) { 
+  if (!reducer) {
     return childrenReducer
   }
 
   const filtered = filteredReducer(reducer, options)
   const merged = mergeReducers([filtered, childrenReducer], options)
-  
+
   return cleanStateReducer(merged, options)
 }
 
-const createDynamicReducer = (reducers, options = {}) => {
+const createDynamicReducer = (reducers, options = {}, defaultOptions = {}) => {
   const expandedReducers = expandReducers(reducers, options)
-  return collapseReducers(expandedReducers)
+  return collapseReducers(expandedReducers, defaultOptions)
 }
 
 export default createDynamicReducer

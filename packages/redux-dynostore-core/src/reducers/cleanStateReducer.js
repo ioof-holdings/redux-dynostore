@@ -8,8 +8,8 @@
 
 import cleanState from '../utils/cleanState'
 
-const mergeReducers = (reducer, { cleanStateFunction = cleanState } = {}) => (state, action) => {
+const cleanStateReducer = (reducer, { cleanStateFunction = cleanState } = {}) => (state, action) => {
   return cleanStateFunction(reducer(state, action))
 }
 
-export default mergeReducers
+export default cleanStateReducer

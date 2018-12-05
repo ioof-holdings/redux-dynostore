@@ -25,3 +25,12 @@ export default dynamic('identifier', subspaced({ mapExtraState: (state, rootStat
 When mounted, `MyComponent` will be wrapped in a [`SubspaceProvider`](https://ioof-holdings.github.io/redux-subspace/packages/react-redux-subspace/docs/api/SubspaceProvider.html).
 
 If you are attaching a reducer dynamically, you should use the [redux-subspace variant](/packages/redux-dynostore-redux-subspace) to ensure it will receive the namespaced actions.
+
+## Options
+
+`subspaced` accepts options to modify it's behaviour.  These can be used to optimize for different goals, such as accuracy or performace, or to support alternative state structures, such as `ImmutableJS`.
+
+| Key | Description | Default | Inbuilt Options | Interface |
+| --- | ----------- | ------- | --------------- | --------- |
+| mergeFunction | Function used to merge a dynamic reducer's state with the state produced by it's dynamic children.  This function is also used when merging the dynamic reducer's state with the static reducer's state when the default is overridden.  | `shallowMerge` | `deepMerge|shallowMerge` | `(state, newState) => nextState` |
+| resolveStateFunction | Function used to resolve a key in the state. | `objectKeyStateResolver` | `objectKeyStateResolver` | `(state, key) => subState` |

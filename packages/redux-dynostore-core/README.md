@@ -102,7 +102,8 @@ _Note:_ only reducers that were added using an the `attachReducer` function can 
 | Key | Description | Default | Inbuilt Options | Interface |
 | --- | ----------- | ------- | --------------- | --------- |
 | mergeFunction | Function used to merge a dynamic reducer's state with the state produced by it's dynamic children.  This function is also used when merging the dynamic reducer's state with the static reducer's state when the default is overridden.  | `deepMerge` | `deepMerge|shallowMerge` | `(state, newState) => nextState` |
-| combineFunction | Function used to combine the child state together before merging. | `shallowCombine` | `shallowCombine` | `(state, key, value) => nexState` |
+| combineFunction | Function used to combine the child state together before merging. | `shallowCombine` | `shallowCombine` | `(state, key, value) => nextState` |
+| resolveStateFunction | Function used to resolve a key in the state. | `objectKeyStateResolver` | `objectKeyStateResolver` | `(state, key) => subState` |
 | cleanStateFunction | Function used to sanitize the state after merging, e.g. remove `undefined` values caused by detaching a reducer. | `cleanState` | `cleanState` | `(state) => nextState` |
 | stateFilter | Function used to filter the input state into the provided reducers.  This is most commonly used to avoid warnings produced by having additional keys in the reducer state by filtering them out of the state, such as those produced by Redux's `combineReducers` implementation. | `plainStateFilter` | `plainStateFilter|noStateFilter` | `(intialState) => ({ filter: (state) => state, merge(state, newState) => nextState` |
 

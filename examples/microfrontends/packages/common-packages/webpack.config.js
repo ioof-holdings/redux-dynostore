@@ -11,5 +11,17 @@ module.exports = {
     filename: `${outputFileName}.js`,
     path: path.join(__dirname, 'bundle')
   },
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development'
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  module: {
+    rules: [
+      {
+        test: /.jsx?$/,
+        loader: 'babel-loader',
+        exclude: [/node_modules/],
+        query: {
+          presets: [['@babel/env', { modules: false, useBuiltIns: 'usage' }]]
+        }
+      }
+    ]
+  }
 }

@@ -6,17 +6,16 @@
     "build": "webpack"
   },
   "dependencies": {
-    "react": "^16.4.1"
+    "react": "^16.6.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.1.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0",
-    "webpack": "^4.15.1",
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge",
+    "babel-loader": "^8.0.4",
+    "core-js": "^2.6.0",
+    "webpack": "^4.27.1",
     "webpack-cli": "^3.0.8"
   }
 }

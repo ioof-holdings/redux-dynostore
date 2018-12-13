@@ -26,28 +26,30 @@
     "lodash.isplainobject": "^4.0.6"
   },
   "peerDependencies": {
-    "redux": "^3.0.0"
+    "redux": "^3.0.0 || ^4.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-annotate-pure-calls": "^0.2.2",
-    "babel-plugin-external-helpers": "^6.22.0",
+    "@babel/core": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "babel-core": "^7.0.0-bridge",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "babel-plugin-annotate-pure-calls": "^0.4.0",
     "babel-plugin-module-resolver": "^3.1.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-3": "^6.24.1",
-    "jest": "^22.4.3",
-    "jest-junit": "^3.6.0",
-    "redux": "^3.7.2",
-    "rollup": "^0.57.1",
-    "rollup-plugin-babel": "^3.0.3"
+    "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
+    "redux": "^4.0.1",
+    "rollup": "^0.67.4",
+    "rollup-plugin-babel": "^4.0.3"
   },
   "scripts": {
     "prebuild": "rimraf lib es",
     "build": "rollup -c",
     "lint": "eslint . --ext .js --ext .jsx",
     "lint:fix": "eslint . --ext .js --ext .jsx --fix",
-    "test": "JEST_JUNIT_OUTPUT=./test-reports/unit-test-output.xml jest --coverage --colors",
+    "test": "cross-env JEST_JUNIT_OUTPUT=./test-reports/unit-test-output.xml jest --coverage --colors",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run build"
   },
@@ -55,7 +57,7 @@
     "collectCoverageFrom": [
       "**/src/**"
     ],
-    "testResultsProcessor": "./node_modules/jest-junit",
+    "reporters": [ "default", "jest-junit" ],
     "testURL": "http://localhost/"
   }
 }

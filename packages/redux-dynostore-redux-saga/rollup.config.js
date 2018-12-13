@@ -14,9 +14,5 @@ export default {
 		{ format: 'cjs', file: pkg.main, exports: 'named' }
 	],
 	external: id => external.test(id),
-	plugins: [
-		babel({
-			plugins: ['external-helpers']
-		})
-	]
+	plugins: [babel()]
 }

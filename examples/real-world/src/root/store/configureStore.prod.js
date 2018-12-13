@@ -2,18 +2,22 @@ import { createStore, compose } from 'redux'
 import dynostore, { dynamicReducers } from '@redux-dynostore/core'
 import { applyMiddleware } from 'redux-subspace'
 import thunk from 'redux-thunk'
-import api from '../../common/middleware/api'
+import { routerMiddleware } from 'connected-react-router'
 import wormhole from 'redux-subspace-wormhole'
-import rootReducer from '../reducers'
+import api from '../../common/middleware/api'
+import createRootReducer from '../reducers'
 
-const configureStore = preloadedState =>
-  createStore(
-    rootReducer,
-    preloadedState,
-    compose(
-      applyMiddleware(thunk, api, wormhole(state => state.configuration, 'configuration')),
-      dynostore(dynamicReducers())
-    )
+const configureStore = history => createStore(
+  createRootReducer(history),
+  compose(
+    applyMiddleware(
+      thunk,
+      api,
+      routerMiddleware(history),
+      wormhole(state => state.configuration, 'configuration')
+    ),
+    dynostore(dynamicReducers())
   )
+)
 
 export default configureStore

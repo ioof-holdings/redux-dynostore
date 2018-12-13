@@ -16,7 +16,7 @@ module.exports = {
         loader: 'babel-loader',
         exclude: [/node_modules/],
         query: {
-          presets: [['env', { modules: false, useBuiltIns: true }], 'react']
+          presets: [['@babel/env', { modules: false, useBuiltIns: 'usage' }], '@babel/react']
         }
       }
     ]

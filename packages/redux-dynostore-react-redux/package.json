@@ -24,34 +24,36 @@
   },
   "dependencies": {
     "@redux-dynostore/core": "^1.1.0",
-    "hoist-non-react-statics": "^2.5.0",
+    "hoist-non-react-statics": "^3.2.1",
     "prop-types": "^15.6.1",
-    "recompose": "^0.26.0"
+    "recompose": "^0.30.0"
   },
   "peerDependencies": {
     "react": "^15.1.0 || ^16.0.0",
-    "redux": "^3.0.0"
+    "redux": "^3.0.0 || ^4.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-annotate-pure-calls": "^0.2.2",
-    "babel-plugin-external-helpers": "^6.22.0",
+    "@babel/core": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "babel-plugin-annotate-pure-calls": "^0.4.0",
     "babel-plugin-module-resolver": "^3.1.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-3": "^6.24.1",
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "jest": "^22.4.3",
-    "jest-junit": "^3.6.0",
-    "raf": "^3.4.0",
-    "react": "^16.3.1",
-    "react-dom": "^16.3.1",
-    "react-redux": "^5.0.7",
-    "redux": "^3.7.2",
-    "rollup": "^0.57.1",
-    "rollup-plugin-babel": "^3.0.3"
+    "enzyme-adapter-react-16": "^1.7.0",
+    "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
+    "raf": "^3.4.1",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-redux": "^5.1.0",
+    "redux": "^4.0.1",
+    "rollup": "^0.67.4",
+    "rollup-plugin-babel": "^4.0.3"
   },
   "scripts": {
     "prebuild": "rimraf lib es",
@@ -67,7 +69,7 @@
     "collectCoverageFrom": [
       "**/src/**"
     ],
-    "testResultsProcessor": "./node_modules/jest-junit",
+    "reporters": [ "default", "jest-junit" ],
     "testURL": "http://localhost/"
   }
 }

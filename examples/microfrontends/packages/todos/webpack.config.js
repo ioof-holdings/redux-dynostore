@@ -19,8 +19,7 @@ module.exports = {
         loader: 'babel-loader',
         exclude: [/node_modules/],
         query: {
-          plugins: ['transform-object-rest-spread'],
-          presets: [['env', { modules: false, useBuiltIns: true }], 'react']
+          presets: [['@babel/env', { modules: false, useBuiltIns: 'usage' }], '@babel/react']
         }
       }
     ]

@@ -10,19 +10,19 @@
     "@redux-dynostore/react-redux": "^1.1.0",
     "@redux-dynostore/react-redux-subspace": "^1.1.0",
     "@redux-dynostore/redux-subspace": "^1.1.0",
-    "prop-types": "^15.6.1",
-    "react": "^16.6.3",
+    "prop-types": "^15.6.2",
+    "react": "^16.7.0",
     "react-redux": "^5.1.0",
     "redux": "^4.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "babel-core": "^7.0.0-bridge",
-    "babel-loader": "^8.0.4",
-    "core-js": "^2.6.0",
-    "webpack": "^4.27.1",
-    "webpack-cli": "^3.0.8"
+    "babel-loader": "^8.0.5",
+    "core-js": "^2.6.2",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1"
   }
 }

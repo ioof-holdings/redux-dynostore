@@ -6,7 +6,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     filename: 'microfrontends-example.js',
-    path: path.resolve(__dirname, '../build')
+    path: path.resolve(__dirname, 'build')
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   module: {

@@ -20,9 +20,9 @@
     "rimraf": "^2.6.3"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap --concurrency=1",
+    "bootstrap": "lerna bootstrap",
     "postinstall": "npm run bootstrap",
-    "build": "lerna run --concurrency=1 build",
+    "build": "lerna run build",
     "test": "lerna run test && istanbul report --root packages --reporter text-summary",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate"

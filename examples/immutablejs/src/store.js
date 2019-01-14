@@ -7,21 +7,12 @@ import { Map } from 'immutable'
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export const immutableJsStateHandler = {
-  createEmpty: () => {
-    return Map()
-  },
-  getKeys: state => {
-    return state.keys()
-  },
-  getValue: (state, key) => {
-    return state.get(key)
-  },
-  setValue: (state, key, value) => {
-    return state.set(key, value)
-  },
-  merge: (oldState, newState) => {
-    return oldState ? oldState.merge(newState) : newState
-  }
+  createEmpty: () => Map(),
+  getKeys: state => state.keys(),
+  getValue: (state, key) => state.get(key),
+  setValue: (state, key, value) => state.set(key, value),
+  canMerge: state => Map.isMap(state),
+  merge: (oldState, newState) => oldState ? oldState.merge(newState) : newState
 }
 
 const store = createStore(

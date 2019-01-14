@@ -24,7 +24,7 @@
     "react-loadable": "^5.4.0",
     "react-redux": "^5.1.0",
     "redux": "^4.0.1",
-    "redux-subspace": "^2.5.0",
+    "redux-subspace": "^3.0.1",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {

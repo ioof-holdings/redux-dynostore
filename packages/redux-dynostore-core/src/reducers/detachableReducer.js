@@ -6,10 +6,43 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { deepStateHandler } from '../utils/stateHandlers'
+
 const DETACH_TYPE = '@@DYNOSTORE/DETACH_REDUCER'
 
 export const detach = identifier => ({ type: DETACH_TYPE, identifier })
 
-export const detachable = identifier => reducer => (state, action) => {
-  return action.type !== DETACH_TYPE || action.identifier !== identifier ? reducer(state, action) : undefined
+export const detachableReducer = identifier => reducer => {
+  const detacher = (state, action) => {
+    return action.type !== DETACH_TYPE || action.identifier !== identifier ? reducer(state, action) : undefined
+  }
+  return detacher
+}
+
+export const cleanupDetachedReducer = (
+  reducer,
+  { stateHandler: { createEmpty, getKeys, getValue, setValue } = deepStateHandler } = {}
+) => {
+  const cleaner = (state, action) => {
+    const newState = reducer(state, action)
+    if (action.type == DETACH_TYPE && newState !== state) {
+      let hasChanged = false
+      let nextState = createEmpty()
+
+      getKeys(newState).forEach(key => {
+        const value = getValue(newState, key)
+        if (value !== undefined) {
+          nextState = setValue(nextState, key, value)
+        } else {
+          hasChanged = true
+        }
+      })
+
+      return hasChanged ? nextState : newState
+    } else {
+      return newState
+    }
+  }
+
+  return cleaner
 }

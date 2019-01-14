@@ -6,17 +6,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import objectKeyStateResolver from '../utils/objectKeyStateResolver'
-import shallowCombine from '../utils/shallowCombine'
+import { deepStateHandler } from '../utils/stateHandlers'
 
-const combineReducers = (
-  reducers,
-  { resolveStateFunction = objectKeyStateResolver, combineFunction = shallowCombine } = {}
-) => (state = {}, action) => {
-  return Object.entries(reducers).reduce((nextState, [key, reducer]) => {
-    const newState = reducer(resolveStateFunction(nextState, key), action)
-    return combineFunction(nextState, key, newState)
-  }, state)
+const combineReducers = (reducers, { stateHandler: { createEmpty, getValue, setValue } = deepStateHandler } = {}) => {
+  const reducerEntries = Object.entries(reducers)
+
+  const combiner = (state = createEmpty(), action) => {
+    let nextState = createEmpty()
+    let hasChanged = false
+    reducerEntries.forEach(([key, reducer]) => {
+      const oldValue = getValue(state, key)
+      const newValue = reducer(oldValue, action)
+      nextState = setValue(nextState, key, newValue)
+      hasChanged = hasChanged || newValue !== oldValue
+    })
+
+    return hasChanged ? nextState : state
+  }
+  return combiner
 }
 
 export default combineReducers

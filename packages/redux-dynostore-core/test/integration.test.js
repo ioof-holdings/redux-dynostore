@@ -12,9 +12,10 @@ import dynostore, {
   createDynamicTarget,
   attachReducer,
   dispatchAction,
+  shallowStateHandler,
+  deepStateHandler,
   shallowMerge,
-  cleanState,
-  noStateFilter
+  deepMerge
 } from 'src'
 
 describe('integration tests', () => {
@@ -49,7 +50,7 @@ describe('integration tests', () => {
     })
   })
 
-  test('should create dynostore with overrides', () => {
+  test('should create dynostore with shallow state handler', () => {
     const static1Reducer = makeTestReducer('static1')
     const static2Reducer = makeTestReducer('static2')
 
@@ -64,16 +65,9 @@ describe('integration tests', () => {
       reducer,
       dynostore(
         dynamicReducers({
-          mergeFunction: (oldState, newState) => ({ ...oldState, ...newState, defaultMergeCalled: true }),
-          resolveStateFunction: (state, key) => typeof state[key] === 'object' ? ({ ...state[key], defaultResolveStateCalled: true }) : state[key],
-          combineFunction: (state, key, value) => ({ ...state, [key]: value, defaultCombineCalled: true }),
-          cleanStateFunction: state => ({ ...state, defaultCleanStateCalled: true }),
-          stateFilter: () => {
-            const filterInstance = noStateFilter()
-            return {
-              filter: filterInstance.filter,
-              merge:  (oldState, newState) => ({ ...oldState, ...newState, defaultFilterCalled: true })
-            }
+          stateHandler: {
+            ...shallowStateHandler,
+            merge: (oldState, newState) => ({ ...shallowMerge(oldState, newState), defaultCalled: true })
           }
         })
       )
@@ -82,14 +76,11 @@ describe('integration tests', () => {
     const dynamic1Reducer = makeTestReducer('dynamic1')
     const dynamic4Reducer = makeTestReducer('dynamic4')
 
-    store.attachReducers(
-      {
-        group1: (state = {}, action) => ({ dynamic1: dynamic1Reducer(state.dynamic1, action) }),
-        'group1.dynamic2': makeTestReducer('dynamic2'),
-        'group1.dynamic3': makeTestReducer('dynamic3')
-      },
-      { mergeFunction: shallowMerge, cleanStateFunction: cleanState }
-    )
+    store.attachReducers({
+      group1: (state = {}, action) => ({ dynamic1: dynamic1Reducer(state.dynamic1, action) }),
+      'group1.dynamic2': makeTestReducer('dynamic2'),
+      'group1.dynamic3': makeTestReducer('dynamic3')
+    })
 
     store.attachReducers(
       {
@@ -98,15 +89,9 @@ describe('integration tests', () => {
         'group2.dynamic6': makeTestReducer('dynamic6')
       },
       {
-        mergeFunction: (oldState, newState) => ({ ...oldState, ...newState, mergeOverrideCalled: true }),
-        combineFunction: (state, key, value) => ({ ...state, [key]: value, combineOverrideCalled: true }),
-        cleanStateFunction: state => ({ ...state, cleanStateOverrideCalled: true }),
-        stateFilter: () => {
-          const filterInstance = noStateFilter()
-          return {
-            filter: filterInstance.filter,
-            merge:  (oldState, newState) => ({ ...oldState, ...newState, filterOverrideCalled: true })
-          }
+        stateHandler: {
+          ...deepStateHandler,
+          merge: (oldState, newState) => ({ ...deepMerge(oldState, newState), overrideCalled: true })
         }
       }
     )
@@ -114,25 +99,17 @@ describe('integration tests', () => {
     store.dispatch(changeValue('newValue'))
 
     expect(store.getState()).toEqual({
-      defaultCombineCalled: true,
-      defaultMergeCalled: true,
-      defaultFilterCalled: true,
+      defaultCalled: true,
       static1: 'static1 - newValue',
       static2: 'static2 - newValue',
       group1: {
-        defaultResolveStateCalled: true,
-        defaultCombineCalled: true,
-        defaultFilterCalled: true,
+        defaultCalled: true,
         dynamic1: 'dynamic1 - newValue',
         dynamic2: 'dynamic2 - newValue',
         dynamic3: 'dynamic3 - newValue'
       },
       group2: {
-        mergeOverrideCalled: true,
-        defaultResolveStateCalled: true,
-        combineOverrideCalled: true,
-        cleanStateOverrideCalled: true,
-        filterOverrideCalled: true,
+        overrideCalled: true,
         dynamic4: 'dynamic4 - newValue',
         dynamic5: 'dynamic5 - newValue',
         dynamic6: 'dynamic6 - newValue'
@@ -180,6 +157,8 @@ describe('integration tests', () => {
       static2: 'static2 - initialValue',
       dynamic2: 'dynamic2 - initialValue'
     })
+
+    expect(store.getState().hasOwnProperty('dynamic1')).toBe(false)
   })
 
   test('should dispatch actions', () => {

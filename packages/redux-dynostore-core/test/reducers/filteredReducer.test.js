@@ -106,21 +106,27 @@ describe('filteredReducer Tests', () => {
     })
   })
 
-  test('should use overridden clean state function', () => {
-    const customStateFilter = (initialState) => {
-      return {
-        filter: (state) => ({ ...state, initialState }),
-        merge: (oldState, newState) => ({ ...oldState, ...newState, mergeCalled: true })
-      }
+  test('should use override state handler', () => {
+    const stateHandler = {
+      createEmpty: () => {
+        return {}
+      },
+      getKeys: (state) => {
+        return [...Object.keys(state), 'custom']
+      },
+      getValue: (state, key) => {
+        return key === 'custom' ? true : state[key]
+      },
+      setValue: (state, key, value) => {
+        state[key] = value
+        return state
+      },
     }
-    const reducer = filteredReducer(changingState, { stateFilter: customStateFilter })
+    
+    const reducer = filteredReducer(changingState, { stateHandler })
 
-    const initialState = reducer(undefined, {})
+    const state = reducer({ test: 'wrong' }, { type: 'ADD_STATE' })
 
-    expect(initialState).toEqual({})
-
-    const state = reducer(initialState, { type: 'ADD_STATE' })
-
-    expect(state).toEqual({ test: 'value', initialState: {}, mergeCalled: true })
+    expect(state).toEqual({ test: 'value', custom: true })
   })
 })

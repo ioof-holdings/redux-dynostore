@@ -6,30 +6,28 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import isPlainObject from 'lodash.isplainobject'
 import { subspaced } from 'react-redux-subspace'
-import { objectKeyStateResolver, shallowMerge } from '@redux-dynostore/core'
+import { shallowStateHandler } from '@redux-dynostore/core'
 
 const subspacedEnhancer = ({
-  resolveStateFunction = objectKeyStateResolver,
-  mergeFunction = shallowMerge,
+  stateHandler: { getValue, canMerge, merge } = shallowStateHandler,
   mapExtraState = () => null
 } = {}) => identifier => {
   const mapState = (state, rootState) => {
-    const componentState = resolveStateFunction(state, identifier)
-    if (!isPlainObject(componentState)) {
+    const componentState = getValue(state, identifier)
+    if (!canMerge(componentState)) {
       return componentState
     }
 
     const extraState = mapExtraState(state, rootState)
-    if (!isPlainObject(extraState)) {
+    if (!canMerge(extraState)) {
       if (process.env.NODE_ENV !== 'production' && extraState !== null) {
-        throw new TypeError(`extra state must be a plain object but received ${extraState}`)
+        throw new TypeError(`extra state must be a mergable with the component state but received ${extraState}`)
       }
       return componentState
     }
 
-    return mergeFunction(extraState, componentState)
+    return merge(extraState, componentState)
   }
   const subspaceEnhancer = subspaced(mapState, identifier)
   return () => Component => subspaceEnhancer(Component)

@@ -17,15 +17,7 @@ export { default as createDynamicTarget } from './createDynamicTarget'
 export { default as mergeReducers } from './reducers/mergeReducers'
 export { default as combineReducers } from './reducers/combineReducers'
 export { default as filteredReducer } from './reducers/filteredReducer'
-export { default as cleanStateReducer } from './reducers/cleanStateReducer'
 
-export { default as deepMerge } from './utils/deepMerge'
-export { default as shallowMerge } from './utils/shallowMerge'
+export { shallowMerge, deepMerge } from './utils/merge'
 
-export { default as objectKeyStateResolver } from './utils/objectKeyStateResolver'
-export { default as shallowCombine } from './utils/shallowCombine'
-
-export { default as cleanState } from './utils/cleanState'
-
-export { default as plainStateFilter } from './utils/plainStateFilter'
-export { default as noStateFilter } from './utils/noStateFilter'
+export { shallowStateHandler, deepStateHandler, deepStateHandler as defaultStateHandler } from './utils/stateHandlers'

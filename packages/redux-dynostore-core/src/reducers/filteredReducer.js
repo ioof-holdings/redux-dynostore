@@ -6,29 +6,51 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import plainStateFilter from '../utils/plainStateFilter'
+import { deepStateHandler } from '../utils/stateHandlers'
 
 const FILTER_INIT = { type: '@@FILTER/INIT' }
 
-const filteredReducer = (reducer, { stateFilter = plainStateFilter } = {}) => {
+const filteredReducer = (
+  reducer,
+  { stateHandler: { createEmpty, getKeys, getValue, setValue } = deepStateHandler } = {}
+) => {
   const initialState = reducer(undefined, FILTER_INIT)
-  const filterInstance = stateFilter(initialState)
+  let knownKeys = getKeys(initialState)
 
-  return (state, action) => {
+  const filter = (state, action) => {
     if (state === undefined) {
       return initialState
     }
 
-    const filteredState = filterInstance.filter(state)
+    let filteredState = state
 
-    const newState = reducer(filteredState, action)
+    if (knownKeys.length) {
+      filteredState = createEmpty()
+      knownKeys.forEach(key => {
+        const oldValue = getValue(state, key)
+        filteredState = setValue(filteredState, key, oldValue)
+      })
+    }
+
+    let newState = reducer(filteredState, action)
 
     if (newState === filteredState) {
       return state
     }
 
-    return filterInstance.merge(state, newState)
+    knownKeys = getKeys(newState)
+
+    getKeys(state).forEach(key => {
+      if (!knownKeys.includes(key)) {
+        const oldValue = getValue(state, key)
+        newState = setValue(newState, key, oldValue)
+      }
+    })
+
+    return newState
   }
+
+  return filter
 }
 
 export default filteredReducer

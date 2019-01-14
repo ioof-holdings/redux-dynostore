@@ -3,14 +3,14 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --concurrency=1",
     "postinstall": "npm run bootstrap",
     "prebuild": "npm run externals:build",
     "build": "ENV=production webpack",
     "prestart": "npm run externals:build",
     "start": "webpack-dev-server",
     "start:production": "NODE_ENV=production npm start",
-    "externals:build": "lerna run --parallel build && npm run externals:copy",
+    "externals:build": "lerna run --concurrency=1 build && npm run externals:copy",
     "externals:copy": "rimraf externals && copyfiles -f packages/*/bundle/* externals"
   },
   "dependencies": {

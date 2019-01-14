@@ -14,8 +14,8 @@ import { SubspaceProvider } from 'react-redux-subspace'
 import { mount } from 'enzyme'
 
 import dynostore from '@redux-dynostore/core'
-import subspaced from 'src/subspaced'
 import dynamic from '@redux-dynostore/react-redux'
+import subspaced from 'src/subspaced'
 
 const suppressError = f => {
   const error = console.error // eslint-disable-line no-console
@@ -98,10 +98,15 @@ describe('subspaced tests', () => {
     expect(actions[0]).toEqual({ type: 'parentId/testId/testKey/TEST_DISPATCH' })
   })
 
-  test('should override resolve state function', () => {
-    const resolveStateFunction = (state, key) => ({ ...state[key], testKey: 'override value' })
+  test('should override state handler', () => {
+    const stateHandler = {
+      getValue: (state, key) => ({ ...state[key], testKey: 'override value' }),
+      canMerge: (state) => typeof state === 'object',
+      merge: (oldState, newState) => ({ ...oldState, ...newState })
+    }
+    const mapExtraState= (state, rootState) => ({ extraState: rootState.extraState })
 
-    const SubspacedComponent = subspaced({ resolveStateFunction })('testId')()(ConnectedTestComponent)
+    const SubspacedComponent = subspaced({ stateHandler, mapExtraState })('testId')()(ConnectedTestComponent)
     const wrapper = mount(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
@@ -176,11 +181,15 @@ describe('mapExtraState tests', () => {
     expect(wrapper.html()).toBe('<p>extra state value</p>')
   })
 
-  test('should override merge function', () => {
+  test('should override state handler', () => {
+    const stateHandler = {
+      getValue: (state, key) => state[key],
+      canMerge: (state) => typeof state === 'object',
+      merge: (oldState, newState) => ({ ...oldState, ...newState, extraState: { extraStateId: 'override value' } })
+    }
     const mapExtraState= (state, rootState) => ({ extraState: rootState.extraState })
-    const mergeFunction = (oldState, newState) => ({ ...oldState, ...newState, extraState: { extraStateId: 'override value' } })
 
-    const SubspacedComponent = subspaced({ mapExtraState, mergeFunction })('testId')()(ConnectedTestComponent)
+    const SubspacedComponent = subspaced({ stateHandler, mapExtraState })('testId')()(ConnectedTestComponent)
     const wrapper = mount(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">

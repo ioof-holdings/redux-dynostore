@@ -1,9 +1,11 @@
 node_modules
 npm-debug.log
 lerna-debug.log
+isolate-*-v8.log
 .nyc_output
 coverage
 test-reports
+flamegraph.html
 .vscode
 .idea
 lib/

@@ -6,33 +6,57 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { detachable, detach } from 'src/reducers/detachableReducer'
+import { detachableReducer, cleanupDetachedReducer, detach } from 'src/reducers/detachableReducer'
 
 describe('detachableReducer Tests', () => {
   const identifier = 'fooBar'
 
   test('should forward the dispatched action to the intial reducer and return the expected state', () => {
-      const intialState = { foo: "bar" }
+    const intialState = { foo: 'bar' }
 
-      const reducer = detachable(identifier)((state = intialState) => state)
-      const state = reducer(intialState, { type: "FOO", identifier })
+    const reducer = detachableReducer(identifier)((state = intialState) => state)
+    const state = reducer(intialState, { type: 'FOO', identifier })
 
-      expect(state).toEqual(intialState)
+    expect(state).toEqual(intialState)
   })
 
-  test('should intercept the action and return a null state for this reducer', () => {
-      const intialState = { foo: "bar" }
-      const reducer = detachable(identifier)((state = intialState) => state)
-      const state = reducer(intialState, detach(identifier))
+  test('should intercept the action and return an undefined state for this reducer', () => {
+    const intialState = { foo: 'bar' }
+    const reducer = detachableReducer(identifier)((state = intialState) => state)
+    const state = reducer(intialState, detach(identifier))
 
-      expect(state).toEqual(undefined)
+    expect(state).toEqual(undefined)
   })
 
   test('should ignore the action if the identifier does not match', () => {
-    const intialState = { foo: "bar" }
-    const reducer = detachable(identifier)((state = intialState) => state)
+    const intialState = { foo: 'bar' }
+    const reducer = detachableReducer(identifier)((state = intialState) => state)
     const state = reducer(intialState, detach('notFooBar'))
 
-    expect(state).toEqual(intialState)
+    expect(state).toBe(intialState)
+  })
+
+  test('should clean up detatched reducer', () => {
+    const reducer = cleanupDetachedReducer(state => ({ ...state }))
+    const state = reducer({ foo: undefined, bar: 'baz' }, detach(identifier))
+
+    expect(state).toEqual({ bar: 'baz' })
+    expect(Object.keys(state).length).toBe(1)
+  })
+
+  test('should not alter state on noop', () => {
+    const intialState = { foo: 'bar' }
+    const reducer = cleanupDetachedReducer((state = intialState) => state)
+    const state = reducer(intialState, detach(identifier))
+
+    expect(state).toBe(intialState)
+  })
+
+  test('should not alter state if no undefined values', () => {
+    const intialState = { foo: 'bar' }
+    const reducer = cleanupDetachedReducer((state = intialState) => state)
+    const state = reducer(undefined, detach(identifier))
+
+    expect(state).toBe(intialState)
   })
 })

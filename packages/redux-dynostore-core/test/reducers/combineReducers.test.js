@@ -95,16 +95,21 @@ describe('combineReducers Tests', () => {
     expect(state.changingState).toBe(initialState.changingState)
   })
 
-  test('should use overridden combine function', () => {
-    const reducer = combineReducers(
-      {
-        primative,
-        plainObject,
-        array,
-        changingState
-      },
-      { combineFunction: (state, key, value) => ({ ...state, [key]: value ? value : undefined }) }
-    )
+  test('should override state handler', () => {
+    const stateHandler = {
+      createEmpty: () => ({ called: true }),
+      getValue: (state, key) => state[key],
+      setValue: (state, key, value) => {
+        state[key] = value
+        return state
+      }
+    }
+    const reducer = combineReducers({
+      primative,
+      plainObject,
+      array,
+      changingState
+    }, { stateHandler })
 
     const state = reducer(undefined, {})
 
@@ -113,7 +118,9 @@ describe('combineReducers Tests', () => {
         test: 'value'
       },
       array: ['value'],
-      changingState: {}
+      changingState: {},
+      primative: 0,
+      called: true
     })
   })
 })

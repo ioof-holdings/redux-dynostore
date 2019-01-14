@@ -49,7 +49,7 @@ describe('dynamicReducers tests', () => {
     })
   })
 
-  test('should override default merge function', () => {
+  test('should override default state handler', () => {
     const createHandlers = jest.fn()
     const store = { replaceReducer: jest.fn() }
     const reducer = (state = {}) => state
@@ -58,11 +58,26 @@ describe('dynamicReducers tests', () => {
     const testReducer1 = (state = {}) => state
     const testReducer2 = (state = 'value1') => state
 
-    const mergeFunction2 = (oldState, newState) => ({ ...oldState, ...newState, called: true })
+    const stateHandler = {
+      createEmpty: () => {
+        return {}
+      },
+      getKeys: (state) => {
+        return Object.keys(state)
+      },
+      getValue: (state, key) => {
+        return state[key]
+      },
+      setValue: (state, key, value) => {
+        state[key] = value
+        return state
+      },
+      merge: (oldState, newState) => ({ ...oldState, ...newState, called: true })
+    }
 
     createHandlers.mockReturnValue(otherHandlers)
 
-    const handlers = dynamicReducers({ mergeFunction: mergeFunction2 })(createHandlers)(store, reducer)
+    const handlers = dynamicReducers({ stateHandler })(createHandlers)(store, reducer)
 
     handlers.attachReducers({ testReducer1 })
     handlers.attachReducers({ 'testReducer1.testReducer2': testReducer2 })
@@ -76,146 +91,7 @@ describe('dynamicReducers tests', () => {
     })
   })
 
-  test('should override default combine function', () => {
-    const createHandlers = jest.fn()
-    const store = { replaceReducer: jest.fn() }
-    const reducer = (state = {}) => state
-    const otherHandlers = { other: jest.fn() }
-
-    const testReducer1 = (state = {}) => state
-    const testReducer2 = (state = 'value2') => state
-    const testReducer3 = (state = 'value3') => state
-
-    const combineFunction = (state, key, value) => ({ ...state, [key]: value, called: true })
-
-    createHandlers.mockReturnValue(otherHandlers)
-
-    const handlers = dynamicReducers({ combineFunction })(createHandlers)(store, reducer)
-
-    handlers.attachReducers({ testReducer1 })
-    handlers.attachReducers({
-      testReducer1: {
-        testReducer2,
-        testReducer3
-      }
-    })
-
-    expect(store.replaceReducer.mock.calls[1][0](undefined, {})).toEqual({
-      called: true,
-      testReducer1: {
-        testReducer2: 'value2',
-        testReducer3: 'value3',
-        called: true
-      }
-    })
-  })
-
-  test('should override default clean state function', () => {
-    const createHandlers = jest.fn()
-    const store = { replaceReducer: jest.fn() }
-    const reducer = (state = {}) => state
-    const otherHandlers = { other: jest.fn() }
-
-    const testReducer1 = (state = { value: undefined }) => state
-    const testReducer2 = (state = 'value1') => state
-
-    const cleanStateFunction = (state) => ({ ...state, called: true })
-
-    createHandlers.mockReturnValue(otherHandlers)
-
-    const handlers = dynamicReducers({ cleanStateFunction })(createHandlers)(store, reducer)
-
-    handlers.attachReducers({ testReducer1 })
-    handlers.attachReducers({ 'testReducer1.testReducer2': testReducer2 })
-
-    expect(store.replaceReducer.mock.calls[1][0](undefined, {})).toEqual({
-      testReducer1: {
-        testReducer2: 'value1',
-        called: true
-      }
-    })
-  })
-
-  test('should override default state filter', () => {
-    const createHandlers = jest.fn()
-    const store = { replaceReducer: jest.fn() }
-    const reducer = (state = {}) => state
-    const otherHandlers = { other: jest.fn() }
-
-    const testReducer1 = (state = { value: {} }, action) => action.type === 'SET_VALUE' ? { ...state, value: action.value } : state
-    const testReducer2 = (state = 'value1') => state
-    
-    const stateFilter = () => {
-      return {
-        filter: (state) => state,
-        merge:  (oldState, newState) => ({ ...oldState, ...newState, called: true })
-      }
-    }
-
-    createHandlers.mockReturnValue(otherHandlers)
-
-    const handlers = dynamicReducers({ stateFilter })(createHandlers)(store, reducer)
-
-    handlers.attachReducers({ testReducer1 })
-    handlers.attachReducers({ 'testReducer1.testReducer2': testReducer2 })
-
-    const initialState = {
-      testReducer1: {
-        testReducer2: 'value1'
-      }
-    }
-
-    expect(store.replaceReducer.mock.calls[1][0](initialState, { type: 'SET_VALUE', value: 'value3' })).toEqual({
-      testReducer1: {
-        testReducer2: 'value1',
-        value: 'value3',
-        called: true
-      }
-    })
-  })
-
-  test('should override default resolve state function', () => {
-    const createHandlers = jest.fn()
-    const store = { replaceReducer: jest.fn() }
-    const reducer = (state = {}) => state
-    const otherHandlers = { other: jest.fn() }
-
-    const testReducer1 = (state = {}) => state
-    const testReducer2 = (state = { test: 'value' }) => state
-
-    const resolveStateFunction = (state, key) => typeof state[key] === 'object' ? ({ ...state[key], called: true }) : state[key]
-
-    createHandlers.mockReturnValue(otherHandlers)
-
-    const handlers = dynamicReducers({ resolveStateFunction })(createHandlers)(store, reducer)
-
-    handlers.attachReducers({ testReducer1 })
-    handlers.attachReducers({
-      testReducer1: {
-        testReducer2
-      }
-    })
-
-    const initialState = {
-      testReducer1: {
-        testReducer2: {
-          test: 'value',
-        }
-      }
-    }
-
-    expect(store.replaceReducer.mock.calls[1][0](initialState, {})).toEqual({
-      testReducer1: {
-        testReducer2: {
-          test: 'value',
-          called: true
-        },
-        called: true
-      }
-    })
-  })
-
-  test('should attach reducers with overridden merge function', () => {
+  test('should attach reducers with overridden state handler', () => {
     const createHandlers = jest.fn()
     const store = { replaceReducer: jest.fn() }
     const reducer = (state = {}) => state
@@ -224,123 +100,34 @@ describe('dynamicReducers tests', () => {
     const testReducer1 = (state = {}) => state
     const testReducer2 = (state = 'value1') => state
 
-    const mergeFunction = (oldState, newState) => ({ ...oldState, ...newState, called: true })
+    const stateHandler = {
+      createEmpty: () => {
+        return {}
+      },
+      getKeys: (state) => {
+        return Object.keys(state)
+      },
+      getValue: (state, key) => {
+        return state[key]
+      },
+      setValue: (state, key, value) => {
+        state[key] = value
+        return state
+      },
+      merge: (oldState, newState) => ({ ...oldState, ...newState, called: true })
+    }
 
     createHandlers.mockReturnValue(otherHandlers)
 
     const handlers = dynamicReducers()(createHandlers)(store, reducer)
 
-    handlers.attachReducers({ testReducer1 }, { mergeFunction })
+    handlers.attachReducers({ testReducer1 }, { stateHandler })
     handlers.attachReducers({ 'testReducer1.testReducer2': testReducer2 })
 
     expect(store.replaceReducer.mock.calls[1][0](undefined, {})).toEqual({
       testReducer1: {
         testReducer2: 'value1',
         called: true
-      }
-    })
-  })
-
-  test('should attach reducers with overridden clean state function', () => {
-    const createHandlers = jest.fn()
-    const store = { replaceReducer: jest.fn() }
-    const reducer = (state = {}) => state
-    const otherHandlers = { other: jest.fn() }
-
-    const testReducer1 = (state = { value: undefined }) => state
-    const testReducer2 = (state = 'value1') => state
-
-    const cleanStateFunction = (state) => ({ ...state, called: true })
-
-    createHandlers.mockReturnValue(otherHandlers)
-
-    const handlers = dynamicReducers()(createHandlers)(store, reducer)
-
-    handlers.attachReducers({ testReducer1 }, { cleanStateFunction })
-    handlers.attachReducers({ 'testReducer1.testReducer2': testReducer2 })
-
-    expect(store.replaceReducer.mock.calls[1][0](undefined, {})).toEqual({
-      testReducer1: {
-        testReducer2: 'value1',
-        called: true
-      }
-    })
-  })
-
-  test('should attach reducers with overridden state filter', () => {
-    const createHandlers = jest.fn()
-    const store = { replaceReducer: jest.fn() }
-    const reducer = (state = {}) => state
-    const otherHandlers = { other: jest.fn() }
-
-    const testReducer1 = (state = { value: {} }, action) => action.type === 'SET_VALUE' ? { ...state, value: action.value } : state
-    const testReducer2 = (state = 'value1') => state
-    
-    const stateFilter = () => {
-      return {
-        filter: (state) => state,
-        merge:  (oldState, newState) => ({ ...oldState, ...newState, called: true })
-      }
-    }
-
-    createHandlers.mockReturnValue(otherHandlers)
-
-    const handlers = dynamicReducers()(createHandlers)(store, reducer)
-
-    handlers.attachReducers({ testReducer1 }, { stateFilter })
-    handlers.attachReducers({ 'testReducer1.testReducer2': testReducer2 })
-
-    const initialState = {
-      testReducer1: {
-        testReducer2: 'value1'
-      }
-    }
-
-    expect(store.replaceReducer.mock.calls[1][0](initialState, { type: 'SET_VALUE', value: 'value3' })).toEqual({
-      testReducer1: {
-        testReducer2: 'value1',
-        value: 'value3',
-        called: true
-      }
-    })
-  })
-
-  test('should attach reducers with overridden resolve state function', () => {
-    const createHandlers = jest.fn()
-    const store = { replaceReducer: jest.fn() }
-    const reducer = (state = {}) => state
-    const otherHandlers = { other: jest.fn() }
-
-    const testReducer1 = (state = {}) => state
-    const testReducer2 = (state = { test: 'value' }) => state
-
-    const resolveStateFunction = (state, key) => typeof state[key] === 'object' ? ({ ...state[key], called: true }) : state[key]
-
-    createHandlers.mockReturnValue(otherHandlers)
-
-    const handlers = dynamicReducers()(createHandlers)(store, reducer)
-
-    handlers.attachReducers({ testReducer1 }, { resolveStateFunction })
-    handlers.attachReducers({
-      testReducer1: {
-        testReducer2
-      }
-    })
-
-    const initialState = {
-      testReducer1: {
-        testReducer2: {
-          test: 'value',
-        }
-      }
-    }
-
-    expect(store.replaceReducer.mock.calls[1][0](initialState, {})).toEqual({
-      testReducer1: {
-        testReducer2: {
-          test: 'value',
-          called: true
-        }
       }
     })
   })

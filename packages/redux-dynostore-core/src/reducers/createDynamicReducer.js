@@ -9,42 +9,44 @@
 import combineReducers from './combineReducers'
 import mergeReducers from './mergeReducers'
 import filteredReducer from './filteredReducer'
-import cleanStateReducer from './cleanStateReducer'
+import { cleanupDetachedReducer } from './detachableReducer'
 
-const expandReducers = (reducers, options) => {
-  const expandedReducers = { children: {} }
+const expandReducers = (staticReducer, dynamicReducers, options, defaultOptions) => {
+  const expandedReducers = { reducer: staticReducer, children: {}, options: defaultOptions }
 
-  for (let key in reducers) {
+  Object.entries(dynamicReducers).forEach(([key, dynamicReducer]) => {
     let path = key.split('.')
     let currentNode = expandedReducers
 
-    for (let element of path) {
+    path.forEach(element => {
       if (!currentNode.children[element]) {
-        currentNode.children[element] = { children: {} }
+        currentNode.children[element] = { children: {}, options: defaultOptions }
       }
 
       currentNode = currentNode.children[element]
-    }
-    currentNode.reducer = reducers[key]
+    })
+
+    currentNode.reducer = dynamicReducer
     currentNode.options = options[key]
-  }
+  })
 
   return expandedReducers
 }
 
-const collapseReducers = (node, defaultOptions) => {
-  const { reducer, children, options = defaultOptions } = node
+const collapseReducers = node => {
+  const { reducer, children, options } = node
 
-  const childrenKeys = Object.keys(children)
+  const childrenEntries = Object.entries(children)
 
-  if (!childrenKeys.length) {
+  if (!childrenEntries.length) {
     return reducer
   }
 
-  const reducersToCombine = childrenKeys.reduce(
-    (reducerMap, key) => ({ ...reducerMap, [key]: collapseReducers(children[key]) }),
-    {}
-  )
+  const reducersToCombine = {}
+
+  childrenEntries.forEach(([key, childNode]) => {
+    reducersToCombine[key] = collapseReducers(childNode)
+  })
 
   const childrenReducer = combineReducers(reducersToCombine, options)
 
@@ -54,13 +56,14 @@ const collapseReducers = (node, defaultOptions) => {
 
   const filtered = filteredReducer(reducer, options)
   const merged = mergeReducers([filtered, childrenReducer], options)
+  const cleaned = cleanupDetachedReducer(merged, options)
 
-  return cleanStateReducer(merged, options)
+  return cleaned
 }
 
-const createDynamicReducer = (reducers, options = {}, defaultOptions = {}) => {
-  const expandedReducers = expandReducers(reducers, options)
-  return collapseReducers(expandedReducers, defaultOptions)
+const createDynamicReducer = (staticReducer, dynamicReducers, options = {}, defaultOptions) => {
+  const expandedReducers = expandReducers(staticReducer, dynamicReducers, options, defaultOptions)
+  return collapseReducers(expandedReducers)
 }
 
 export default createDynamicReducer

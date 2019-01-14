@@ -12,7 +12,8 @@ describe('mergeReducers Tests', () => {
   const primative = (state = { primative: 0 }) => state
   const plainObject = (state = { plainObject: { test: 'value' } }) => state
   const array = (state = { array: ['value'] }) => state
-  const changingState = (state = {}, action) => action.type == 'ADD_STATE' ? { ...state, changingState: 'value' } : state
+  const changingState = (state = {}, action) =>
+    action.type == 'ADD_STATE' ? { ...state, changingState: 'value' } : state
   const overlappingState1 = (state = { overlapping: { key1: true, key2: false } }) => state
   const overlappingState2 = (state = { overlapping: { key2: true, key3: true } }) => state
 
@@ -108,11 +109,20 @@ describe('mergeReducers Tests', () => {
     expect(state).toEqual({})
   })
 
-  test('should use overridden merge function', () => {
-    const reducer = mergeReducers(
-      [primative, plainObject, array, changingState, overlappingState1, overlappingState2],
-      { mergeFunction: (a, b) => ({ ...a, ...b }) }
-    )
+  test('should override state handler', () => {
+    const stateHandler = {
+      createEmpty: () => ({}),
+      merge: (oldState, newState) => ({ ...oldState, ...newState, called: true })
+    }
+
+    const reducer = mergeReducers([
+      primative,
+      plainObject,
+      array,
+      changingState,
+      overlappingState1,
+      overlappingState2
+    ], { stateHandler })
 
     const state = reducer(undefined, {})
 
@@ -125,7 +135,8 @@ describe('mergeReducers Tests', () => {
       overlapping: {
         key2: true,
         key3: true
-      }
+      },
+      called: true
     })
   })
 })

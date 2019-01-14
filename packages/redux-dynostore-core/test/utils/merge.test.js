@@ -60,7 +60,6 @@ describe('merge tests', () => {
 
       expect(shallowMerge(oldState, newState)).toBe(oldState)
     })
-
     ;[
       [{}, 1],
       [{}, true],
@@ -187,7 +186,6 @@ describe('merge tests', () => {
 
       expect(deepMerge(oldState, newState)).toBe(oldState)
     })
-    
     ;[
       [{}, 1],
       [{}, true],

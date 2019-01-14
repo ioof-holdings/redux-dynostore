@@ -1,8 +1,8 @@
-import React from "react"
-import ReactDOM from "react-dom"
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import store from './store'
-import Counter from "./counter"
+import Counter from './counter'
 
 const Counter1 = Counter.createInstance('counter1')
 const Counter2 = Counter.createInstance('counter2')
@@ -14,5 +14,5 @@ ReactDOM.render(
       <Counter2 />
     </React.Fragment>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById('root')
 )

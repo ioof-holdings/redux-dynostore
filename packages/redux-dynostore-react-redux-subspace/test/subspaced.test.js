@@ -49,7 +49,10 @@ describe('subspaced tests', () => {
     testDispatch: () => ({ type: 'TEST_DISPATCH' })
   }
 
-  const ConnectedTestComponent = connect(mapStateToProps, mapDispatchToProps)(TestComponent)
+  const ConnectedTestComponent = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(TestComponent)
 
   beforeEach(() => {
     store = mockStore({
@@ -82,7 +85,12 @@ describe('subspaced tests', () => {
   })
 
   test('should create subspaced enhanced component to a primative value', () => {
-    const SubspacedComponent = subspaced()('testKey')()(connect(s => ({ testKey: s }), mapDispatchToProps)(TestComponent))
+    const SubspacedComponent = subspaced()('testKey')()(
+      connect(
+        s => ({ testKey: s }),
+        mapDispatchToProps
+      )(TestComponent)
+    )
     const wrapper = mount(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId.testId} namespace="parentId/testId">
@@ -101,10 +109,10 @@ describe('subspaced tests', () => {
   test('should override state handler', () => {
     const stateHandler = {
       getValue: (state, key) => ({ ...state[key], testKey: 'override value' }),
-      canMerge: (state) => typeof state === 'object',
+      canMerge: state => typeof state === 'object',
       merge: (oldState, newState) => ({ ...oldState, ...newState })
     }
-    const mapExtraState= (state, rootState) => ({ extraState: rootState.extraState })
+    const mapExtraState = (state, rootState) => ({ extraState: rootState.extraState })
 
     const SubspacedComponent = subspaced({ stateHandler, mapExtraState })('testId')()(ConnectedTestComponent)
     const wrapper = mount(
@@ -120,7 +128,6 @@ describe('subspaced tests', () => {
 })
 
 describe('mapExtraState tests', () => {
-
   let store
   const initialState = {
     testId: {
@@ -134,7 +141,7 @@ describe('mapExtraState tests', () => {
     extraState: {
       extraStateId: 'extra state value'
     },
-    invalidExtraState: [ 0, 1, 2 ]
+    invalidExtraState: [0, 1, 2]
   }
 
   class TestComponent extends React.Component {
@@ -156,19 +163,24 @@ describe('mapExtraState tests', () => {
     testDispatch: () => ({ type: 'TEST_DISPATCH' })
   }
 
-  const ConnectedTestComponent = connect(mapStateToProps, mapDispatchToProps)(TestComponent)
+  const ConnectedTestComponent = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(TestComponent)
 
   beforeEach(() => {
     store = createStore((state = initialState) => state, dynostore())
   })
 
   test('should create subspaced enhanced component with extraState', () => {
-
-    const SubspacedComponent = dynamic('testId', subspaced({
-      mapExtraState: (state, rootState) => ({
-        extraState: rootState.extraState
+    const SubspacedComponent = dynamic(
+      'testId',
+      subspaced({
+        mapExtraState: (state, rootState) => ({
+          extraState: rootState.extraState
+        })
       })
-    }))(ConnectedTestComponent)
+    )(ConnectedTestComponent)
 
     const wrapper = mount(
       <Provider store={store}>
@@ -184,10 +196,10 @@ describe('mapExtraState tests', () => {
   test('should override state handler', () => {
     const stateHandler = {
       getValue: (state, key) => state[key],
-      canMerge: (state) => typeof state === 'object',
+      canMerge: state => typeof state === 'object',
       merge: (oldState, newState) => ({ ...oldState, ...newState, extraState: { extraStateId: 'override value' } })
     }
-    const mapExtraState= (state, rootState) => ({ extraState: rootState.extraState })
+    const mapExtraState = (state, rootState) => ({ extraState: rootState.extraState })
 
     const SubspacedComponent = subspaced({ stateHandler, mapExtraState })('testId')()(ConnectedTestComponent)
     const wrapper = mount(
@@ -202,20 +214,23 @@ describe('mapExtraState tests', () => {
   })
 
   test('should fail to create subspaced enhanced component with invalid extraState', () => {
+    const SubspacedComponent = dynamic(
+      'testId',
+      subspaced({
+        mapExtraState: (state, rootState) => rootState.invalidExtraState
+      })
+    )(ConnectedTestComponent)
 
-    const SubspacedComponent = dynamic('testId', subspaced({
-      mapExtraState: (state, rootState) => (
-        rootState.invalidExtraState
+    expect(() =>
+      suppressError(() =>
+        mount(
+          <Provider store={store}>
+            <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
+              <SubspacedComponent />
+            </SubspaceProvider>
+          </Provider>
+        )
       )
-    }))(ConnectedTestComponent)
-
-    expect(() => suppressError(() =>
-      mount(
-        <Provider store={store}>
-          <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
-            <SubspacedComponent />
-          </SubspaceProvider>
-        </Provider>
-      ))).toThrow(TypeError)
+    ).toThrow(TypeError)
   })
 })

@@ -104,12 +104,15 @@ describe('combineReducers Tests', () => {
         return state
       }
     }
-    const reducer = combineReducers({
-      primative,
-      plainObject,
-      array,
-      changingState
-    }, { stateHandler })
+    const reducer = combineReducers(
+      {
+        primative,
+        plainObject,
+        array,
+        changingState
+      },
+      { stateHandler }
+    )
 
     const state = reducer(undefined, {})
 

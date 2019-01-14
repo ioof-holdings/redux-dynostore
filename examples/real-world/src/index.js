@@ -6,7 +6,4 @@ import { Root, configureStore } from './root'
 const history = createBrowserHistory()
 const store = configureStore(history)
 
-render(
-  <Root store={store} history={history} />,
-  document.getElementById('root')
-)
+render(<Root store={store} history={history} />, document.getElementById('root'))

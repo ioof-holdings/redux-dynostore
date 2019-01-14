@@ -7,17 +7,13 @@ import wormhole from 'redux-subspace-wormhole'
 import api from '../../common/middleware/api'
 import createRootReducer from '../reducers'
 
-const configureStore = history => createStore(
-  createRootReducer(history),
-  compose(
-    applyMiddleware(
-      thunk,
-      api,
-      routerMiddleware(history),
-      wormhole(state => state.configuration, 'configuration')
-    ),
-    dynostore(dynamicReducers())
+const configureStore = history =>
+  createStore(
+    createRootReducer(history),
+    compose(
+      applyMiddleware(thunk, api, routerMiddleware(history), wormhole(state => state.configuration, 'configuration')),
+      dynostore(dynamicReducers())
+    )
   )
-)
 
 export default configureStore

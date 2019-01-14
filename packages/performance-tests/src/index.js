@@ -87,7 +87,7 @@ const testCase = (scenario, setup, { branches, depth, updates = 3 }, variations 
 const createTestCaseSet = (scenario, constraints) => [
   testCase(scenario, reduxSetup, constraints),
   testCase(scenario, dynostoreSetup, constraints, [
-    { name: 'shallow', stateHandler: shallowStateHandler},
+    { name: 'shallow', stateHandler: shallowStateHandler },
     { name: 'deep', stateHandler: deepStateHandler }
   ])
 ]

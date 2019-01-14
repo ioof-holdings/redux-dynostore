@@ -71,7 +71,10 @@
     "collectCoverageFrom": [
       "**/src/**"
     ],
-    "reporters": [ "default", "jest-junit" ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
     "testURL": "http://localhost/"
   }
 }

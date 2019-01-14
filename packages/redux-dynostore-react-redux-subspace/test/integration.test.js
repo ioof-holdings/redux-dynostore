@@ -47,7 +47,10 @@ describe('integration tests', () => {
     testDispatch: () => ({ type: 'TEST_DISPATCH' })
   }
 
-  const ConnectedTestComponent = connect(mapStateToProps, mapDispatchToProps)(TestComponent)
+  const ConnectedTestComponent = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(TestComponent)
 
   beforeEach(() => {
     store = createStore((state = initialState) => state, dynostore())

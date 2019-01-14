@@ -71,13 +71,16 @@ class RepoPage extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) =>  {
+const mapStateToProps = (state, ownProps) => {
   // We need to lower case the login/name due to the way GitHub's API behaves.
   // Have a look at ../middleware/api.js for more details.
   const login = ownProps.match.params.login.toLowerCase()
   const name = ownProps.match.params.name.toLowerCase()
 
-  const { stargazersByRepo, entities: { users, repos } } = state
+  const {
+    stargazersByRepo,
+    entities: { users, repos }
+  } = state
 
   const fullName = `${login}/${name}`
   const stargazersPagination = stargazersByRepo[fullName] || { ids: [] }
@@ -93,7 +96,10 @@ const mapStateToProps = (state, ownProps) =>  {
   }
 }
 
-export default connect(mapStateToProps, {
-  loadRepo,
-  loadStargazers
-})(RepoPage)
+export default connect(
+  mapStateToProps,
+  {
+    loadRepo,
+    loadStargazers
+  }
+)(RepoPage)

@@ -117,5 +117,4 @@ describe('dynamicSagas tests', () => {
       expect(runningTestSaga.cancel).not.toBeCalled()
     })
   })
-
 })

@@ -78,7 +78,10 @@ const mapStateToProps = (state, ownProps) => {
   // Have a look at ../middleware/api.js for more details.
   const login = ownProps.match.params.login.toLowerCase()
 
-  const { starredByUser, entities: { users, repos } } = state
+  const {
+    starredByUser,
+    entities: { users, repos }
+  } = state
 
   const starredPagination = starredByUser[login] || { ids: [] }
   const starredRepos = starredPagination.ids.map(id => repos[id])
@@ -93,7 +96,10 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, {
-  loadUser,
-  loadStarred
-})(UserPage)
+export default connect(
+  mapStateToProps,
+  {
+    loadUser,
+    loadStarred
+  }
+)(UserPage)

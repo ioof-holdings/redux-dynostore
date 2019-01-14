@@ -62,7 +62,7 @@ describe('dynamicReducers tests', () => {
       createEmpty: () => {
         return {}
       },
-      getKeys: (state) => {
+      getKeys: state => {
         return Object.keys(state)
       },
       getValue: (state, key) => {
@@ -104,7 +104,7 @@ describe('dynamicReducers tests', () => {
       createEmpty: () => {
         return {}
       },
-      getKeys: (state) => {
+      getKeys: state => {
         return Object.keys(state)
       },
       getValue: (state, key) => {

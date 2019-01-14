@@ -10,7 +10,6 @@ import dynostore from 'src/dynostore'
 
 describe('dynostore tests', () => {
   test('should add dynamic handler', () => {
-
     const baseStore = { getState: jest.fn(), dispatch: jest.fn() }
     const rootReducer = jest.fn()
     const initialState = { key: 'value' }
@@ -20,7 +19,7 @@ describe('dynostore tests', () => {
 
     const testHandler = jest.fn()
 
-    const dynamicTest = (createHandlers) => (store, reducer, preloadedState) => {
+    const dynamicTest = createHandlers => (store, reducer, preloadedState) => {
       expect(store).toBe(baseStore)
       expect(reducer).toBe(rootReducer)
       expect(preloadedState).toBe(initialState)
@@ -39,7 +38,6 @@ describe('dynostore tests', () => {
   })
 
   test('should add multiple dynamic handlers', () => {
-
     const baseStore = { getState: jest.fn(), dispatch: jest.fn() }
     const createStore = jest.fn()
 
@@ -48,13 +46,13 @@ describe('dynostore tests', () => {
     const testHandler1 = jest.fn()
     const testHandler2 = jest.fn()
 
-    const dynamicTest1 = (createHandlers) => (store, reducer, preloadedState) => {
+    const dynamicTest1 = createHandlers => (store, reducer, preloadedState) => {
       return {
         ...createHandlers(store, reducer, preloadedState),
         testHandler1
       }
     }
-    const dynamicTest2 = (createHandlers) => (store, reducer, preloadedState) => {
+    const dynamicTest2 = createHandlers => (store, reducer, preloadedState) => {
       return {
         ...createHandlers(store, reducer, preloadedState),
         testHandler2

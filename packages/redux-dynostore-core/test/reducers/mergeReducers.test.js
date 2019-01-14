@@ -115,14 +115,10 @@ describe('mergeReducers Tests', () => {
       merge: (oldState, newState) => ({ ...oldState, ...newState, called: true })
     }
 
-    const reducer = mergeReducers([
-      primative,
-      plainObject,
-      array,
-      changingState,
-      overlappingState1,
-      overlappingState2
-    ], { stateHandler })
+    const reducer = mergeReducers(
+      [primative, plainObject, array, changingState, overlappingState1, overlappingState2],
+      { stateHandler }
+    )
 
     const state = reducer(undefined, {})
 

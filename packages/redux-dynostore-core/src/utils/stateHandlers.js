@@ -9,11 +9,11 @@
 import isPlainObject from 'lodash.isplainobject'
 import { shallowMerge, deepMerge } from './merge'
 
-const createStateHandler = (merge) => ({
+const createStateHandler = merge => ({
   createEmpty: () => {
     return {}
   },
-  getKeys: (state) => {
+  getKeys: state => {
     return isPlainObject(state) ? Object.keys(state) : []
   },
   getValue: (state, key) => {
@@ -29,4 +29,3 @@ const createStateHandler = (merge) => ({
 
 export const shallowStateHandler = createStateHandler(shallowMerge)
 export const deepStateHandler = createStateHandler(deepMerge)
-

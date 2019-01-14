@@ -19,11 +19,12 @@ describe('integration tests', () => {
 
   const changeValue = newValue => ({ type: 'CHANGE_VALUE', newValue })
 
-  const createSaga = (newValue) => function* saga() {
-    yield takeEvery('MAKE_CHANGE', function* () {
-      yield put(changeValue(newValue))
-    })
-  }
+  const createSaga = newValue =>
+    function* saga() {
+      yield takeEvery('MAKE_CHANGE', function*() {
+        yield put(changeValue(newValue))
+      })
+    }
 
   const mockTarget = (enhancers, id, store, mockFn) => {
     return createDynamicTarget(enhancers)(id)(store)(mockFn)
@@ -37,10 +38,13 @@ describe('integration tests', () => {
 
     const sagaMiddleware = createSagaMiddleware()
 
-    const store = createStore(reducer, compose(
-      applyMiddleware(sagaMiddleware),
-      dynostore(dynamicSagas(sagaMiddleware))
-    ))
+    const store = createStore(
+      reducer,
+      compose(
+        applyMiddleware(sagaMiddleware),
+        dynostore(dynamicSagas(sagaMiddleware))
+      )
+    )
 
     const target = mockTarget([runSaga(createSaga('newValue'))], 'dynamic', store, jest.fn())
 
@@ -62,10 +66,13 @@ describe('integration tests', () => {
 
     const sagaMiddleware = createSagaMiddleware()
 
-    const store = createStore(reducer, compose(
-      applyMiddleware(sagaMiddleware),
-      dynostore(dynamicSagas(sagaMiddleware))
-    ))
+    const store = createStore(
+      reducer,
+      compose(
+        applyMiddleware(sagaMiddleware),
+        dynostore(dynamicSagas(sagaMiddleware))
+      )
+    )
 
     const target = mockTarget([runSaga(createSaga('newValue'))], 'dynamic', store, jest.fn())
 

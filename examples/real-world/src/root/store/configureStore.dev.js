@@ -17,7 +17,7 @@ const configureStore = history => {
         thunk,
         api,
         routerMiddleware(history),
-        wormhole((state) => state.configuration, 'configuration'),
+        wormhole(state => state.configuration, 'configuration'),
         applyToRoot(createLogger())
       ),
       dynostore(dynamicReducers()),

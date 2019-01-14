@@ -108,21 +108,15 @@ describe('filteredReducer Tests', () => {
 
   test('should use override state handler', () => {
     const stateHandler = {
-      createEmpty: () => {
-        return {}
-      },
-      getKeys: (state) => {
-        return [...Object.keys(state), 'custom']
-      },
-      getValue: (state, key) => {
-        return key === 'custom' ? true : state[key]
-      },
+      createEmpty: () => ({}),
+      getKeys: state => [...Object.keys(state), 'custom'],
+      getValue: (state, key) => key === 'custom' ? true : state[key],
       setValue: (state, key, value) => {
         state[key] = value
         return state
-      },
+      }
     }
-    
+
     const reducer = filteredReducer(changingState, { stateHandler })
 
     const state = reducer({ test: 'wrong' }, { type: 'ADD_STATE' })

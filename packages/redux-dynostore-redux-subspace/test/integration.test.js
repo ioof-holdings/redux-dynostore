@@ -142,10 +142,12 @@ describe('integration tests', () => {
 
   test('should dispatch nested actions', () => {
     const reducer = combineReducers({
-      static: namespaced('static')(combineReducers({
-        static1: namespaced('static1')(makeTestReducer('static1')),
-        static2: namespaced('static2')(makeTestReducer('static2'))
-      }))
+      static: namespaced('static')(
+        combineReducers({
+          static1: namespaced('static1')(makeTestReducer('static1')),
+          static2: namespaced('static2')(makeTestReducer('static2'))
+        })
+      )
     })
 
     const store = createStore(reducer, dynostore(dynamicReducers()))

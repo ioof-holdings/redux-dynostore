@@ -64,6 +64,66 @@ describe('integration tests', () => {
     const store = createStore(
       reducer,
       dynostore(
+        dynamicReducers(),
+        {
+          stateHandler: {
+            ...shallowStateHandler,
+            merge: (oldState, newState) => ({ ...shallowMerge(oldState, newState), defaultCalled: true })
+          }
+        }
+      )
+    )
+
+    const dynamic1Reducer = makeTestReducer('dynamic1')
+    const dynamic4Reducer = makeTestReducer('dynamic4')
+
+    store.attachReducers({
+      group1: (state = {}, action) => ({ dynamic1: dynamic1Reducer(state.dynamic1, action) }),
+      'group1.dynamic2': makeTestReducer('dynamic2'),
+      'group1.dynamic3': makeTestReducer('dynamic3')
+    })
+
+    store.attachReducers({
+      group2: (state = {}, action) => ({ dynamic4: dynamic4Reducer(state.dynamic4, action) }),
+      'group2.dynamic5': makeTestReducer('dynamic5'),
+      'group2.dynamic6': makeTestReducer('dynamic6')
+    })
+
+    store.dispatch(changeValue('newValue'))
+
+    expect(store.getState()).toEqual({
+      defaultCalled: true,
+      static1: 'static1 - newValue',
+      static2: 'static2 - newValue',
+      group1: {
+        defaultCalled: true,
+        dynamic1: 'dynamic1 - newValue',
+        dynamic2: 'dynamic2 - newValue',
+        dynamic3: 'dynamic3 - newValue'
+      },
+      group2: {
+        defaultCalled: true,
+        dynamic4: 'dynamic4 - newValue',
+        dynamic5: 'dynamic5 - newValue',
+        dynamic6: 'dynamic6 - newValue'
+      }
+    })
+  })
+
+  test('should create dynostore with state handler overrides', () => {
+    const static1Reducer = makeTestReducer('static1')
+    const static2Reducer = makeTestReducer('static2')
+
+    const reducer = (state = {}, action) => {
+      return {
+        static1: static1Reducer(state.static1, action),
+        static2: static2Reducer(state.static2, action)
+      }
+    }
+
+    const store = createStore(
+      reducer,
+      dynostore(
         dynamicReducers({
           stateHandler: {
             ...shallowStateHandler,

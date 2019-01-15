@@ -20,7 +20,9 @@ describe('dynostore tests', () => {
     const testHandler = jest.fn()
 
     const dynamicTest = createHandlers => (store, reducer, preloadedState) => {
-      expect(store).toBe(baseStore)
+      expect(store.getState).toBe(baseStore.getState)
+      expect(store.dispatch).toBe(baseStore.dispatch)
+      expect(store.dynostoreOptions).toEqual({})
       expect(reducer).toBe(rootReducer)
       expect(preloadedState).toBe(initialState)
 
@@ -35,6 +37,7 @@ describe('dynostore tests', () => {
     expect(store.getState).toBe(baseStore.getState)
     expect(store.dispatch).toBe(baseStore.dispatch)
     expect(store.testHandler).toBe(testHandler)
+    expect(store.dynostoreOptions).toEqual({})
   })
 
   test('should add multiple dynamic handlers', () => {
@@ -65,5 +68,35 @@ describe('dynostore tests', () => {
     expect(store.dispatch).toBe(baseStore.dispatch)
     expect(store.testHandler1).toBe(testHandler1)
     expect(store.testHandler2).toBe(testHandler2)
+    expect(store.dynostoreOptions).toEqual({})
+  })
+
+  test('should extract options', () => {
+    const baseStore = { getState: jest.fn(), dispatch: jest.fn() }
+    const rootReducer = jest.fn()
+    const initialState = { key: 'value' }
+    const createStore = jest.fn()
+
+    createStore.mockReturnValue(baseStore)
+
+    const testHandler = jest.fn()
+
+    const dynamicTest = createHandlers => (store, reducer, preloadedState) => {
+      expect(store.dynostoreOptions).toBe(testOptions)
+
+      return {
+        ...createHandlers(store, reducer, preloadedState),
+        testHandler
+      }
+    }
+
+    const testOptions = { test: 'option' }
+
+    const store = dynostore(dynamicTest, testOptions)(createStore)(rootReducer, initialState)
+
+    expect(store.getState).toBe(baseStore.getState)
+    expect(store.dispatch).toBe(baseStore.dispatch)
+    expect(store.testHandler).toBe(testHandler)
+    expect(store.dynostoreOptions).toBe(testOptions)
   })
 })

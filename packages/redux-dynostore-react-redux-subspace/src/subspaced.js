@@ -9,10 +9,10 @@
 import { subspaced } from 'react-redux-subspace'
 import { shallowStateHandler } from '@redux-dynostore/core'
 
-const subspacedEnhancer = ({
-  stateHandler: { getValue, canMerge, merge } = shallowStateHandler,
-  mapExtraState = () => null
-} = {}) => identifier => {
+const subspacedEnhancer = ({ stateHandler, mapExtraState = () => null } = {}) => identifier => store => {
+  const defaultOptions = store.dynostoreOptions || {}
+  const { getValue, canMerge, merge } = stateHandler || defaultOptions.stateHandler || shallowStateHandler
+
   const mapState = (state, rootState) => {
     const componentState = getValue(state, identifier)
     if (!canMerge(componentState)) {
@@ -30,7 +30,7 @@ const subspacedEnhancer = ({
     return merge(extraState, componentState)
   }
   const subspaceEnhancer = subspaced(mapState, identifier)
-  return () => Component => subspaceEnhancer(Component)
+  return Component => subspaceEnhancer(Component)
 }
 
 export default subspacedEnhancer

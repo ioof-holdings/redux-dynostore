@@ -68,7 +68,7 @@ describe('subspaced tests', () => {
   })
 
   test('should create subspaced enhanced component', () => {
-    const SubspacedComponent = subspaced()('testId')()(ConnectedTestComponent)
+    const SubspacedComponent = subspaced()('testId')(store)(ConnectedTestComponent)
     const wrapper = mount(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
@@ -85,7 +85,7 @@ describe('subspaced tests', () => {
   })
 
   test('should create subspaced enhanced component to a primative value', () => {
-    const SubspacedComponent = subspaced()('testKey')()(
+    const SubspacedComponent = subspaced()('testKey')(store)(
       connect(
         s => ({ testKey: s }),
         mapDispatchToProps
@@ -106,15 +106,35 @@ describe('subspaced tests', () => {
     expect(actions[0]).toEqual({ type: 'parentId/testId/testKey/TEST_DISPATCH' })
   })
 
+  test('should use default state handler', () => {
+    const stateHandler = {
+      getValue: (state, key) => ({ ...state[key], testKey: 'override value' }),
+      canMerge: state => typeof state === 'object',
+      merge: (oldState, newState) => ({ ...oldState, ...newState })
+    }
+
+    store.dynostoreOptions = { stateHandler }
+
+    const SubspacedComponent = subspaced()('testId')(store)(ConnectedTestComponent)
+    const wrapper = mount(
+      <Provider store={store}>
+        <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
+          <SubspacedComponent />
+        </SubspaceProvider>
+      </Provider>
+    )
+
+    expect(wrapper.html()).toBe('<p>override value</p>')
+  })
+
   test('should override state handler', () => {
     const stateHandler = {
       getValue: (state, key) => ({ ...state[key], testKey: 'override value' }),
       canMerge: state => typeof state === 'object',
       merge: (oldState, newState) => ({ ...oldState, ...newState })
     }
-    const mapExtraState = (state, rootState) => ({ extraState: rootState.extraState })
 
-    const SubspacedComponent = subspaced({ stateHandler, mapExtraState })('testId')()(ConnectedTestComponent)
+    const SubspacedComponent = subspaced({ stateHandler })('testId')(store)(ConnectedTestComponent)
     const wrapper = mount(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
@@ -193,6 +213,28 @@ describe('mapExtraState tests', () => {
     expect(wrapper.html()).toBe('<p>extra state value</p>')
   })
 
+  test('should use default state handler', () => {
+    const stateHandler = {
+      getValue: (state, key) => state[key],
+      canMerge: state => typeof state === 'object',
+      merge: (oldState, newState) => ({ ...oldState, ...newState, extraState: { extraStateId: 'override value' } })
+    }
+    const mapExtraState = (state, rootState) => ({ extraState: rootState.extraState })
+
+    store.dynostoreOptions = { stateHandler }
+
+    const SubspacedComponent = subspaced({ stateHandler, mapExtraState })('testId')(store)(ConnectedTestComponent)
+    const wrapper = mount(
+      <Provider store={store}>
+        <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
+          <SubspacedComponent />
+        </SubspaceProvider>
+      </Provider>
+    )
+
+    expect(wrapper.html()).toBe('<p>override value</p>')
+  })
+
   test('should override state handler', () => {
     const stateHandler = {
       getValue: (state, key) => state[key],
@@ -201,7 +243,7 @@ describe('mapExtraState tests', () => {
     }
     const mapExtraState = (state, rootState) => ({ extraState: rootState.extraState })
 
-    const SubspacedComponent = subspaced({ stateHandler, mapExtraState })('testId')()(ConnectedTestComponent)
+    const SubspacedComponent = subspaced({ stateHandler, mapExtraState })('testId')(store)(ConnectedTestComponent)
     const wrapper = mount(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">

@@ -1,7 +1,7 @@
 # @redux-dynostore/core
 
 [![build status](https://img.shields.io/travis/ioof-holdings/redux-dynostore/master.svg?style=flat-square)](https://travis-ci.org/ioof-holdings/redux-dynostore)
-[![npm version](https://img.shields.io/npm/v/@redux-dynostore/core.svg?style=flat-square)](https://www.npmjs.com/package/redux-dynostore-core)
+[![npm version](https://img.shields.io/npm/v/@redux-dynostore/core.svg?style=flat-square)](https://www.npmjs.com/package/@redux-dynostore/core)
 [![npm downloads](https://img.shields.io/npm/dm/@redux-dynostore/core.svg?style=flat-square)](https://www.npmjs.com/package/@redux-dynostore/core)
 [![License: BSD-3-Clause](https://img.shields.io/npm/l/@redux-dynostore/core.svg?style=flat-square)](/LICENSE.md)
 
@@ -14,6 +14,23 @@ import dynostore from '@redux-dynostore/core'
 
 const store = createStore(reducer, dynostore(dynamicEnhancer(), dynamicEnhancer2('with parameters')))
 ```
+
+## Options
+
+An optional options object can be passed as the final parameter to the `dynostore` function:
+
+```javascript
+import dynostore, { dynamicReducers } from '@redux-dynostore/core'
+
+const store = createStore(
+  reducer,
+  dynostore(dynamicReducers(), {
+    /* options */
+  })
+)
+```
+
+When provided, the options are available to enhancers to use as default options or for handling common options between multiple enhancers. How options are used will depend of the specific enhancer implementations, so refer to their individual documentation for details.
 
 ## Enhancers
 
@@ -125,10 +142,18 @@ _Note:_ All the reducers being attached in a single `attachReducers` call will u
 ##### `stateHandler`
 
 ```javascript
+const store = createStore(reducer, dynostore(dynamicReducers(), { stateHandler: customStateHandler }))
+```
+
+```javascript
 const store = createStore(reducer, dynostore(dynamicReducers({ stateHandler: customStateHandler })))
 ```
 
-The `stateHandler` option is used to modify `dynamicReducers`'s behaviour when interacting with the state tree. They can be used to optimize for different goals, such as accuracy or performace, or to support alternative state structures, such as [`ImmutableJS`](<(http://facebook.github.io/immutable-js/docs/#/)>).
+```javascript
+store.attachReducers({ 'some.path.to': dynamicReducer }, { stateHandler: customStateHandler })
+```
+
+The `stateHandler` option is used to modify the behaviour of `dynamicReducers` when interacting with the state tree. They can be used to optimize for different goals, such as accuracy or performace, or to support alternative state structures, such as [`ImmutableJS`](<(http://facebook.github.io/immutable-js/docs/#/)>).
 
 State handlers are provided as an object with the following functions:
 
@@ -174,10 +199,9 @@ export default dynamic('identifier', attachReducer(myReducer))(MyComponent)
 
 The same options that can be provided to `store.attachReducers` (above) can also be provided to the `attachReducer` enhancer as the second parameter:
 
-import dynamic from '@redux-dynostore/react-redux'
-import { attachReducer, shallowMerge } from '@redux-dynostore/core'
-
-export default dynamic('identifier', attachReducer(myReducer, { shallowMerge }))(MyComponent)
+```javascript
+export default dynamic('identifier', attachReducer(myReducer, { stateHandler: customStateHandler }))(MyComponent)
+```
 
 ### `dispatchAction`
 

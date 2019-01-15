@@ -12,12 +12,12 @@ export const immutableJsStateHandler = {
   getValue: (state, key) => state.get(key),
   setValue: (state, key, value) => state.set(key, value),
   canMerge: state => Map.isMap(state),
-  merge: (oldState, newState) => oldState ? oldState.merge(newState) : newState
+  merge: (oldState, newState) => (oldState ? oldState.merge(newState) : newState)
 }
 
 const store = createStore(
   (state = Map()) => state,
-  composeEnhancers(applyMiddleware(thunk), dynostore(dynamicReducers({ stateHandler: immutableJsStateHandler })))
+  composeEnhancers(applyMiddleware(thunk), dynostore(dynamicReducers(), { stateHandler: immutableJsStateHandler }))
 )
 
 export default store

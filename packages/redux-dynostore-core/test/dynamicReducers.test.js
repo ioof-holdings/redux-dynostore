@@ -49,6 +49,49 @@ describe('dynamicReducers tests', () => {
     })
   })
 
+  test('should use default state handler', () => {
+    const createHandlers = jest.fn()
+
+    const stateHandler = {
+      createEmpty: () => {
+        return {}
+      },
+      getKeys: state => {
+        return Object.keys(state)
+      },
+      getValue: (state, key) => {
+        return state[key]
+      },
+      setValue: (state, key, value) => {
+        state[key] = value
+        return state
+      },
+      merge: (oldState, newState) => ({ ...oldState, ...newState, called: true })
+    }
+
+    const store = { replaceReducer: jest.fn(), dynostoreOptions: { stateHandler } }
+    const reducer = (state = {}) => state
+    const otherHandlers = { other: jest.fn() }
+
+    const testReducer1 = (state = {}) => state
+    const testReducer2 = (state = 'value1') => state
+
+    createHandlers.mockReturnValue(otherHandlers)
+
+    const handlers = dynamicReducers()(createHandlers)(store, reducer)
+
+    handlers.attachReducers({ testReducer1 })
+    handlers.attachReducers({ 'testReducer1.testReducer2': testReducer2 })
+
+    expect(store.replaceReducer.mock.calls[1][0](undefined, {})).toEqual({
+      testReducer1: {
+        testReducer2: 'value1',
+        called: true
+      },
+      called: true
+    })
+  })
+
   test('should override default state handler', () => {
     const createHandlers = jest.fn()
     const store = { replaceReducer: jest.fn() }

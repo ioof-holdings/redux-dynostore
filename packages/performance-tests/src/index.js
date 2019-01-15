@@ -69,7 +69,7 @@ const dynostoreSetup = (branches, depth, testCases, options) => {
     return reducers
   }
 
-  const store = createStore((state = {}) => state, dynostore(dynamicReducers(options)))
+  const store = createStore((state = {}) => state, dynostore(dynamicReducers(), options))
   store.attachReducers(makeReducers(branches, depth))
 
   return { name: 'dynostore', store, actions, reducerCount }

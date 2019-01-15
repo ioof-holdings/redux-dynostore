@@ -11,10 +11,11 @@ import { detachableReducer, detach } from './reducers/detachableReducer'
 import flattenReducers from './utils/flattenReducers'
 import { deepStateHandler } from './utils/stateHandlers'
 
-const dynamicReducersEnhancer = ({ stateHandler = deepStateHandler } = {}) => {
+const dynamicReducersEnhancer = ({ stateHandler } = {}) => {
   return createHandlers => (store, staticReducer, ...rest) => {
+    const defaultOptions = store.dynostoreOptions || {}
     const defaultReducerOptions = {
-      stateHandler
+      stateHandler: stateHandler || defaultOptions.stateHandler || deepStateHandler
     }
 
     const dynamicReducers = {}

@@ -7,6 +7,7 @@
  */
 
 import { compose } from 'redux'
+import isPlainObject from 'lodash.isplainobject'
 
 const createHandlers = (store, reducer, preloadedState, enhancer) => {
   if (typeof enhancer !== 'undefined') {
@@ -16,13 +17,19 @@ const createHandlers = (store, reducer, preloadedState, enhancer) => {
   return {}
 }
 
+const splitOptions = args => {
+  const [lastItem] = args.slice(-1)
+  return isPlainObject(lastItem) ? [args.slice(0, -1), lastItem] : [args, {}]
+}
+
 const dynostore = (...dynamicEnhancers) => createStore => (reducer, preloadedState) => {
-  const store = createStore(reducer, preloadedState)
-  const dynamicHandlers = createHandlers(store, reducer, preloadedState, compose(...dynamicEnhancers))
+  const [enhancers, dynostoreOptions] = splitOptions(dynamicEnhancers)
+  const store = { ...createStore(reducer, preloadedState), dynostoreOptions }
+  const dynamicHandlers = createHandlers(store, reducer, preloadedState, compose(...enhancers))
 
   return {
     ...store,
-    ...dynamicHandlers
+    ...dynamicHandlers,
   }
 }
 

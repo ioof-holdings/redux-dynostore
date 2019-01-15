@@ -36,4 +36,12 @@ describe('attachReducer tests', () => {
     expect(store.attachReducers.mock.calls[0][0]['testId']).toBeUndefined()
     expect(store.attachReducers).toHaveBeenCalledTimes(1)
   })
+
+  test('should attach reducer with options', () => {
+    const options = {}
+    attachReducer(reducer, options)('testId')(store)
+
+    expect(store.attachReducers.mock.calls[0][0]['testId']).toBeTruthy()
+    expect(store.attachReducers.mock.calls[0][1]).toBe(options)
+  })
 })

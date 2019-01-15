@@ -33,7 +33,7 @@ describe('flattenSagas tests', () => {
 
   test('should normalize delimeters', () => {
     const inputStructure = {
-      'test': jest.fn(),
+      test: jest.fn(),
       'dot.test': jest.fn(),
       'slash/test': jest.fn(),
       'multiple.dot.test': jest.fn(),

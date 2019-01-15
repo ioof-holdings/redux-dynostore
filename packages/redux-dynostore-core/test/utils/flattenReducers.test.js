@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import flattenReducers from 'src/flattenReducers'
+import flattenReducers from 'src/utils/flattenReducers'
 
 describe('flattenReducers tests', () => {
   test('should flatten object structure', () => {
@@ -33,7 +33,7 @@ describe('flattenReducers tests', () => {
 
   test('should normalize delimeters', () => {
     const inputStructure = {
-      'test': jest.fn(),
+      test: jest.fn(),
       'dot.test': jest.fn(),
       'slash/test': jest.fn(),
       'multiple.dot.test': jest.fn(),

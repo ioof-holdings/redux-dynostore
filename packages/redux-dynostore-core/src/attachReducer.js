@@ -6,12 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const attachReducerEnhancer = reducer => identifier => store => {
+const attachReducerEnhancer = (reducer, options) => identifier => store => {
   if (process.env.NODE_ENV !== 'production' && typeof store.attachReducers !== 'function') {
     throw new TypeError(`'store.attachReducers' function is missing: Unable to attach reducer '${identifier}'.`)
   }
 
-  store.attachReducers({ [identifier]: reducer })
+  store.attachReducers({ [identifier]: reducer }, options)
 }
 
 export default attachReducerEnhancer

@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react'
-import { Route, Switch } from 'react-router' 
+import { Route, Switch } from 'react-router'
 import Loadable from 'react-loadable'
 
 const Loading = () => <p>Loading...</p>
@@ -24,14 +24,17 @@ const UserPage = Loadable({
 })
 
 const Routes = () => (
-  <Route path="/" render={props => (
-    <App {...props}>
-      <Switch>
-        <Route path="/:login/:name" component={RepoPage} />
-        <Route path="/:login" component={UserPage} />
-      </Switch>
-    </App>
-  )} />
+  <Route
+    path="/"
+    render={props => (
+      <App {...props}>
+        <Switch>
+          <Route path="/:login/:name" component={RepoPage} />
+          <Route path="/:login" component={UserPage} />
+        </Switch>
+      </App>
+    )}
+  />
 )
 
 export default Routes

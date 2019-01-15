@@ -19,7 +19,7 @@ describe('integration tests', () => {
 
   const TestComponent = () => <div>expected</div>
 
-  const testDynamicEnhancer = (mockFn) => identifier => (store) => Component => {
+  const testDynamicEnhancer = mockFn => identifier => store => Component => {
     mockFn(identifier, store, Component)
     return Component
   }

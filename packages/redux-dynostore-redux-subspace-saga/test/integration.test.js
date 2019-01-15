@@ -21,13 +21,14 @@ describe('integration tests', () => {
 
   const changeValue = newValue => ({ type: 'CHANGE_VALUE', newValue })
 
-  const createSaga = (expectedValue, newValue) => function* saga() {
-    const value = yield select((state) => state)
-    expect(value).toBe(expectedValue)
-    yield takeEvery('MAKE_CHANGE', function* () {
-      yield put(changeValue(newValue))
-    })
-  }
+  const createSaga = (expectedValue, newValue) =>
+    function* saga() {
+      const value = yield select(state => state)
+      expect(value).toBe(expectedValue)
+      yield takeEvery('MAKE_CHANGE', function*() {
+        yield put(changeValue(newValue))
+      })
+    }
 
   const mockTarget = (enhancers, id, store, mockFn) => {
     return createDynamicTarget(enhancers)(id)(store)(mockFn)
@@ -41,10 +42,13 @@ describe('integration tests', () => {
 
     const sagaMiddleware = createSagaMiddleware()
 
-    const store = createStore(reducer, compose(
-      applyMiddleware(sagaMiddleware),
-      dynostore(dynamicSagas(sagaMiddleware))
-    ))
+    const store = createStore(
+      reducer,
+      compose(
+        applyMiddleware(sagaMiddleware),
+        dynostore(dynamicSagas(sagaMiddleware))
+      )
+    )
 
     const target = mockTarget([runSaga(createSaga('static2 - initialValue', 'newValue'))], 'static2', store, jest.fn())
 
@@ -60,21 +64,31 @@ describe('integration tests', () => {
 
   test('should run nested sagas', () => {
     const reducer = combineReducers({
-      static: namespaced('static')(combineReducers({
-        static1: namespaced('static1')(makeTestReducer('static1')),
-        static2: namespaced('static2')(makeTestReducer('static2'))
-      }))
+      static: namespaced('static')(
+        combineReducers({
+          static1: namespaced('static1')(makeTestReducer('static1')),
+          static2: namespaced('static2')(makeTestReducer('static2'))
+        })
+      )
     })
 
     const sagaMiddleware = createSagaMiddleware()
 
-    const store = createStore(reducer, compose(
-      applyMiddleware(sagaMiddleware),
-      dynostore(dynamicSagas(sagaMiddleware))
-    ))
+    const store = createStore(
+      reducer,
+      compose(
+        applyMiddleware(sagaMiddleware),
+        dynostore(dynamicSagas(sagaMiddleware))
+      )
+    )
     const subspacedStore = subspace('static')(store)
 
-    const target = mockTarget([runSaga(createSaga('static2 - initialValue', 'newValue'))], 'static2', subspacedStore, jest.fn())
+    const target = mockTarget(
+      [runSaga(createSaga('static2 - initialValue', 'newValue'))],
+      'static2',
+      subspacedStore,
+      jest.fn()
+    )
 
     store.dispatch({ type: 'static/static2/MAKE_CHANGE' })
 
@@ -96,10 +110,13 @@ describe('integration tests', () => {
 
     const sagaMiddleware = createSagaMiddleware()
 
-    const store = createStore(reducer, compose(
-      applyMiddleware(sagaMiddleware),
-      dynostore(dynamicSagas(sagaMiddleware))
-    ))
+    const store = createStore(
+      reducer,
+      compose(
+        applyMiddleware(sagaMiddleware),
+        dynostore(dynamicSagas(sagaMiddleware))
+      )
+    )
 
     const target = mockTarget([runSaga(createSaga('static2 - initialValue', 'newValue'))], 'static2', store, jest.fn())
 
@@ -117,21 +134,31 @@ describe('integration tests', () => {
 
   test('should cancel nested sagas', () => {
     const reducer = combineReducers({
-      static: namespaced('static')(combineReducers({
-        static1: namespaced('static1')(makeTestReducer('static1')),
-        static2: namespaced('static2')(makeTestReducer('static2'))
-      }))
+      static: namespaced('static')(
+        combineReducers({
+          static1: namespaced('static1')(makeTestReducer('static1')),
+          static2: namespaced('static2')(makeTestReducer('static2'))
+        })
+      )
     })
 
     const sagaMiddleware = createSagaMiddleware()
 
-    const store = createStore(reducer, compose(
-      applyMiddleware(sagaMiddleware),
-      dynostore(dynamicSagas(sagaMiddleware))
-    ))
+    const store = createStore(
+      reducer,
+      compose(
+        applyMiddleware(sagaMiddleware),
+        dynostore(dynamicSagas(sagaMiddleware))
+      )
+    )
     const subspacedStore = subspace('static')(store)
 
-    const target = mockTarget([runSaga(createSaga('static2 - initialValue', 'newValue'))], 'static2', subspacedStore, jest.fn())
+    const target = mockTarget(
+      [runSaga(createSaga('static2 - initialValue', 'newValue'))],
+      'static2',
+      subspacedStore,
+      jest.fn()
+    )
 
     store.cancelSagas(['static/static2'])
 

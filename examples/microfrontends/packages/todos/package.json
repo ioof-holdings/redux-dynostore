@@ -1,15 +1,15 @@
 {
   "name": "todos-microfrontend",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "build": "webpack"
   },
   "dependencies": {
-    "@redux-dynostore/core": "^1.1.0",
-    "@redux-dynostore/react-redux": "^1.1.0",
-    "@redux-dynostore/react-redux-subspace": "^1.1.0",
-    "@redux-dynostore/redux-subspace": "^1.1.0",
+    "@redux-dynostore/core": "^2.0.0",
+    "@redux-dynostore/react-redux": "^2.0.0",
+    "@redux-dynostore/react-redux-subspace": "^2.0.0",
+    "@redux-dynostore/redux-subspace": "^2.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-redux": "^5.1.0",

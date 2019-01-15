@@ -1,6 +1,6 @@
 {
   "name": "@redux-dynostore/redux-subspace-saga",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "redux-subspace-saga extensions for redux-dynostore",
   "author": "Michael Peyper",
   "contributors": [
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.2.0",
-    "@redux-dynostore/redux-saga": "^1.1.0",
+    "@redux-dynostore/redux-saga": "^2.0.0",
     "dot-prop-immutable": "^1.5.0",
     "redux-subspace": "^3.0.1",
     "redux-subspace-saga": "^3.0.1"
@@ -37,9 +37,9 @@
     "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
-    "@babel/preset-env": "^7.2.3",
     "@babel/plugin-transform-runtime": "^7.2.0",
-    "@redux-dynostore/core": "^1.1.0",
+    "@babel/preset-env": "^7.2.3",
+    "@redux-dynostore/core": "^2.0.0",
     "babel-core": "^7.0.0-bridge",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",

@@ -166,9 +166,9 @@ State handlers are provided as an object with the following functions:
 | `canMerge(state)`             | Check if the state is of a mergable type            | `(state) => state && typeof state === 'object' && !Array.isArray(state)` |
 | `merge(oldState, newState)`   | Merges the new state and old state into a new state | `(oldState, newState) => ({ ...oldState, newState })`                    |
 
-`redux-dynostore` provides the followin built-in state handlers:
+`redux-dynostore` provides the following built-in state handlers:
 
-- `deepStateHandler` _(default)_: handles plain Javascript types and deep merges the state when combining the state from differnt reducers
+- `deepStateHandler` _(default)_: handles plain Javascript types and deep merges the state when combining the state from different reducers
 - `shallowStateHandler`: handles plain Javascript types and shallow merges the state when combining the state from different reducers
 - `defaultStateHandler`: an alias for `deepStateHandler`
 

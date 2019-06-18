@@ -9,6 +9,7 @@
 import combineReducers from './combineReducers'
 import mergeReducers from './mergeReducers'
 import filteredReducer from './filteredReducer'
+import enhanceRootReducer from './enhanceReducer'
 import { cleanupDetachedReducer } from './detachableReducer'
 
 const expandReducers = (staticReducer, dynamicReducers, options, defaultOptions) => {
@@ -57,8 +58,8 @@ const collapseReducers = node => {
   const filtered = filteredReducer(reducer, options)
   const merged = mergeReducers([filtered, childrenReducer], options)
   const cleaned = cleanupDetachedReducer(merged, options)
-
-  return cleaned
+  const enhanced = enhanceRootReducer(cleaned, options)
+  return enhanced
 }
 
 const createDynamicReducer = (staticReducer, dynamicReducers, options = {}, defaultOptions) => {

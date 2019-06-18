@@ -63,15 +63,12 @@ describe('integration tests', () => {
 
     const store = createStore(
       reducer,
-      dynostore(
-        dynamicReducers(),
-        {
-          stateHandler: {
-            ...shallowStateHandler,
-            merge: (oldState, newState) => ({ ...shallowMerge(oldState, newState), defaultCalled: true })
-          }
+      dynostore(dynamicReducers(), {
+        stateHandler: {
+          ...shallowStateHandler,
+          merge: (oldState, newState) => ({ ...shallowMerge(oldState, newState), defaultCalled: true })
         }
-      )
+      })
     )
 
     const dynamic1Reducer = makeTestReducer('dynamic1')
@@ -271,6 +268,66 @@ describe('integration tests', () => {
         key4: 'key4 - initialValue'
       },
       key5: 'key5 - initialValue'
+    })
+  })
+
+  test('should apply rootEnhancers to static and dynamic reducers', () => {
+    const makeTestReducerWithObject = id => (state = { id: id, value: `${id} - initialValue` }, { type, newValue }) => {
+      return type === 'CHANGE_VALUE' ? { ...state, value: newValue } : state
+    }
+
+    const reducer = combineReducers({
+      static1: makeTestReducerWithObject('static1'),
+      static2: makeTestReducer('static2')
+    })
+
+    const mergePayloadEnhancer = reducer => (state, action) => {
+      if (action.type === 'MERGE_PAYLOAD') {
+        return { ...state, [action.key]: { ...state[action.key], ...action.payload } }
+      }
+      return reducer(state, action)
+    }
+
+    const mergePayloadEnhancer2 = reducer => (state, action) => {
+      if (action.type === 'DO_NOTHING') {
+        return { ...state, [action.key]: { ...state[action.key], ...action.payload, type: action.type } }
+      }
+      return reducer(state, action)
+    }
+
+    const store = createStore(
+      reducer,
+      dynostore(dynamicReducers({ rootEnhancers: [mergePayloadEnhancer, mergePayloadEnhancer2] }))
+    )
+
+    store.attachReducers({
+      dynamic1: makeTestReducer('dynamic1'),
+      dynamic2: makeTestReducerWithObject('dynamic2')
+    })
+
+    expect(store.getState()).toEqual({
+      static1: {
+        id: 'static1',
+        value: 'static1 - initialValue'
+      },
+      static2: 'static2 - initialValue',
+      dynamic1: 'dynamic1 - initialValue',
+      dynamic2: {
+        id: 'dynamic2',
+        value: 'dynamic2 - initialValue'
+      }
+    })
+
+    store.dispatch({
+      type: 'MERGE_PAYLOAD',
+      key: 'dynamic2',
+      payload: { id: `modified-dynamic2`, value: 'dynamic2 - modifiedValue' }
+    })
+
+    store.dispatch({
+      type: 'MERGE_PAYLOAD',
+      key: 'static1',
+      payload: { id: `modified-static1`, value: 'static1 - modifiedValue' }
     })
   })
 })

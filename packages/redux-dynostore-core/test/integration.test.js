@@ -290,7 +290,7 @@ describe('integration tests', () => {
 
     const mergePayloadEnhancer2 = reducer => (state, action) => {
       if (action.type === 'DO_NOTHING') {
-        return { ...state, [action.key]: { ...state[action.key], ...action.payload, type: action.type } }
+        return { ...state }
       }
       return reducer(state, action)
     }
@@ -328,6 +328,17 @@ describe('integration tests', () => {
       type: 'MERGE_PAYLOAD',
       key: 'static1',
       payload: { id: `modified-static1`, value: 'static1 - modifiedValue' }
+    })
+
+    store.dispatch({
+      type: 'DO_NOTHING'
+    })
+
+    expect(store.getState()).toEqual({
+      static1: { id: `modified-static1`, value: 'static1 - modifiedValue' },
+      static2: 'static2 - initialValue',
+      dynamic1: 'dynamic1 - initialValue',
+      dynamic2: { id: `modified-dynamic2`, value: 'dynamic2 - modifiedValue' }
     })
   })
 })

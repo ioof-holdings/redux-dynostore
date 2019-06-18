@@ -1,0 +1,10 @@
+<testsuites name="jest tests" tests="3" failures="0" time="3.606">
+  <testsuite name="enhanceReducer Tests" errors="0" failures="0" skipped="0" timestamp="2019-06-18T22:31:00" time="1.975" tests="3">
+    <testcase classname="enhanceReducer Tests should apply rootEnhancer" name="enhanceReducer Tests should apply rootEnhancer" time="0.008">
+    </testcase>
+    <testcase classname="enhanceReducer Tests should apply multiple rootEnhancers" name="enhanceReducer Tests should apply multiple rootEnhancers" time="0.001">
+    </testcase>
+    <testcase classname="enhanceReducer Tests should work without any rootEnhancer" name="enhanceReducer Tests should work without any rootEnhancer" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>

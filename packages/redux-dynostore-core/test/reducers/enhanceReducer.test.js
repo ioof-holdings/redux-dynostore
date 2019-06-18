@@ -79,12 +79,6 @@ describe('enhanceReducer Tests', () => {
     })
   })
   test('should work without any rootEnhancer', () => {
-    const rootEnhancer1 = reducer => (state, action) => {
-      if (action.type === 'MERGE_OBJECT') {
-        return { ...state, [action.key]: { ...state[action.key], ...action.payload } }
-      }
-      return reducer(state, action)
-    }
     const enhancedReducer = enhanceReducer(reducer)
 
     const testAction = { type: 'MERGE_OBJECT', key: 'changingState', payload: { test: 'newMergedValue' } }

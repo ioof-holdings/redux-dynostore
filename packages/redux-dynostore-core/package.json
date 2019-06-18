@@ -1,6 +1,6 @@
 {
   "name": "@redux-dynostore/core",
-  "version": "3.0.0",
+  "version": "2.0.0",
   "description": "Enhance Redux stores to allow additional functionality to be dynamically added at runtime",
   "author": "Michael Peyper",
   "contributors": [

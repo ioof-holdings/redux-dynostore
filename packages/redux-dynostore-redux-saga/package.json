@@ -1,6 +1,6 @@
 {
   "name": "@redux-dynostore/redux-saga",
-  "version": "3.0.0",
+  "version": "2.0.0",
   "description": "Dynamically add Redux sagas at runtime",
   "author": "Michael Peyper",
   "contributors": [
@@ -36,7 +36,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
-    "@redux-dynostore/core": "^3.0.0",
+    "@redux-dynostore/core": "^2.0.0",
     "babel-core": "^7.0.0-bridge",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",

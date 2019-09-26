@@ -4,5 +4,10 @@
     "examples/**/*",
     "packages/*"
   ],
+  "command": {
+    "bootstrap": {
+      "ignore": "microfrontends-example"
+    }
+  },
   "version": "2.0.0"
 }

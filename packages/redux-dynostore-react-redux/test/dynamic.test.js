@@ -127,4 +127,35 @@ describe('dynamic tests', () => {
     expect(callback).toHaveBeenCalledWith(2)
     expect(callback).toHaveBeenCalledTimes(2)
   })
+
+  test('should receate dynamic component if store changes', () => {
+
+    const fakeStore1 = {
+      getState: () => {},
+      dispatch: () => {},
+      subscribe: () => {}
+    }
+
+    const fakeStore2 = {
+      getState: () => {},
+      dispatch: () => {},
+      subscribe: () => {}
+    }
+
+    const stores = []
+
+    const testEnhancer = () => store => {
+      stores.push(store)
+    }
+
+    const TestComponent = () => <p>Hello World</p>
+    const DynamicComponent = dynamic('testId', testEnhancer)(TestComponent)
+
+    const { rerender } = render(<Provider store={fakeStore1}><DynamicComponent /></Provider>)
+
+    rerender(<Provider store={fakeStore2}><DynamicComponent /></Provider>)
+
+    expect(stores[0]).toBe(fakeStore1)
+    expect(stores[1]).toBe(fakeStore2)
+  })
 })

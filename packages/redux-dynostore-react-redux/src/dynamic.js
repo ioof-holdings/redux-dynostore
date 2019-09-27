@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ReactReduxContext } from 'react-redux'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import wrapDisplayName from 'recompose/wrapDisplayName'
@@ -15,10 +15,24 @@ import { createDynamicTarget } from '@redux-dynostore/core'
 const createDynamic = (identifier, enhancers) => {
   const dynamicEnhancer = createDynamicTarget(enhancers)(identifier)
 
+  const useEnhancedComponent = (store, Component) => {
+    const [dynamicState, setDynamicState] = useState(() => ({
+      EnhancedComponent: dynamicEnhancer(store)(Component),
+      store
+    }))
+    useEffect(() => {
+      if (store !== dynamicState.store) {
+        const NewEnhancedComponent = dynamicEnhancer(store)(Component)
+        setDynamicState({ EnhancedComponent: NewEnhancedComponent, store })
+      }
+    }, [store])
+    return dynamicState.EnhancedComponent
+  }
+
   return Component => {
     const Dynamic = (props) => {
       const { store } = useContext(ReactReduxContext)
-      const EnhancedComponent = useMemo(() => dynamicEnhancer(store)(Component), [store])
+      const EnhancedComponent = useEnhancedComponent(store, Component)
       return <EnhancedComponent identifier={identifier} {...props} />
     }
 

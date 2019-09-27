@@ -26,6 +26,24 @@ const MyComponent1 = MyComponent.createInstance('instance1')
 const MyComponent2 = MyComponent.createInstance('instance2')
 ```
 
+### Options
+
+An optional options object can be passed as the final parameter to the `dynamic` function:
+
+```javascript
+export default dynamic('identifier', somethingDynamic(), { /* options */ })(MyComponent)
+```
+
+#### context
+
+```javascript
+import CustomReactReduxContext from './CustomReactReduxContext'
+
+export default dynamic('identifier', somethingDynamic(), { context: CustomReactReduxContext })(MyComponent)
+```
+
+This option overrides the `context` used for accessing the store in the React context.  If you are overriding this value, you should also be overriding the context passed to any `Provider` and/or `connect` components as well.  Please refer to the [Redux documentation](https://react-redux.js.org/using-react-redux/accessing-store#providing-custom-context) for more details on this use case.
+
 ## Enhancers
 
 Enhancers are used to provide additional wrappers around the passed component when it is mounted. The following enhancers are provided:

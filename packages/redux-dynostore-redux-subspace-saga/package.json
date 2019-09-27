@@ -23,7 +23,6 @@
     "url": "https://github.com/ioof-holdings/redux-dynostore.git"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
     "@redux-dynostore/redux-saga": "^2.0.0",
     "redux-subspace": "^6.1.0",
     "redux-subspace-saga": "^6.1.0"
@@ -38,6 +37,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.6.0",
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
     "@redux-dynostore/core": "^2.0.0",
     "babel-core": "^7.0.0-bridge",
     "babel-eslint": "^10.0.3",

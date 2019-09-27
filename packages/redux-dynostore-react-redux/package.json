@@ -25,7 +25,6 @@
   "dependencies": {
     "@redux-dynostore/core": "^2.0.0",
     "hoist-non-react-statics": "^3.3.0",
-    "prop-types": "^15.7.2",
     "recompose": "^0.30.0"
   },
   "peerDependencies": {

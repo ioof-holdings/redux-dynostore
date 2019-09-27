@@ -11,11 +11,19 @@ import { ReactReduxContext } from 'react-redux'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import wrapDisplayName from 'recompose/wrapDisplayName'
 import { createDynamicTarget } from '@redux-dynostore/core'
+import isObject from './utils/isObject'
 
-const createDynamic = (identifier, enhancers) => {
+const splitOptions = args => {
+  const [lastItem] = args.slice(-1)
+  return isObject(lastItem) ? [args.slice(0, -1), lastItem] : [args, {}]
+}
+
+const createDynamic = (identifier, enhancers, options) => {
+  const { context = ReactReduxContext } = options
   const dynamicEnhancer = createDynamicTarget(enhancers)(identifier)
 
-  const useEnhancedComponent = (store, Component) => {
+  const useEnhancedComponent = (Component) => {
+    const { store } = useContext(context)
     const [dynamicState, setDynamicState] = useState(() => ({
       EnhancedComponent: dynamicEnhancer(store)(Component),
       store
@@ -31,8 +39,7 @@ const createDynamic = (identifier, enhancers) => {
 
   return Component => {
     const Dynamic = (props) => {
-      const { store } = useContext(ReactReduxContext)
-      const EnhancedComponent = useEnhancedComponent(store, Component)
+      const EnhancedComponent = useEnhancedComponent(Component)
       return <EnhancedComponent identifier={identifier} {...props} />
     }
 
@@ -40,12 +47,14 @@ const createDynamic = (identifier, enhancers) => {
     Dynamic.displayName = wrapDisplayName(Component, 'Dynamic')
 
     Dynamic.createInstance = (instanceIdentfier, ...instanceEnhancers) =>
-      createDynamic(instanceIdentfier, enhancers.concat(instanceEnhancers))(Component)
+      createDynamic(instanceIdentfier, enhancers.concat(instanceEnhancers), options)(Component)
 
     return Dynamic
   }
 }
 
-const dynamic = (identifier, ...enhancers) => createDynamic(identifier, enhancers)
+const dynamic = (identifier, ...enhancers) => {
+  return createDynamic(identifier, ...splitOptions(enhancers))
+}
 
 export default dynamic

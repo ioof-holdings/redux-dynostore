@@ -158,4 +158,30 @@ describe('dynamic tests', () => {
     expect(stores[0]).toBe(fakeStore1)
     expect(stores[1]).toBe(fakeStore2)
   })
+
+  test('should create dynamic component with custom context', () => {
+    const callback = jest.fn()
+
+    const fakeStore = {
+      getState: () => {},
+      dispatch: () => {},
+      subscribe: () => {}
+    }
+
+    const testEnhancer = identifier => store => {
+      expect(identifier).toBe('testId')
+      expect(store).toBe(fakeStore)
+      callback()
+    }
+
+    const context = React.createContext()
+
+    const TestComponent = () => <p>Hello World</p>
+    const DynamicComponent = dynamic('testId', testEnhancer, { context })(TestComponent)
+
+    const { getByText } = render(<Provider store={fakeStore} context={context}><DynamicComponent /></Provider>)
+
+    expect(getByText('Hello World')).toBeDefined()
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
 })

@@ -42,7 +42,6 @@
     "core-js": "^3.2.1",
     "cross-env": "^6.0.0",
     "jest": "^24.9.0",
-    "jest-junit": "^8.0.0",
     "redux": "^4.0.4",
     "rollup": "^1.21.4",
     "rollup-plugin-babel": "^4.3.3"
@@ -52,17 +51,15 @@
     "build": "rollup -c",
     "lint": "eslint . --ext .js --ext .jsx",
     "lint:fix": "eslint . --ext .js --ext .jsx --fix",
-    "test": "JEST_JUNIT_OUTPUT=./test-reports/unit-test-output.xml jest --coverage --colors",
+    "test": "jest",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run build"
   },
   "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "./coverage/",
     "collectCoverageFrom": [
       "**/src/**"
-    ],
-    "reporters": [
-      "default",
-      "jest-junit"
     ],
     "testURL": "http://localhost/"
   }

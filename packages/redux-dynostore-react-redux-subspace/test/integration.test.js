@@ -10,7 +10,7 @@ import React from 'react'
 import { createStore } from 'redux'
 import { Provider, connect } from 'react-redux'
 import { SubspaceProvider } from 'react-redux-subspace'
-import { mount } from 'enzyme'
+import { render } from '@testing-library/react'
 
 import dynostore from '@redux-dynostore/core'
 import dynamic from '@redux-dynostore/react-redux'
@@ -58,7 +58,7 @@ describe('integration tests', () => {
 
   test('should create subspaced enhanced component', () => {
     const SubspacedComponent = dynamic('testId', subspaced())(ConnectedTestComponent)
-    const wrapper = mount(
+    const { getByText } = render(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
           <SubspacedComponent />
@@ -66,6 +66,6 @@ describe('integration tests', () => {
       </Provider>
     )
 
-    expect(wrapper.html()).toBe('<p>nested value</p>')
+    expect(getByText('nested value')).toBeDefined()
   })
 })

@@ -39,6 +39,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
+    "@testing-library/react": "^9.1.4",
     "babel-core": "^7.0.0-bridge",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
@@ -46,10 +47,7 @@
     "babel-plugin-module-resolver": "^3.2.0",
     "core-js": "^3.2.1",
     "cross-env": "^6.0.0",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.14.0",
     "jest": "^24.9.0",
-    "jest-junit": "^8.0.0",
     "raf": "^3.4.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -63,18 +61,15 @@
     "build": "rollup -c",
     "lint": "eslint . --ext .js --ext .jsx",
     "lint:fix": "eslint . --ext .js --ext .jsx --fix",
-    "test": "JEST_JUNIT_OUTPUT=./test-reports/unit-test-output.xml jest --coverage --colors",
+    "test": "jest",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run build"
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/test-config/jest-setup.js",
+    "collectCoverage": true,
+    "coverageDirectory": "./coverage/",
     "collectCoverageFrom": [
       "**/src/**"
-    ],
-    "reporters": [
-      "default",
-      "jest-junit"
     ],
     "testURL": "http://localhost/"
   }

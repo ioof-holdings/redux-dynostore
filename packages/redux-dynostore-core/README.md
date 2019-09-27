@@ -168,11 +168,13 @@ State handlers are provided as an object with the following functions:
 
 `redux-dynostore` provides the following built-in state handlers:
 
-- `deepStateHandler` _(default)_: handles plain Javascript types and deep merges the state when combining the state from different reducers
-- `shallowStateHandler`: handles plain Javascript types and shallow merges the state when combining the state from different reducers
-- `defaultStateHandler`: an alias for `deepStateHandler`
+- `shallowStateHandler` _(default)_: handles plain Javascript types and shallow merges the state when combining the state from different reducers
+- `deepStateHandler` : handles plain Javascript types and deep merges the state when combining the state from different reducers
+- `defaultStateHandler`: an alias for `shallowStateHandler`
 
 The `deepStateHandler` will generally create more accurate state trees and allows for dynamic reducers to attach to node of the state tree owned by a static reducer, but at the cost of performance. Using the `shallowStateHandler` will generally be more performant, but comes with the previously mentioned constraints.
+
+**Note: There is a known issue with the `deepStateHandler` and that prevents reducers from ever removing nodes of the state tree.  For this reason, it is currently adviser not to use this state handler unless you are confident that this will not affect you.**
 
 ### Custom Enhancers
 

@@ -29,3 +29,4 @@ const createStateHandler = merge => ({
 
 export const shallowStateHandler = createStateHandler(shallowMerge)
 export const deepStateHandler = createStateHandler(deepMerge)
+export const defaultStateHandler = shallowStateHandler

@@ -71,4 +71,4 @@ State handlers are provided as an object with the following functions:
 
 _Note, this is a subset of [the `stateHandler` option of `dynamicReducers`](/packages/redux-dynostore-core#stateHandler)._
 
-By default, `subspaced` will use the `shallowStateHandler` exported from the core package.
+By default, `subspaced` will use the `defaultStateHandler` exported from the core package.

@@ -20,4 +20,4 @@ export { default as filteredReducer } from './reducers/filteredReducer'
 
 export { shallowMerge, deepMerge } from './utils/merge'
 
-export { shallowStateHandler, deepStateHandler, deepStateHandler as defaultStateHandler } from './utils/stateHandlers'
+export { shallowStateHandler, deepStateHandler, defaultStateHandler } from './utils/stateHandlers'

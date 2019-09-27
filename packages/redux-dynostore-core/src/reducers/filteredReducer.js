@@ -6,13 +6,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { deepStateHandler } from '../utils/stateHandlers'
+import { defaultStateHandler } from '../utils/stateHandlers'
 
 const FILTER_INIT = { type: '@@FILTER/INIT' }
 
 const filteredReducer = (
   reducer,
-  { stateHandler: { createEmpty, getKeys, getValue, setValue } = deepStateHandler } = {}
+  { stateHandler: { createEmpty, getKeys, getValue, setValue } = defaultStateHandler } = {}
 ) => {
   const initialState = reducer(undefined, FILTER_INIT)
   let knownKeys = getKeys(initialState)

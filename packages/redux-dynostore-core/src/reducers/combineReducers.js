@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { deepStateHandler } from '../utils/stateHandlers'
+import { defaultStateHandler } from '../utils/stateHandlers'
 
-const combineReducers = (reducers, { stateHandler: { createEmpty, getValue, setValue } = deepStateHandler } = {}) => {
+const combineReducers = (reducers, { stateHandler: { createEmpty, getValue, setValue } = defaultStateHandler } = {}) => {
   const reducerEntries = Object.entries(reducers)
 
   const combiner = (state = createEmpty(), action) => {

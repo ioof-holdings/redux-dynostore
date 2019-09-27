@@ -250,7 +250,7 @@ describe('integration tests', () => {
       key5: makeTestReducer('key5')
     })
 
-    const store = createStore(reducer, dynostore(dynamicReducers()))
+    const store = createStore(reducer, dynostore(dynamicReducers(), { stateHandler: deepStateHandler }))
 
     store.attachReducers({
       group1: {

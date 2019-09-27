@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import isPlainObject from 'lodash.isplainobject'
+import isObject from './isObject'
 
 const createMerge = overrideFunction => (oldState, newState) => {
   if (
@@ -14,8 +14,8 @@ const createMerge = overrideFunction => (oldState, newState) => {
     oldState === null ||
     oldState === newState ||
     typeof oldState !== typeof newState ||
-    !isPlainObject(oldState) ||
-    !isPlainObject(newState)
+    !isObject(oldState) ||
+    !isObject(newState)
   ) {
     return newState
   }

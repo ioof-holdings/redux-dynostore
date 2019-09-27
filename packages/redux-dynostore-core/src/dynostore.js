@@ -7,7 +7,7 @@
  */
 
 import { compose } from 'redux'
-import isPlainObject from 'lodash.isplainobject'
+import isObject from './utils/isObject'
 
 const createHandlers = (store, reducer, preloadedState, enhancer) => {
   if (typeof enhancer !== 'undefined') {
@@ -19,7 +19,7 @@ const createHandlers = (store, reducer, preloadedState, enhancer) => {
 
 const splitOptions = args => {
   const [lastItem] = args.slice(-1)
-  return isPlainObject(lastItem) ? [args.slice(0, -1), lastItem] : [args, {}]
+  return isObject(lastItem) ? [args.slice(0, -1), lastItem] : [args, {}]
 }
 
 const dynostore = (...dynamicEnhancers) => createStore => (reducer, preloadedState) => {

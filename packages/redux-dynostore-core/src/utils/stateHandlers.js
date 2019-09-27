@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import isPlainObject from 'lodash.isplainobject'
+import isObject from './isObject'
 import { shallowMerge, deepMerge } from './merge'
 
 const createStateHandler = merge => ({
@@ -14,7 +14,7 @@ const createStateHandler = merge => ({
     return {}
   },
   getKeys: state => {
-    return isPlainObject(state) ? Object.keys(state) : []
+    return isObject(state) ? Object.keys(state) : []
   },
   getValue: (state, key) => {
     return state[key]
@@ -23,7 +23,7 @@ const createStateHandler = merge => ({
     state[key] = value
     return state
   },
-  canMerge: isPlainObject,
+  canMerge: isObject,
   merge
 })
 

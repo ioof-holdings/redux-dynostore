@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { deepStateHandler } from '../utils/stateHandlers'
+import { defaultStateHandler } from '../utils/stateHandlers'
 
 const DETACH_TYPE = '@@DYNOSTORE/DETACH_REDUCER'
 
@@ -21,7 +21,7 @@ export const detachableReducer = identifier => reducer => {
 
 export const cleanupDetachedReducer = (
   reducer,
-  { stateHandler: { createEmpty, getKeys, getValue, setValue } = deepStateHandler } = {}
+  { stateHandler: { createEmpty, getKeys, getValue, setValue } = defaultStateHandler } = {}
 ) => {
   const cleaner = (state, action) => {
     const newState = reducer(state, action)

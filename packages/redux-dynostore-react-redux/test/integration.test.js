@@ -9,7 +9,7 @@
 import React from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { mount } from 'enzyme'
+import { render } from '@testing-library/react'
 
 import dynostore from '@redux-dynostore/core'
 import dynamic from 'src'
@@ -31,13 +31,13 @@ describe('integration tests', () => {
   test('should enhance component with dynamic enhaners', () => {
     const mockFn = jest.fn()
     const DynamicComponent = dynamic('testId', testDynamicEnhancer(mockFn))(TestComponent)
-    const wrapper = mount(
+    const { getByText } = render(
       <Provider store={store}>
         <DynamicComponent />
       </Provider>
     )
 
-    expect(wrapper.html()).toBe('<div>expected</div>')
+    expect(getByText('expected')).toBeDefined()
     expect(mockFn).toBeCalledWith('testId', store, TestComponent)
   })
 })

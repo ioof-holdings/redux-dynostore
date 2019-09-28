@@ -29,7 +29,6 @@ describe('mergeReducers Tests', () => {
       },
       array: ['value'],
       overlapping: {
-        key1: true,
         key2: true,
         key3: true
       }

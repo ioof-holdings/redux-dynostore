@@ -111,7 +111,7 @@ _Note:_ only reducers that were added using an the `attachReducer` function can 
 
 #### Options
 
-`dynamicReducers` accepts options to modify it's behaviour. Default options can be overriden when creating the `dynamicReducers` enhancer:
+`dynamicReducers` accepts options to modify it's behaviour. Default options can be overridden when creating the `dynamicReducers` enhancer:
 
 ```javascript
 import dynostore, { dynamicReducers } from '@redux-dynostore/core'
@@ -153,7 +153,7 @@ const store = createStore(reducer, dynostore(dynamicReducers({ stateHandler: cus
 store.attachReducers({ 'some.path.to': dynamicReducer }, { stateHandler: customStateHandler })
 ```
 
-The `stateHandler` option is used to modify the behaviour of `dynamicReducers` when interacting with the state tree. They can be used to optimize for different goals, such as accuracy or performace, or to support alternative state structures, such as [`ImmutableJS`](<(http://facebook.github.io/immutable-js/docs/#/)>).
+The `stateHandler` option is used to modify the behaviour of `dynamicReducers` when interacting with the state tree. They can be used to optimize for different goals, such as accuracy or performance, or to support alternative state structures, such as [`ImmutableJS`](<(http://facebook.github.io/immutable-js/docs/#/)>).
 
 State handlers are provided as an object with the following functions:
 
@@ -168,11 +168,13 @@ State handlers are provided as an object with the following functions:
 
 `redux-dynostore` provides the following built-in state handlers:
 
-- `deepStateHandler` _(default)_: handles plain Javascript types and deep merges the state when combining the state from different reducers
-- `shallowStateHandler`: handles plain Javascript types and shallow merges the state when combining the state from different reducers
-- `defaultStateHandler`: an alias for `deepStateHandler`
+- `shallowStateHandler` _(default)_: handles plain Javascript types and shallow merges the state when combining the state from different reducers
+- `deepStateHandler` : handles plain Javascript types and deep merges the state when combining the state from different reducers
+- `defaultStateHandler`: an alias for `shallowStateHandler`
 
-The `deepStateHandler` will generally create more accurate state trees and allows for dynamic reducers to attach to node of the state tree owned by a static reducer, but at the cost of performance. Using the `shallowStateHandler` will generally be more performant, but comes with the previosly mentioned contraints.
+The `deepStateHandler` will generally create more accurate state trees and allows for dynamic reducers to attach to node of the state tree owned by a static reducer, but at the cost of performance. Using the `shallowStateHandler` will generally be more performant, but comes with the previously mentioned constraints.
+
+**Note: There is a known issue with the `deepStateHandler` and that prevents reducers from ever removing nodes of the state tree.  For this reason, it is currently adviser not to use this state handler unless you are confident that this will not affect you.**
 
 ### Custom Enhancers
 

@@ -6,8 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import 'raf/polyfill'
-import Enzyme from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+const isObject = value => {
+  const type = typeof value
+  return type == "object" && value != null && !Array.isArray(value)
+}
 
-Enzyme.configure({ adapter: new Adapter() })
+export default isObject

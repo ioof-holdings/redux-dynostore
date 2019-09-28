@@ -15,11 +15,11 @@ Include dynamic enhancer with [`redux-dynostore`](/packages/redux-dynostore-core
 import dynostore from '@redux-dynostore/core'
 import { dynamicSagas } from '@redux-dynostore/redux-saga'
 
-const sagaMiddlware = createSagaMiddleware()
+const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(reducer, compose(
-  applyMiddleware(sagaMiddlware),
-  dynostore(dynamicSagas(sagaMiddlware))
+  applyMiddleware(sagaMiddleware),
+  dynostore(dynamicSagas(sagaMiddleware))
 )
 ```
 

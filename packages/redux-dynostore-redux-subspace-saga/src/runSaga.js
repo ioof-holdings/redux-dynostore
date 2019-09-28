@@ -7,8 +7,11 @@
  */
 
 import { subspaced } from 'redux-subspace-saga'
-import { get } from 'dot-prop-immutable'
 import { runSaga } from '@redux-dynostore/redux-saga'
+
+const getParentState = (state, namespace) => {
+  return namespace.split('/').reduce((subState, pathPart) => subState[pathPart], state)
+}
 
 const runSubspacedSagaEnhancer = saga => identifier => {
   const subspacedSaga = subspaced(identifier)(saga)
@@ -18,7 +21,7 @@ const runSubspacedSagaEnhancer = saga => identifier => {
     const namespacedIdentifier = storeNamespace ? `${storeNamespace}/${identifier}` : identifier
 
     const sagaToRun = storeNamespace
-      ? subspaced(state => get(state, storeNamespace.replace(/\//g, '.')), storeNamespace)(subspacedSaga)
+      ? subspaced(state => getParentState(state, storeNamespace), storeNamespace)(subspacedSaga)
       : subspacedSaga
 
     return runSaga(sagaToRun)(namespacedIdentifier)(store)

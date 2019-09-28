@@ -11,7 +11,7 @@ import { createStore } from 'redux'
 import configureStore from 'redux-mock-store'
 import { Provider, connect } from 'react-redux'
 import { SubspaceProvider } from 'react-redux-subspace'
-import { mount } from 'enzyme'
+import { render } from '@testing-library/react'
 
 import dynostore from '@redux-dynostore/core'
 import dynamic from '@redux-dynostore/react-redux'
@@ -69,7 +69,7 @@ describe('subspaced tests', () => {
 
   test('should create subspaced enhanced component', () => {
     const SubspacedComponent = subspaced()('testId')(store)(ConnectedTestComponent)
-    const wrapper = mount(
+    const { getByText } = render(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
           <SubspacedComponent />
@@ -77,7 +77,7 @@ describe('subspaced tests', () => {
       </Provider>
     )
 
-    expect(wrapper.html()).toBe('<p>nested value</p>')
+    expect(getByText('nested value')).toBeDefined()
 
     const actions = store.getActions()
     expect(actions.length).toEqual(1)
@@ -91,7 +91,7 @@ describe('subspaced tests', () => {
         mapDispatchToProps
       )(TestComponent)
     )
-    const wrapper = mount(
+    const { getByText } = render(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId.testId} namespace="parentId/testId">
           <SubspacedComponent />
@@ -99,7 +99,7 @@ describe('subspaced tests', () => {
       </Provider>
     )
 
-    expect(wrapper.html()).toBe('<p>nested value</p>')
+    expect(getByText('nested value')).toBeDefined()
 
     const actions = store.getActions()
     expect(actions.length).toEqual(1)
@@ -116,7 +116,7 @@ describe('subspaced tests', () => {
     store.dynostoreOptions = { stateHandler }
 
     const SubspacedComponent = subspaced()('testId')(store)(ConnectedTestComponent)
-    const wrapper = mount(
+    const { getByText } = render(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
           <SubspacedComponent />
@@ -124,7 +124,7 @@ describe('subspaced tests', () => {
       </Provider>
     )
 
-    expect(wrapper.html()).toBe('<p>override value</p>')
+    expect(getByText('override value')).toBeDefined()
   })
 
   test('should override state handler', () => {
@@ -135,7 +135,7 @@ describe('subspaced tests', () => {
     }
 
     const SubspacedComponent = subspaced({ stateHandler })('testId')(store)(ConnectedTestComponent)
-    const wrapper = mount(
+    const { getByText } = render(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
           <SubspacedComponent />
@@ -143,7 +143,7 @@ describe('subspaced tests', () => {
       </Provider>
     )
 
-    expect(wrapper.html()).toBe('<p>override value</p>')
+    expect(getByText('override value')).toBeDefined()
   })
 })
 
@@ -202,7 +202,7 @@ describe('mapExtraState tests', () => {
       })
     )(ConnectedTestComponent)
 
-    const wrapper = mount(
+    const { getByText } = render(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
           <SubspacedComponent />
@@ -210,7 +210,7 @@ describe('mapExtraState tests', () => {
       </Provider>
     )
 
-    expect(wrapper.html()).toBe('<p>extra state value</p>')
+    expect(getByText('extra state value')).toBeDefined()
   })
 
   test('should use default state handler', () => {
@@ -224,7 +224,7 @@ describe('mapExtraState tests', () => {
     store.dynostoreOptions = { stateHandler }
 
     const SubspacedComponent = subspaced({ stateHandler, mapExtraState })('testId')(store)(ConnectedTestComponent)
-    const wrapper = mount(
+    const { getByText } = render(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
           <SubspacedComponent />
@@ -232,7 +232,7 @@ describe('mapExtraState tests', () => {
       </Provider>
     )
 
-    expect(wrapper.html()).toBe('<p>override value</p>')
+    expect(getByText('override value')).toBeDefined()
   })
 
   test('should override state handler', () => {
@@ -244,7 +244,7 @@ describe('mapExtraState tests', () => {
     const mapExtraState = (state, rootState) => ({ extraState: rootState.extraState })
 
     const SubspacedComponent = subspaced({ stateHandler, mapExtraState })('testId')(store)(ConnectedTestComponent)
-    const wrapper = mount(
+    const { getByText } = render(
       <Provider store={store}>
         <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
           <SubspacedComponent />
@@ -252,7 +252,7 @@ describe('mapExtraState tests', () => {
       </Provider>
     )
 
-    expect(wrapper.html()).toBe('<p>override value</p>')
+    expect(getByText('override value')).toBeDefined()
   })
 
   test('should fail to create subspaced enhanced component with invalid extraState', () => {
@@ -265,7 +265,7 @@ describe('mapExtraState tests', () => {
 
     expect(() =>
       suppressError(() =>
-        mount(
+        render(
           <Provider store={store}>
             <SubspaceProvider mapState={state => state.parentId} namespace="parentId">
               <SubspacedComponent />

@@ -6,41 +6,41 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useContext, useMemo } from 'react'
+import { ReactReduxContext } from 'react-redux'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import wrapDisplayName from 'recompose/wrapDisplayName'
 import { createDynamicTarget } from '@redux-dynostore/core'
+import isObject from './utils/isObject'
 
-const createDynamic = (identifier, enhancers) => {
+const splitOptions = args => {
+  const [lastItem] = args.slice(-1)
+  return isObject(lastItem) ? [args.slice(0, -1), lastItem] : [args, {}]
+}
+
+const createDynamic = (identifier, enhancers, options) => {
+  const { context = ReactReduxContext } = options
   const dynamicEnhancer = createDynamicTarget(enhancers)(identifier)
 
   return Component => {
-    class Dynamic extends React.Component {
-      constructor(props, context) {
-        super(props, context)
-        this.EnhancedComponent = dynamicEnhancer(context.store)(Component)
-      }
-
-      render() {
-        return <this.EnhancedComponent identifier={identifier} {...this.props} />
-      }
-    }
+    const Dynamic = React.forwardRef((props, ref) => {
+      const { store } = useContext(context)
+      const EnhancedComponent = useMemo(() => dynamicEnhancer(store)(Component), [store])
+      return <EnhancedComponent identifier={identifier} {...props} ref={ref} />
+    })
 
     hoistNonReactStatics(Dynamic, Component)
     Dynamic.displayName = wrapDisplayName(Component, 'Dynamic')
 
-    Dynamic.createInstance = (instanceIdentfier, ...instanceEnhancers) =>
-      createDynamic(instanceIdentfier, enhancers.concat(instanceEnhancers))(Component)
-
-    Dynamic.contextTypes = {
-      store: PropTypes.object
-    }
+    Dynamic.createInstance = (instanceIdentifier, ...instanceEnhancers) =>
+      createDynamic(instanceIdentifier, enhancers.concat(instanceEnhancers), options)(Component)
 
     return Dynamic
   }
 }
 
-const dynamic = (identifier, ...enhancers) => createDynamic(identifier, enhancers)
+const dynamic = (identifier, ...enhancers) => {
+  return createDynamic(identifier, ...splitOptions(enhancers))
+}
 
 export default dynamic

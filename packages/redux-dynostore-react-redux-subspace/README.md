@@ -18,7 +18,7 @@ export default dynamic('identifier', subspaced())(MyComponent)
 
 ## Options
 
-`subspaced` accepts options to modify it's behaviour. Default options can be overriden when using the `subspaced` handler:
+`subspaced` accepts options to modify it's behaviour. Default options can be overridden when using the `subspaced` handler:
 
 ```javascript
 import dynamic from '@redux-dynostore/react-redux'
@@ -59,7 +59,7 @@ const store = createStore(reducer, dynostore(dynamicReducers(), { stateHandler: 
 export default dynamic('identifier', subspaced({ stateHandler: customStateHandler }))(MyComponent)
 ```
 
-The `stateHandler` option is used to modify the behaviour of `subspaced` when interacting with the state (accessing it's own state and merging in state returned from the `mapExtraState` option). They can be used to optimize for different goals, such as accuracy or performace, or to support alternative state structures, such as [`ImmutableJS`](<(http://facebook.github.io/immutable-js/docs/#/)>).
+The `stateHandler` option is used to modify the behaviour of `subspaced` when interacting with the state (accessing it's own state and merging in state returned from the `mapExtraState` option). They can be used to optimize for different goals, such as accuracy or performance, or to support alternative state structures, such as [`ImmutableJS`](<(http://facebook.github.io/immutable-js/docs/#/)>).
 
 State handlers are provided as an object with the following functions:
 
@@ -71,4 +71,4 @@ State handlers are provided as an object with the following functions:
 
 _Note, this is a subset of [the `stateHandler` option of `dynamicReducers`](/packages/redux-dynostore-core#stateHandler)._
 
-By default, `subspaced` will use the `shallowStateHandler` exported from the core package.
+By default, `subspaced` will use the `defaultStateHandler` exported from the core package.

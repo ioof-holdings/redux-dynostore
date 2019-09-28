@@ -3,22 +3,22 @@
   "version": "3.0.1",
   "private": true,
   "devDependencies": {
-    "react-scripts": "^3.1.2"
+    "react-scripts": "3.1.2"
   },
   "dependencies": {
     "@redux-dynostore/core": "^3.0.1",
     "@redux-dynostore/react-redux": "^3.0.1",
     "@redux-dynostore/react-redux-subspace": "^3.0.1",
     "@redux-dynostore/redux-subspace": "^3.0.1",
-    "immutable": "^4.0.0-rc.12",
-    "prop-types": "^15.7.2",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-redux": "^7.1.1",
-    "react-redux-subspace": "^6.1.0",
-    "redux": "^4.0.4",
-    "redux-subspace": "^6.1.0",
-    "redux-thunk": "^2.3.0"
+    "immutable": "4.0.0-rc.12",
+    "prop-types": "15.7.2",
+    "react": "16.10.0",
+    "react-dom": "16.10.0",
+    "react-redux": "7.1.1",
+    "react-redux-subspace": "6.1.0",
+    "redux": "4.0.4",
+    "redux-subspace": "6.1.0",
+    "redux-thunk": "2.3.0"
   },
   "scripts": {
     "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start"

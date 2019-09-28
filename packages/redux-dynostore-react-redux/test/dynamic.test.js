@@ -128,7 +128,7 @@ describe('dynamic tests', () => {
     expect(callback).toHaveBeenCalledTimes(2)
   })
 
-  test('should receate dynamic component if store changes', () => {
+  test('should recreate dynamic component if store changes', () => {
 
     const fakeStore1 = {
       getState: () => {},

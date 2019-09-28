@@ -46,8 +46,8 @@ const createDynamic = (identifier, enhancers, options) => {
     hoistNonReactStatics(Dynamic, Component)
     Dynamic.displayName = wrapDisplayName(Component, 'Dynamic')
 
-    Dynamic.createInstance = (instanceIdentfier, ...instanceEnhancers) =>
-      createDynamic(instanceIdentfier, enhancers.concat(instanceEnhancers), options)(Component)
+    Dynamic.createInstance = (instanceIdentifier, ...instanceEnhancers) =>
+      createDynamic(instanceIdentifier, enhancers.concat(instanceEnhancers), options)(Component)
 
     return Dynamic
   }

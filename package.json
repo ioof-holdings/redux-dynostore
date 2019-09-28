@@ -10,14 +10,14 @@
     "url": "https://github.com/ioof-holdings/redux-dynostore.git"
   },
   "devDependencies": {
-    "all-contributors-cli": "^6.9.1",
+    "all-contributors-cli": "6.9.1",
     "babel-eslint": "10.0.3",
-    "cross-env": "^6.0.0",
+    "cross-env": "6.0.0",
     "eslint": "6.4.0",
-    "eslint-plugin-react": "^7.14.3",
-    "istanbul": "^0.4.5",
-    "lerna": "^3.16.4",
-    "rimraf": "^3.0.0"
+    "eslint-plugin-react": "7.14.3",
+    "istanbul": "0.4.5",
+    "lerna": "3.16.4",
+    "rimraf": "3.0.0"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",

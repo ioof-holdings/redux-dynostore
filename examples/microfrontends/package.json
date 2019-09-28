@@ -1,6 +1,6 @@
 {
   "name": "microfrontends-example",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@reach/router": "^1.2.1",
-    "@redux-dynostore/core": "^3.0.0",
-    "@redux-dynostore/react-redux": "^3.0.0",
-    "@redux-dynostore/react-redux-subspace": "^3.0.0",
-    "@redux-dynostore/redux-subspace": "^3.0.0",
+    "@redux-dynostore/core": "^3.0.1",
+    "@redux-dynostore/react-redux": "^3.0.1",
+    "@redux-dynostore/react-redux-subspace": "^3.0.1",
+    "@redux-dynostore/redux-subspace": "^3.0.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-loadable": "^5.5.0",

@@ -26,8 +26,8 @@
     "react-redux-subspace": "^6.1.0"
   },
   "peerDependencies": {
-    "@redux-dynostore/core": "^2.0.0",
-    "@redux-dynostore/react-redux": "^2.0.0",
+    "@redux-dynostore/core": "^3.0.0",
+    "@redux-dynostore/react-redux": "^3.0.0",
     "redux": "^3.0.0 || ^4.0.0"
   },
   "devDependencies": {

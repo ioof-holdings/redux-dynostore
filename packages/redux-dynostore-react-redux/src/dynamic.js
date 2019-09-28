@@ -38,10 +38,10 @@ const createDynamic = (identifier, enhancers, options) => {
   }
 
   return Component => {
-    const Dynamic = (props) => {
+    const Dynamic = React.forwardRef((props, ref) => {
       const EnhancedComponent = useEnhancedComponent(Component)
-      return <EnhancedComponent identifier={identifier} {...props} />
-    }
+      return <EnhancedComponent identifier={identifier} {...props} ref={ref} />
+    })
 
     hoistNonReactStatics(Dynamic, Component)
     Dynamic.displayName = wrapDisplayName(Component, 'Dynamic')

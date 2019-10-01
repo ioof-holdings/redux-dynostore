@@ -45,7 +45,7 @@
     "babel-plugin-annotate-pure-calls": "0.4.0",
     "babel-plugin-module-resolver": "3.2.0",
     "core-js": "3.2.1",
-    "cross-env": "6.0.0",
+    "cross-env": "6.0.2",
     "jest": "24.9.0",
     "redux": "4.0.4",
     "redux-saga": "1.1.1",

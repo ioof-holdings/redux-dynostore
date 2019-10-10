@@ -15,7 +15,7 @@
     "redux": "4.0.4"
   },
   "devDependencies": {
-    "@babel/core": "7.6.3",
+    "@babel/core": "7.6.4",
     "@babel/preset-env": "7.6.3",
     "@babel/preset-react": "7.6.3",
     "babel-core": "7.0.0-bridge.0",

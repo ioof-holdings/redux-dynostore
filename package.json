@@ -10,7 +10,7 @@
     "url": "https://github.com/ioof-holdings/redux-dynostore.git"
   },
   "devDependencies": {
-    "all-contributors-cli": "6.9.2",
+    "all-contributors-cli": "6.9.3",
     "babel-eslint": "10.0.3",
     "cross-env": "6.0.3",
     "eslint": "6.5.1",

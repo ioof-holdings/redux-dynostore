@@ -41,7 +41,7 @@
     "redux-devtools-extension": "2.13.8",
     "rimraf": "3.0.0",
     "webpack": "4.41.2",
-    "webpack-cli": "3.3.9",
+    "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.9.0"
   }
 }

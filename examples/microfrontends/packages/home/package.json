@@ -6,7 +6,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "react": "16.11.0"
+    "react": "16.12.0"
   },
   "devDependencies": {
     "@babel/core": "7.7.2",

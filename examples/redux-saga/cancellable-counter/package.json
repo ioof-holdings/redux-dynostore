@@ -16,7 +16,7 @@
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-redux": "7.1.2",
-    "redux": "4.0.4",
+    "redux": "4.0.5",
     "redux-saga": "1.1.3",
     "redux-subspace": "6.1.0",
     "redux-subspace-saga": "6.1.0"

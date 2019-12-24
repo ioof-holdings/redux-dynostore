@@ -38,7 +38,7 @@
     "core-js": "3.6.0",
     "cross-env": "6.0.3",
     "jest": "24.9.0",
-    "redux": "4.0.4",
+    "redux": "4.0.5",
     "rimraf": "3.0.0",
     "rollup": "1.27.14",
     "rollup-plugin-babel": "4.3.3"

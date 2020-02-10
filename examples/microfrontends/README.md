@@ -5,7 +5,7 @@ This example shows how [`redux-dynostore`](/) can be used to dynamically integra
 ```sh
 git clone https://github.com/ioof-holdings/redux-dynostore.git
 
-cd redux-subspace/examples/microfrontends
+cd redux-dynostore/examples/microfrontends
 npm install
 npm start
 ```

@@ -31,10 +31,10 @@
     "redux": "^3.0.0 || ^4.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.8.4",
+    "@babel/core": "7.8.6",
     "@babel/plugin-proposal-object-rest-spread": "7.8.3",
     "@babel/plugin-transform-modules-commonjs": "7.8.3",
-    "@babel/preset-env": "7.8.4",
+    "@babel/preset-env": "7.8.6",
     "@babel/preset-react": "7.8.3",
     "@redux-dynostore/core": "^3.0.1",
     "@redux-dynostore/react-redux": "^3.0.1",

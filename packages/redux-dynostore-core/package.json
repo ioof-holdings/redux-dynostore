@@ -41,7 +41,7 @@
     "redux": "4.0.5",
     "rimraf": "3.0.2",
     "rollup": "1.32.1",
-    "rollup-plugin-babel": "4.3.3"
+    "rollup-plugin-babel": "4.4.0"
   },
   "scripts": {
     "prebuild": "rimraf lib es",

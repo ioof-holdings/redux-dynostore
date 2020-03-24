@@ -15,7 +15,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-loader": "8.0.6",
     "core-js": "3.6.4",
-    "webpack": "4.42.0",
+    "webpack": "4.42.1",
     "webpack-cli": "3.3.11"
   }
 }

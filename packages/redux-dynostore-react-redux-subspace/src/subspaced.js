@@ -9,7 +9,11 @@
 import { subspaced } from 'react-redux-subspace'
 import { defaultStateHandler } from '@redux-dynostore/core'
 
-const subspacedEnhancer = ({ stateHandler, mapExtraState = () => null } = {}) => identifier => store => {
+const subspacedEnhancer = ({
+  stateHandler,
+  subspaceOptions,
+  mapExtraState = () => null,
+} = {}) => identifier => store => {
   const defaultOptions = store.dynostoreOptions || {}
   const { getValue, canMerge, merge } = stateHandler || defaultOptions.stateHandler || defaultStateHandler
 
@@ -29,7 +33,7 @@ const subspacedEnhancer = ({ stateHandler, mapExtraState = () => null } = {}) =>
 
     return merge(extraState, componentState)
   }
-  const subspaceEnhancer = subspaced(mapState, identifier)
+  const subspaceEnhancer = subspaced(mapState, identifier, subspaceOptions)
   return Component => subspaceEnhancer(Component)
 }
 

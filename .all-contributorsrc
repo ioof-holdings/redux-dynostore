@@ -70,7 +70,17 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "macklay",
+      "name": "Nick Smirnov",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6972011?v=4",
+      "profile": "https://github.com/macklay",
+      "contributions": [
+        "code"
+      ]
     }
   ],
-  "repoType": "github"
+  "repoType": "github",
+  "commitConvention": "none"
 }

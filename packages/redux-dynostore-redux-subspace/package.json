@@ -44,7 +44,7 @@
     "jest": "25.5.2",
     "redux": "4.0.5",
     "rimraf": "3.0.2",
-    "rollup": "2.2.0",
+    "rollup": "2.7.6",
     "rollup-plugin-babel": "4.4.0"
   },
   "scripts": {

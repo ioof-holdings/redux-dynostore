@@ -11,8 +11,8 @@ import { defaultStateHandler } from '@redux-dynostore/core'
 
 const subspacedEnhancer = ({
   stateHandler,
-  subspaceOptions,
   mapExtraState = () => null,
+  ...subspaceOptions
 } = {}) => identifier => store => {
   const defaultOptions = store.dynostoreOptions || {}
   const { getValue, canMerge, merge } = stateHandler || defaultOptions.stateHandler || defaultStateHandler

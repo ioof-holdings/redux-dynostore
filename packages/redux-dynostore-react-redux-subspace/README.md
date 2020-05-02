@@ -49,7 +49,7 @@ When mounted, `MyComponent` will be wrapped in a [`SubspaceProvider`](https://io
 
 If you are attaching a reducer dynamically, you should use the [redux-subspace variant](/packages/redux-dynostore-redux-subspace) to ensure it will receive the namespaced actions.
 
-##### `stateHandler`
+### `stateHandler`
 
 ```javascript
 const store = createStore(reducer, dynostore(dynamicReducers(), { stateHandler: customStateHandler }))
@@ -72,3 +72,15 @@ State handlers are provided as an object with the following functions:
 _Note, this is a subset of [the `stateHandler` option of `dynamicReducers`](/packages/redux-dynostore-core#stateHandler)._
 
 By default, `subspaced` will use the `defaultStateHandler` exported from the core package.
+
+### Additional Subspace Options
+
+Any additional options provided to `subspaced` will be passed through as the [options argument to the underlying `react-redux-subspace` library](https://ioof-holdings.github.io/redux-subspace/packages/react-redux-subspace/docs/api/subspaced.html#arguments).  This is most commonly used to provide a custom context to locate the Redux store to use:
+
+```javascript
+const CustomContext = React.createContext
+
+// ...
+
+export default dynamic('identifier', subspaced({ context: CustomContext }))(MyComponent)
+```

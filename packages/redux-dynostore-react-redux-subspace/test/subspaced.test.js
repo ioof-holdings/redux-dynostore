@@ -276,3 +276,54 @@ describe('mapExtraState tests', () => {
     ).toThrow(TypeError)
   })
 })
+
+describe('subspaceOptions tests', () => {
+  const mockStore = configureStore([])
+  let store
+
+  const CustomContext = React.createContext()
+
+  class TestComponent extends React.Component {
+    render() {
+      return <p>{this.props.testKey}</p>
+    }
+  }
+
+  const mapStateToProps = state => ({
+    testKey: state.testKey
+  })
+
+  const ConnectedTestComponent = connect(
+    mapStateToProps,
+    null,
+    null,
+    { context: CustomContext }
+  )(TestComponent)
+
+  beforeEach(() => {
+    store = mockStore({
+      testId: {
+        testKey: 'root value'
+      },
+      parentId: {
+        testId: {
+          testKey: 'nested value'
+        }
+      }
+    })
+  })
+
+  test('should create subspaced enhanced component using custom context', () => {
+    const SubspacedComponent = subspaced({ context: CustomContext })('testId')(store)(ConnectedTestComponent)
+
+    const { getByText } = render(
+      <Provider store={store} context={CustomContext}>
+        <SubspaceProvider mapState={state => state.parentId} namespace="parentId" context={CustomContext}>
+          <SubspacedComponent />
+        </SubspaceProvider>
+      </Provider>
+    )
+
+    expect(getByText('nested value')).toBeDefined()
+  })
+})

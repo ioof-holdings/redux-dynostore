@@ -6,7 +6,6 @@
     "bootstrap": "lerna bootstrap",
     "postinstall": "npm run bootstrap",
     "prebuild": "npm run externals:build",
-    "build": "ENV=production webpack",
     "prestart": "npm run externals:build",
     "start": "webpack-dev-server",
     "start:production": "NODE_ENV=production npm start",

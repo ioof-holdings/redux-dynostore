@@ -6,17 +6,17 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@reach/router": "1.3.3",
+    "@reach/router": "^1.3.3",
     "@redux-dynostore/core": "^3.0.1",
     "@redux-dynostore/react-redux": "^3.0.1",
     "@redux-dynostore/react-redux-subspace": "^3.0.1",
     "@redux-dynostore/redux-subspace": "^3.0.1",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-redux": "7.2.0",
-    "redux": "4.0.5",
-    "redux-subspace": "6.1.0",
-    "redux-thunk": "2.3.0"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-subspace": "^6.1.0",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "7.9.6",

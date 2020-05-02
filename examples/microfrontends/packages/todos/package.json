@@ -10,10 +10,10 @@
     "@redux-dynostore/react-redux": "^3.0.1",
     "@redux-dynostore/react-redux-subspace": "^3.0.1",
     "@redux-dynostore/redux-subspace": "^3.0.1",
-    "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-redux": "^7.2.0",
-    "redux": "^4.0.5"
+    "prop-types": "15.7.2",
+    "react": "16.13.1",
+    "react-redux": "7.2.0",
+    "redux": "4.0.5"
   },
   "devDependencies": {
     "@babel/core": "7.9.6",

@@ -41,7 +41,7 @@
     "babel-plugin-module-resolver": "4.0.0",
     "core-js": "3.6.5",
     "cross-env": "7.0.2",
-    "jest": "25.5.3",
+    "jest": "25.5.4",
     "redux": "4.0.5",
     "rimraf": "3.0.2",
     "rollup": "2.2.0",

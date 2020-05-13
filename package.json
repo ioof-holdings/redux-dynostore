@@ -16,7 +16,7 @@
     "eslint": "7.0.0",
     "eslint-plugin-react": "7.19.0",
     "istanbul": "0.4.5",
-    "lerna": "3.20.2",
+    "lerna": "3.21.0",
     "rimraf": "3.0.2"
   },
   "scripts": {

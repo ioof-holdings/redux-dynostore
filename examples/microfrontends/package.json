@@ -36,7 +36,7 @@
     "copyfiles": "2.2.0",
     "core-js": "3.6.5",
     "html-webpack-plugin": "4.3.0",
-    "lerna": "3.21.0",
+    "lerna": "3.22.0",
     "redux-devtools-extension": "2.13.8",
     "rimraf": "3.0.2",
     "webpack": "4.43.0",

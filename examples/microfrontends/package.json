@@ -3,7 +3,7 @@
   "version": "3.1.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --hoist",
     "postinstall": "npm run bootstrap",
     "prebuild": "npm run externals:build",
     "prestart": "npm run externals:build",
@@ -32,7 +32,7 @@
     "@babel/preset-react": "7.10.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-loader": "8.1.0",
-    "copy-webpack-plugin": "5.1.1",
+    "copy-webpack-plugin": "6.0.1",
     "copyfiles": "2.2.0",
     "core-js": "3.6.5",
     "html-webpack-plugin": "4.3.0",

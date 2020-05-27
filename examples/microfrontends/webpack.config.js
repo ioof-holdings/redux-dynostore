@@ -31,7 +31,11 @@ module.exports = {
       template: './public/index.html',
       filename: 'index.html'
     }),
-    new CopyWebpackPlugin([{ from: './externals', to: 'externals' }])
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: './externals', to: 'externals' }
+      ]
+    })
   ],
   externals: {
     react: 'React',

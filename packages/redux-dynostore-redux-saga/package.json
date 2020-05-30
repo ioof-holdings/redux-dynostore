@@ -28,12 +28,12 @@
     "redux-saga": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.10.1",
+    "@babel/core": "7.10.2",
     "@babel/plugin-proposal-object-rest-spread": "7.10.1",
     "@babel/plugin-transform-modules-commonjs": "7.10.1",
     "@babel/plugin-transform-runtime": "7.10.1",
-    "@babel/preset-env": "7.10.1",
-    "@babel/runtime": "7.10.1",
+    "@babel/preset-env": "7.10.2",
+    "@babel/runtime": "7.10.2",
     "@redux-dynostore/core": "^3.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",

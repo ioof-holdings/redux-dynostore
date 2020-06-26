@@ -38,7 +38,7 @@
     "@babel/preset-react": "7.10.1",
     "@redux-dynostore/core": "^3.1.0",
     "@redux-dynostore/react-redux": "^3.1.0",
-    "@testing-library/react": "10.0.5",
+    "@testing-library/react": "10.4.3",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.0.1",

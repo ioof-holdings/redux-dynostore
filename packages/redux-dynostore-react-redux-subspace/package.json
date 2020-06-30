@@ -31,11 +31,11 @@
     "redux": "^3.0.0 || ^4.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.10.3",
-    "@babel/plugin-proposal-object-rest-spread": "7.10.3",
-    "@babel/plugin-transform-modules-commonjs": "7.10.1",
-    "@babel/preset-env": "7.10.3",
-    "@babel/preset-react": "7.10.1",
+    "@babel/core": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-transform-modules-commonjs": "7.10.4",
+    "@babel/preset-env": "7.10.4",
+    "@babel/preset-react": "7.10.4",
     "@redux-dynostore/core": "^3.1.0",
     "@redux-dynostore/react-redux": "^3.1.0",
     "@testing-library/react": "10.4.3",

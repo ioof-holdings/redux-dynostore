@@ -3,7 +3,7 @@
   "version": "3.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "3.4.2"
+    "react-scripts": "3.4.3"
   },
   "dependencies": {
     "@redux-dynostore/core": "^3.1.0",

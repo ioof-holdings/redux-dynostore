@@ -8,10 +8,9 @@ import User from '../common/components/User'
 import List from '../common/components/List'
 import { loadRepo, loadStargazers } from './actions'
 
-const loadData = props => {
-  const { fullName } = props
-  props.loadRepo(fullName, ['description'])
-  props.loadStargazers(fullName)
+const loadData = ({ fullName, loadRepo, loadStargazers }) => {
+  loadRepo(fullName, ['description'])
+  loadStargazers(fullName)
 }
 
 class RepoPage extends Component {
@@ -26,13 +25,13 @@ class RepoPage extends Component {
     loadStargazers: PropTypes.func.isRequired
   }
 
-  componentWillMount() {
+  componentDidMount() {
     loadData(this.props)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.fullName !== this.props.fullName) {
-      loadData(nextProps)
+  componentDidUpdate(prevProps) {
+    if (this.props.fullName !== prevProps.fullName) {
+      loadData(this.props)
     }
   }
 

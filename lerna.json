@@ -9,5 +9,6 @@
       "ignore": "microfrontends-example"
     }
   },
+  "hoist": true,
   "version": "3.1.0"
 }

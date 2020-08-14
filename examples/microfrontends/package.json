@@ -3,7 +3,7 @@
   "version": "3.1.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap --hoist",
+    "bootstrap": "lerna bootstrap",
     "postinstall": "npm run bootstrap",
     "prebuild": "npm run externals:build",
     "prestart": "npm run externals:build",

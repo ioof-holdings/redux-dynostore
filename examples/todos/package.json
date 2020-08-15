@@ -1,15 +1,15 @@
 {
   "name": "todos",
-  "version": "3.1.0",
+  "version": "3.1.1-alpha.0",
   "private": true,
   "devDependencies": {
     "react-scripts": "3.4.3"
   },
   "dependencies": {
-    "@redux-dynostore/core": "^3.1.0",
-    "@redux-dynostore/react-redux": "^3.1.0",
-    "@redux-dynostore/react-redux-subspace": "^3.1.0",
-    "@redux-dynostore/redux-subspace": "^3.1.0",
+    "@redux-dynostore/core": "^3.1.1-alpha.0",
+    "@redux-dynostore/react-redux": "^3.1.1-alpha.0",
+    "@redux-dynostore/react-redux-subspace": "^3.1.1-alpha.0",
+    "@redux-dynostore/redux-subspace": "^3.1.1-alpha.0",
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",

@@ -33,7 +33,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-loader": "8.1.0",
     "copy-webpack-plugin": "6.1.1",
-    "copyfiles": "2.3.0",
+    "copyfiles": "2.4.0",
     "core-js": "3.6.5",
     "html-webpack-plugin": "4.5.0",
     "lerna": "3.22.1",

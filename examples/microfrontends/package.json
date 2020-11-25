@@ -34,7 +34,7 @@
     "babel-loader": "8.2.1",
     "copy-webpack-plugin": "6.3.2",
     "copyfiles": "2.4.0",
-    "core-js": "3.7.0",
+    "core-js": "3.8.0",
     "html-webpack-plugin": "4.5.0",
     "lerna": "3.22.1",
     "redux-devtools-extension": "2.13.8",

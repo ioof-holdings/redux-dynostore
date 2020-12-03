@@ -19,7 +19,7 @@
     "redux": "4.0.5",
     "redux-saga": "1.1.3",
     "redux-subspace": "6.2.0",
-    "redux-subspace-saga": "6.1.0"
+    "redux-subspace-saga": "6.2.0"
   },
   "scripts": {
     "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start"

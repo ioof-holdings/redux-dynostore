@@ -12,7 +12,7 @@
   "devDependencies": {
     "all-contributors-cli": "6.19.0",
     "babel-eslint": "10.1.0",
-    "cross-env": "7.0.2",
+    "cross-env": "7.0.3",
     "eslint": "7.14.0",
     "eslint-plugin-react": "7.21.5",
     "istanbul": "0.4.5",

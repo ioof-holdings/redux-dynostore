@@ -14,7 +14,7 @@
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "react-redux": "7.2.2",
-    "react-redux-subspace": "6.1.0",
+    "react-redux-subspace": "6.2.0",
     "redux": "4.0.5",
     "redux-subspace": "6.1.0"
   },

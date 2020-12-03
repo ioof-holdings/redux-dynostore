@@ -16,7 +16,7 @@
     "react-redux": "7.2.2",
     "react-redux-subspace": "6.2.0",
     "redux": "4.0.5",
-    "redux-subspace": "6.1.0"
+    "redux-subspace": "6.2.0"
   },
   "scripts": {
     "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start"

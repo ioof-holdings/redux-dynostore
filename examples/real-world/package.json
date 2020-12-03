@@ -1,6 +1,6 @@
 {
   "name": "real-world",
-  "version": "3.1.1-alpha.0",
+  "version": "3.1.1",
   "private": true,
   "devDependencies": {
     "react-scripts": "4.0.1",
@@ -10,10 +10,10 @@
     "redux-logger": "3.0.6"
   },
   "dependencies": {
-    "@redux-dynostore/core": "^3.1.1-alpha.0",
-    "@redux-dynostore/react-redux": "^3.1.1-alpha.0",
-    "@redux-dynostore/react-redux-subspace": "^3.1.1-alpha.0",
-    "@redux-dynostore/redux-subspace": "^3.1.1-alpha.0",
+    "@redux-dynostore/core": "^3.1.1",
+    "@redux-dynostore/react-redux": "^3.1.1",
+    "@redux-dynostore/react-redux-subspace": "^3.1.1",
+    "@redux-dynostore/redux-subspace": "^3.1.1",
     "connected-react-router": "6.8.0",
     "humps": "2.0.1",
     "lodash": "4.17.20",

@@ -20,7 +20,7 @@
     "rimraf": "3.0.2"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap --hoist",
+    "bootstrap": "lerna bootstrap",
     "postinstall": "npm run bootstrap",
     "build": "lerna run --parallel build",
     "test": "lerna run test && istanbul report --root packages --reporter text-summary",

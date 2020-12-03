@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ReactReduxContext } from 'react-redux'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 import wrapDisplayName from 'recompose/wrapDisplayName'
@@ -25,8 +25,11 @@ const createDynamic = (identifier, enhancers, options) => {
   return Component => {
     const Dynamic = React.forwardRef((props, ref) => {
       const { store } = useContext(context)
-      const EnhancedComponent = useMemo(() => dynamicEnhancer(store)(Component), [store])
-      return <EnhancedComponent identifier={identifier} {...props} ref={ref} />
+      const [EnhancedComponent, setEnhancedComponent] = useState(null)
+      useEffect(() => {
+        setEnhancedComponent(() => dynamicEnhancer(store)(Component))
+      }, [store])
+      return EnhancedComponent && <EnhancedComponent identifier={identifier} {...props} ref={ref} />
     })
 
     hoistNonReactStatics(Dynamic, Component)

@@ -1,15 +1,15 @@
 {
   "name": "immutable-counter",
-  "version": "3.1.0",
+  "version": "3.1.1-alpha.0",
   "private": true,
   "devDependencies": {
     "react-scripts": "4.0.1"
   },
   "dependencies": {
-    "@redux-dynostore/core": "^3.1.0",
-    "@redux-dynostore/react-redux": "^3.1.0",
-    "@redux-dynostore/react-redux-subspace": "^3.1.0",
-    "@redux-dynostore/redux-subspace": "^3.1.0",
+    "@redux-dynostore/core": "^3.1.1-alpha.0",
+    "@redux-dynostore/react-redux": "^3.1.1-alpha.0",
+    "@redux-dynostore/react-redux-subspace": "^3.1.1-alpha.0",
+    "@redux-dynostore/redux-subspace": "^3.1.1-alpha.0",
     "immutable": "4.0.0-rc.12",
     "prop-types": "15.7.2",
     "react": "16.14.0",

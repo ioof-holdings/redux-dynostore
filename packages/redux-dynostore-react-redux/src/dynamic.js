@@ -23,13 +23,22 @@ const createDynamic = (identifier, enhancers, options) => {
   const dynamicEnhancer = createDynamicTarget(enhancers)(identifier)
 
   return Component => {
-    const Dynamic = React.forwardRef((props, ref) => {
+    const useEnhancedComponent = () => {
       const { store } = useContext(context)
-      const [EnhancedComponent, setEnhancedComponent] = useState(null)
+      const enhancer = () => dynamicEnhancer(store)(Component)
+
+      const [EnhancedComponent, setEnhancedComponent] = useState(() => typeof window === 'undefined' ? enhancer() : null) 
+    
       useEffect(() => {
-        setEnhancedComponent(() => dynamicEnhancer(store)(Component))
+        setEnhancedComponent(() => enhancer())
       }, [store])
-      return EnhancedComponent && <EnhancedComponent identifier={identifier} {...props} ref={ref} />
+    
+      return { canRender: !!EnhancedComponent, EnhancedComponent }
+    }
+
+    const Dynamic = React.forwardRef((props, ref) => {
+      const { canRender, EnhancedComponent } = useEnhancedComponent()
+      return canRender && <EnhancedComponent identifier={identifier} {...props} ref={ref} />
     })
 
     hoistNonReactStatics(Dynamic, Component)

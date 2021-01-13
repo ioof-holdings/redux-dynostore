@@ -40,7 +40,7 @@ const createDynamic = (identifier, enhancers, options) => {
       const [lastStore, setLastStore] = useState(store)
       const firstRender = useContext(DynamicContext)
 
-      const [EnhancedComponent, setEnhancedComponent] = useState(() => firstRender ? dynamicEnhancer(store)(Component) : null);
+      const [EnhancedComponent, setEnhancedComponent] = useState(() => firstRender && dynamicEnhancer(store)(Component));
 
       useEffect(() => {
         if (!EnhancedComponent || store !== lastStore) {

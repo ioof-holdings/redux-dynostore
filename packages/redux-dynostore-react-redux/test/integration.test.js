@@ -28,7 +28,7 @@ describe('integration tests', () => {
     store = createStore((state = {}) => state, dynostore())
   })
 
-  test('should enhance component with dynamic enhaners', () => {
+  test('should enhance component with dynamic enhancers', () => {
     const mockFn = jest.fn()
     const DynamicComponent = dynamic('testId', testDynamicEnhancer(mockFn))(TestComponent)
     const { getByText } = render(

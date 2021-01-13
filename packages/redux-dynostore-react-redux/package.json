@@ -1,6 +1,6 @@
 {
   "name": "@redux-dynostore/react-redux",
-  "version": "3.1.1",
+  "version": "3.2.0-alpha.0",
   "description": "Call dynostore enhancers when a React component is mounted",
   "author": "Michael Peyper",
   "contributors": [
@@ -23,7 +23,7 @@
     "url": "https://github.com/ioof-holdings/redux-dynostore.git"
   },
   "dependencies": {
-    "@redux-dynostore/core": "^3.1.1",
+    "@redux-dynostore/core": "^3.2.0-alpha.0",
     "hoist-non-react-statics": "^3.3.0",
     "recompose": "^0.30.0"
   },

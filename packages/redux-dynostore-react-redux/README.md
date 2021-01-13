@@ -68,8 +68,6 @@ ReactDom.render((
 
 While not required for client-side rendering (CSR), `DynamicProvider`, it can also slightly improve performance of the first render pass.  It's use in CSR is generally not advised and not a supported use case, so use it at your own risk.
 
-#### Server-Side Rendering (SSR)
-
 ## Enhancers
 
 Enhancers are used to provide additional wrappers around the passed component when it is mounted. The following enhancers are provided:

@@ -44,6 +44,32 @@ export default dynamic('identifier', somethingDynamic(), { context: CustomReactR
 
 This option overrides the `context` used for accessing the store in the React context.  If you are overriding this value, you should also be overriding the context passed to any `Provider` and/or `connect` components as well.  Please refer to the [Redux documentation](https://react-redux.js.org/using-react-redux/accessing-store#providing-custom-context) for more details on this use case.
 
+### `DynamicProvider`
+
+`dynamic` components will not render when server-side rendering (SSR) your app unless you add a `DynamicProvider` somewhere near the root of of your component tree (anywhere above the the first `dynamic` component).
+This will allow the component to call their enhancers synchronously in the first render pass.  You must also ensure that the `DynamicProvider` is also rendered when hydrating that app on the client.
+
+```js
+import ReactDom from 'react'
+import { Provider } from 'react-redux'
+import dynamic, { DynamicProvider } from '@redux-dynostore/react-redux'
+
+import store from './store'
+import MyDynamicComponent from './MyDynamicComponent
+
+ReactDom.render((
+  <Provider store={store}>
+    <DynamicProvider>
+      <MyDynamicComponent />
+    </DynamicProvider>
+  </Provider>
+), document.getElementById('root'))
+```
+
+While not required for client-side rendering (CSR), `DynamicProvider`, it can also slightly improve performance of the first render pass.  It's use in CSR is generally not advised and not a supported use case, so use it at your own risk.
+
+#### Server-Side Rendering (SSR)
+
 ## Enhancers
 
 Enhancers are used to provide additional wrappers around the passed component when it is mounted. The following enhancers are provided:

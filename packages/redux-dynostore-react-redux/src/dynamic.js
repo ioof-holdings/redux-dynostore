@@ -18,27 +18,38 @@ const splitOptions = args => {
   return isObject(lastItem) ? [args.slice(0, -1), lastItem] : [args, {}]
 }
 
+const DynamicContext = React.createContext(false)
+
+// eslint-disable-next-line react/prop-types
+export const DynamicProvider = ({ children }) => {
+  const [firstRender, setFirstRender] = useState(true);
+
+  useEffect(() => {
+    setFirstRender(false);
+  }, []);
+
+  return <DynamicContext.Provider value={firstRender}>{children}</DynamicContext.Provider>
+}
+
 const createDynamic = (identifier, enhancers, options) => {
   const { context = ReactReduxContext } = options
   const dynamicEnhancer = createDynamicTarget(enhancers)(identifier)
-
   return Component => {
-    const useEnhancedComponent = () => {
-      const { store } = useContext(context)
-      const enhancer = () => dynamicEnhancer(store)(Component)
-
-      const [EnhancedComponent, setEnhancedComponent] = useState(() => typeof window === 'undefined' ? enhancer() : null) 
-    
-      useEffect(() => {
-        setEnhancedComponent(() => enhancer())
-      }, [store])
-    
-      return { canRender: !!EnhancedComponent, EnhancedComponent }
-    }
-
     const Dynamic = React.forwardRef((props, ref) => {
-      const { canRender, EnhancedComponent } = useEnhancedComponent()
-      return canRender && <EnhancedComponent identifier={identifier} {...props} ref={ref} />
+      const { store } = useContext(context)
+      const [lastStore, setLastStore] = useState(store)
+      const firstRender = useContext(DynamicContext)
+
+      const [EnhancedComponent, setEnhancedComponent] = useState(() => firstRender ? dynamicEnhancer(store)(Component) : null);
+
+      useEffect(() => {
+        if (!EnhancedComponent || store !== lastStore) {
+          setEnhancedComponent(() => dynamicEnhancer(store)(Component));
+          setLastStore(store)
+        }
+      }, [store])
+      
+      return EnhancedComponent && <EnhancedComponent identifier={identifier} {...props} ref={ref} />
     })
 
     hoistNonReactStatics(Dynamic, Component)

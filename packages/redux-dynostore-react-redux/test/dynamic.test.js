@@ -7,9 +7,10 @@
  */
 
 import React from 'react'
+import ReactDomServer from 'react-dom/server'
 import { Provider } from 'react-redux'
 import { render } from '@testing-library/react'
-import dynamic from 'src/dynamic'
+import dynamic, { DynamicProvider } from 'src/dynamic'
 
 describe('dynamic tests', () => {
   test('should create dynamic component', () => {
@@ -183,5 +184,76 @@ describe('dynamic tests', () => {
 
     expect(getByText('Hello World')).toBeDefined()
     expect(callback).toHaveBeenCalledTimes(1)
+  })
+
+  test('should create dynamic component on first pass when server rendering', () => {
+    const callback = jest.fn()
+
+    const fakeStore = {
+      getState: () => {},
+      dispatch: () => {},
+      subscribe: () => {}
+    }
+
+    const testEnhancer = identifier => store => {
+      expect(identifier).toBe('testId')
+      expect(store).toBe(fakeStore)
+      callback()
+    }
+
+    const TestComponent = () => <p>Hello World</p>
+    const DynamicComponent = dynamic('testId', testEnhancer)(TestComponent)
+
+    const output = ReactDomServer.renderToString((
+      <Provider store={fakeStore}>
+        <DynamicProvider>
+          <DynamicComponent />
+        </DynamicProvider>
+      </Provider>
+    ))
+
+    expect(output).toEqual(expect.stringMatching(/Hello World/))
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
+  test('should hydrate dynamic component after server rendering', () => {
+    const callback = jest.fn()
+
+    const fakeStore = {
+      getState: () => {},
+      dispatch: () => {},
+      subscribe: () => {}
+    }
+
+    const testEnhancer = identifier => store => {
+      expect(identifier).toBe('testId')
+      expect(store).toBe(fakeStore)
+      callback()
+    }
+
+    const TestComponent = () => <p>Hello World</p>
+    const DynamicComponent = dynamic('testId', testEnhancer)(TestComponent)
+
+    const output = ReactDomServer.renderToString((
+      <Provider store={fakeStore}>
+        <DynamicProvider>
+          <DynamicComponent />
+        </DynamicProvider>
+      </Provider>
+    ))
+
+    const container = document.createElement('div')
+    container.innerHTML = output
+
+    const { getByText } = render((
+      <Provider store={fakeStore}>
+        <DynamicProvider>
+          <DynamicComponent />
+        </DynamicProvider>
+      </Provider>
+    ), { container, hydrate: true })
+
+    expect(getByText('Hello World')).toBeDefined()
+    expect(callback).toHaveBeenCalledTimes(2)
   })
 })

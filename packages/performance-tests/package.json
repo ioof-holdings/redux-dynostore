@@ -1,12 +1,12 @@
 {
   "name": "performance-tests",
-  "version": "3.2.0-alpha.0",
+  "version": "3.2.0-alpha.1",
   "private": true,
   "description": "performance tests for redux-dynostore",
   "author": "Michael Peyper",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "@redux-dynostore/core": "^3.2.0-alpha.0",
+    "@redux-dynostore/core": "^3.2.0-alpha.1",
     "redux": "4.0.5"
   },
   "devDependencies": {

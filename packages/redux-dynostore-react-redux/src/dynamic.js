@@ -18,17 +18,37 @@ const splitOptions = args => {
   return isObject(lastItem) ? [args.slice(0, -1), lastItem] : [args, {}]
 }
 
+const DynamicContext = React.createContext(null)
+
+// eslint-disable-next-line react/prop-types
+export const DynamicProvider = ({ children }) => {
+  const inheritedFirstRender = useContext(DynamicContext)
+  const [firstRender, setFirstRender] = useState(inheritedFirstRender === null)
+  useEffect(() => {
+    setFirstRender(false)
+  }, [])
+
+  return <DynamicContext.Provider value={firstRender}>{children}</DynamicContext.Provider>
+}
+
 const createDynamic = (identifier, enhancers, options) => {
   const { context = ReactReduxContext } = options
   const dynamicEnhancer = createDynamicTarget(enhancers)(identifier)
-
   return Component => {
     const Dynamic = React.forwardRef((props, ref) => {
       const { store } = useContext(context)
-      const [EnhancedComponent, setEnhancedComponent] = useState(null)
+      const [lastStore, setLastStore] = useState(store)
+      const firstRender = useContext(DynamicContext)
+
+      const [EnhancedComponent, setEnhancedComponent] = useState(() => firstRender && dynamicEnhancer(store)(Component));
+
       useEffect(() => {
-        setEnhancedComponent(() => dynamicEnhancer(store)(Component))
+        if (!EnhancedComponent || store !== lastStore) {
+          setEnhancedComponent(() => dynamicEnhancer(store)(Component));
+          setLastStore(store)
+        }
       }, [store])
+      
       return EnhancedComponent && <EnhancedComponent identifier={identifier} {...props} ref={ref} />
     })
 

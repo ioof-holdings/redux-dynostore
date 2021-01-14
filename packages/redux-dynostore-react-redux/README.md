@@ -99,11 +99,11 @@ Enhancers are used to provide additional wrappers around the passed component wh
 4. [Subspaced](/packages/redux-dynostore-react-redux-subspace) - mounts the component is in a subspace for the components identifier
    1. [Namespaced Reducers](/packages/redux-dynostore-redux-subspace) - dynamically attach reducers that are namespaced with the component's identifier
    2. [Subspaced Sagas](/packages/redux-dynostore-redux-subspace-saga) - dynamically run sagas that are subspaced for the component's identifier
-   3. [Dispatch Namepsaced Action](/packages/redux-dynostore-redux-subspace) - dispatch actions when the component is mounted that are namespaced with the component's identifier
+   3. [Dispatch Namespaced Action](/packages/redux-dynostore-redux-subspace) - dispatch actions when the component is mounted that are namespaced with the component's identifier
 
 ### Custom Enhancers
 
-Enahncers can be created for many use cases by implementing the following interface:
+Enhancers can be created for many use cases by implementing the following interface:
 
 ```javascript
 const enhancer = identifier => store => Component => EnhancedComponent

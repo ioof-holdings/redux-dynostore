@@ -66,7 +66,28 @@ ReactDom.render((
 ), document.getElementById('root'))
 ```
 
-While not required for client-side rendering (CSR), `DynamicProvider`, it can also slightly improve performance of the first render pass.  It's use in CSR is generally not advised and not a supported use case, so use it at your own risk.
+You can also nest multiple `DynamicProvider` components within each other.
+
+```js
+ReactDom.render((
+  <Provider store={store}>
+    <DynamicProvider>
+      <ParentDynamicComponent>
+        <DynamicProvider>
+          <ChildDynamicComponent />
+        </DynamicProvider>
+      </ParentDynamicComponent>
+    </DynamicProvider>
+  </Provider>
+), document.getElementById('root'))
+```
+
+One example of when you might do this is when composing multiple sub-apps together into a parent-app and each app could have their own `DynamicProvider` instance.
+However, it is important to that the root `DynamicProvider` does not get unmounted and remounted as this will another synchronous render pass to occur after the first render, which will produce warnings from React about cross component
+updates.
+
+While not required for client-side rendering (CSR), `DynamicProvider`, it can also slightly improve performance of the first render pass, however, due to limited testing, there might be unforeseen impacts of using this in an a CSR
+context, so use it at your own risk.
 
 ## Enhancers
 

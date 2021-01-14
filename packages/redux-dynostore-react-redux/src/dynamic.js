@@ -18,15 +18,15 @@ const splitOptions = args => {
   return isObject(lastItem) ? [args.slice(0, -1), lastItem] : [args, {}]
 }
 
-const DynamicContext = React.createContext(false)
+const DynamicContext = React.createContext(null)
 
 // eslint-disable-next-line react/prop-types
 export const DynamicProvider = ({ children }) => {
-  const [firstRender, setFirstRender] = useState(true);
-
+  const inheritedFirstRender = useContext(DynamicContext)
+  const [firstRender, setFirstRender] = useState(inheritedFirstRender === null)
   useEffect(() => {
-    setFirstRender(false);
-  }, []);
+    setFirstRender(false)
+  }, [])
 
   return <DynamicContext.Provider value={firstRender}>{children}</DynamicContext.Provider>
 }
